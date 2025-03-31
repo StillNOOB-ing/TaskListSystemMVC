@@ -1,0 +1,23 @@
+﻿@model string
+
+<table style="width:100%">
+	<tr>
+		<td class="d-flex align-items-center">
+			<input id="txtSearch" type="text" class="form-control" value="@Model" placeholder="Search..." />
+			<a class="btn btn-secondary" onclick="Search()"><i class="bi bi-search"></i></a>
+		</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+	function Search(){
+			var searchStr = document.getElementById("txtSearch").value;
+
+			var url = new URL(window.location.href);
+			var params = new URLSearchParams(url.search);
+
+			params.set("searchFilter", searchStr);
+
+			window.location.href = `${url.pathname}?${params.toString()}`;
+		}
+</script>

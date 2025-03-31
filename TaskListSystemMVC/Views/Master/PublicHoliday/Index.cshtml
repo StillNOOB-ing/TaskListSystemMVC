@@ -4,16 +4,15 @@
 	ViewData["Title"] = "Public Holiday";
 }
 
-<table>
-	<tr>
-		<td>
+<table style="width:100%">
+	<tr class="d-flex justify-content-between align-items-center">
+		<td class="d-flex align-items-center">
 			<h4>Public Holiday List</h4>
+			<span style="margin-left:10px">(Total: @Model.TotalItem items)</span>
+			<a href="@Url.Action("Create", "MPublicHoliday")" class="btn btn-success" style="margin-left:25px">ADD</a>
 		</td>
-		<td style="padding-left:10px">
-			<span>(Total: @ViewData["TotalItem"] items)</span>
-		</td>
-		<td style="padding-left:25px">
-			<a href="@Url.Action("Create", "MPublicHoliday")" class="btn btn-success">ADD</a>
+		<td class="ms-auto">
+			@await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
 		</td>
 	</tr>
 </table>
@@ -23,13 +22,13 @@
 		<tr>
 			<th></th>
 			<th>
-				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]">
+				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
 					UID
-					@if (ViewData["CurrentSort"]?.ToString() == "asc")
+					@if (ViewData["SortOrder"]?.ToString() == "asc")
 					{
 						<i class="bi bi-arrow-up"></i>
 					}
-					else if (ViewData["CurrentSort"]?.ToString() == "desc")
+					else if (ViewData["SortOrder"]?.ToString() == "desc")
 					{
 						<i class="bi bi-arrow-down"></i>
 					}
@@ -69,4 +68,4 @@
 	</tbody>
 </table>
 
-@await Html.PartialAsync("PageBar", ("MPublicHoliday", Model.PageIndex, Model.TotalPage, Model.SortOrder))
+@await Html.PartialAsync("PageBar", ("MPublicHoliday", Model.PageIndex, Model.TotalPage))

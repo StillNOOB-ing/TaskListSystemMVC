@@ -21,12 +21,13 @@ namespace TaskListSystemMVC.Controllers.DailyTask
             masHelper = mHelper;
         }
 
-        public async Task<IActionResult> Index(int? index, string sortOrder)
+        public async Task<IActionResult> Index(int? index, string sortOrder, string searchFilter)
         {
             if (index == null || index <= 0) index = 1;
             int pageSize = 10;
 
-            ViewData["CurrentSort"] = sortOrder;
+            ViewData["SearchFilter"] = searchFilter;
+            ViewData["SortOrder"] = sortOrder;
             ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
 
             var dataList = sortOrder switch
@@ -35,11 +36,7 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                 _ => taskHelper.GetDailyTaskDB()
             };
             
-            var result = await PaginationList<TDailyTask>.CreateAsync(dataList, index.Value, pageSize, sortOrder);
-
-            ViewData["PageIndex"] = index;
-            ViewData["PageCount"] = result.TotalPage;
-            ViewData["TotalItem"] = dataList.Count();           
+            var result = await PaginationList<TDailyTask>.CreateAsync(dataList, index.Value, pageSize);
 
             return View("~/Views/DailyTask/DailyTask/Index.cshtml", result);
         }

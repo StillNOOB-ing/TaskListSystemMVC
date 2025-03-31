@@ -18,12 +18,13 @@ namespace TaskListSystemMVC.Controllers.Master
             mHelper = masterHelper;
         }
 
-        public async Task<IActionResult> Index(int? index, string sortOrder)
+        public async Task<IActionResult> Index(int? index, string sortOrder, string searchFilter)
         {
             if (index == null || index <= 0) index = 1;
             int pageSize = 10;
 
-            ViewData["CurrentSort"] = sortOrder;
+            ViewData["SearchFilter"] = searchFilter;
+            ViewData["SortOrder"] = sortOrder;
             ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
 
             var dataList = sortOrder switch
@@ -32,11 +33,7 @@ namespace TaskListSystemMVC.Controllers.Master
                 _ => mHelper.GetPublicHolidayDB()
             };
 
-            var result = await PaginationList<MPublicHoliday>.CreateAsync(dataList, index.Value, pageSize, sortOrder);
-
-            ViewData["PageIndex"] = index;
-            ViewData["PageCount"] = result.TotalPage;
-            ViewData["TotalItem"] = dataList.Count();
+            var result = await PaginationList<MPublicHoliday>.CreateAsync(dataList, index.Value, pageSize);
 
             return View("~/Views/Master/PublicHoliday/Index.cshtml", result);
         }
