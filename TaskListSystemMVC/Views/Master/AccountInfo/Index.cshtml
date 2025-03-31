@@ -1,13 +1,9 @@
 ﻿@inject IMasterHelper helper
 
-@model TaskListSystemMVC.Database.PaginationList<TaskListSystemMVC.Database.Model.MAccountInfo>
+@model PaginationList<MAccountInfo>
 
 @{
     ViewData["Title"] = "Account List";
-
-    var pageIndex = Convert.ToInt32(ViewData["PageIndex"]);
-    var pageCount = Convert.ToInt32(ViewData["PageCount"]);
-    var totalItem = Convert.ToInt32(ViewData["TotalItem"]);
 }
 
 <table>
@@ -16,7 +12,7 @@
             <h4>Account List</h4>
         </td>
         <td style ="padding-left:10px">
-            <span>(Total: @totalItem items)</span>
+            <span>(Total: @ViewData["TotalItem"] items)</span>
         </td>
         <td style="padding-left:25px">
             <a href="@Url.Action("Create", "MAccountInfo")" class="btn btn-success">Add</a>
@@ -28,7 +24,19 @@
     <thead>
         <tr>
             <th></th>
-            <th>ID</th>
+            <th>
+                <a asp-controller="MAccountInfo" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]">
+                    UID
+                    @if (ViewData["CurrentSort"]?.ToString() == "asc")
+                    {
+                        <i class="bi bi-arrow-up"></i>
+                    }
+                    else if (ViewData["CurrentSort"]?.ToString() == "desc")
+                    {
+                        <i class="bi bi-arrow-down"></i>
+                    }
+                </a>
+            </th>
             <th>Name</th>
             <th>Level</th>
             @* <th>Username</th>
@@ -68,4 +76,4 @@
     </tbody>
 </table>
 
-@await Html.PartialAsync("Pagination", (pageIndex, pageCount, "MAccountInfo", "Index"))
+@await Html.PartialAsync("PageBar", ("MAccountInfo", Model.PageIndex, Model.TotalPage, Model.SortOrder))

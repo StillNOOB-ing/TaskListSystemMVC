@@ -4,6 +4,7 @@ using TaskListSystemMVC.Database.Helper;
 using TaskListSystemMVC.Database.Interface;
 using TaskListSystemMVC.Database.Model;
 using TaskListSystemMVC.Database;
+using Microsoft.Data.SqlClient;
 
 namespace TaskListSystemMVC.Controllers.Master
 {
@@ -17,13 +18,21 @@ namespace TaskListSystemMVC.Controllers.Master
             mHelper = masterHelper;
         }
 
-        public async Task<IActionResult> Index(int index)
+        public async Task<IActionResult> Index(int? index, string sortOrder)
         {
-            if (index <= 0) index = 1;
+            if (index == null || index <= 0) index = 1;
             int pageSize = 10;
 
-            var dataList = mHelper.GetPublicHolidayDB();
-            var result = await PaginationList<MPublicHoliday>.CreateAsync(dataList, index, pageSize);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
+
+            var dataList = sortOrder switch
+            {
+                "desc" => mHelper.GetPublicHolidayDB().OrderByDescending(x => x.UID),
+                _ => mHelper.GetPublicHolidayDB()
+            };
+
+            var result = await PaginationList<MPublicHoliday>.CreateAsync(dataList, index.Value, pageSize, sortOrder);
 
             ViewData["PageIndex"] = index;
             ViewData["PageCount"] = result.TotalPage;

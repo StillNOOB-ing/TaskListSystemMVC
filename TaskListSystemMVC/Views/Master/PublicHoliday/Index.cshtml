@@ -2,10 +2,6 @@
 
 @{
 	ViewData["Title"] = "Public Holiday";
-
-	var pageIndex = Convert.ToInt32(ViewData["PageIndex"]);
-	var pageCount = Convert.ToInt32(ViewData["PageCount"]);
-	var totalItem = Convert.ToInt32(ViewData["TotalItem"]);
 }
 
 <table>
@@ -14,7 +10,7 @@
 			<h4>Public Holiday List</h4>
 		</td>
 		<td style="padding-left:10px">
-			<span>(Total: @totalItem items)</span>
+			<span>(Total: @ViewData["TotalItem"] items)</span>
 		</td>
 		<td style="padding-left:25px">
 			<a href="@Url.Action("Create", "MPublicHoliday")" class="btn btn-success">ADD</a>
@@ -26,16 +22,28 @@
 	<thead>
 		<tr>
 			<th></th>
-			<th>UID</th>
+			<th>
+				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]">
+					UID
+					@if (ViewData["CurrentSort"]?.ToString() == "asc")
+					{
+						<i class="bi bi-arrow-up"></i>
+					}
+					else if (ViewData["CurrentSort"]?.ToString() == "desc")
+					{
+						<i class="bi bi-arrow-down"></i>
+					}
+				</a>
+			</th>
 			<th>Name</th>
 			<th>Remark</th>
 			<th>Start Date</th>
 			<th>End Date</th>
 			<th>Day</th>
-			<th>Created By</th>
+			@* <th>Created By</th>
 			<th>Created On</th>
 			<th>Updated By</th>
-			<th>Updated On</th>
+			<th>Updated On</th> *@
 		</tr>		
 	</thead>
 	<tbody>
@@ -52,13 +60,13 @@
 				<td>@item.StartDate</td>
 				<td>@item.EndDate</td>
 				<td>@item.Day</td>
-				<td>@item.CreatedBy</td>
+				@* <td>@item.CreatedBy</td>
 				<td>@item.CreatedOn</td>
 				<td>@item.UpdatedBy</td>
-				<td>@item.UpdatedOn</td>
+				<td>@item.UpdatedOn</td> *@
 			</tr>
 		}
 	</tbody>
 </table>
 
-@await Html.PartialAsync("Pagination", (pageIndex, pageCount, "MAccountInfo", "Index"))
+@await Html.PartialAsync("PageBar", ("MPublicHoliday", Model.PageIndex, Model.TotalPage, Model.SortOrder))

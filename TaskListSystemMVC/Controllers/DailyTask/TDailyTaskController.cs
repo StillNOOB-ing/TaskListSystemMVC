@@ -26,20 +26,20 @@ namespace TaskListSystemMVC.Controllers.DailyTask
             if (index == null || index <= 0) index = 1;
             int pageSize = 10;
 
-            var dataList = taskHelper.GetDailyTaskDB();
-            switch (sortOrder)
-            {
-                case "desc":
-                    dataList = dataList.OrderByDescending(x => x.ReportByID);
-                    break;
-            }
-            
-            var result = await PaginationList<TDailyTask>.CreateAsync(dataList, index.Value, pageSize);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
 
-            ViewData["SortParamReportID"] = sortOrder;
+            var dataList = sortOrder switch
+            {
+                "desc" => taskHelper.GetDailyTaskDB().OrderByDescending(x => x.ReportByID),
+                _ => taskHelper.GetDailyTaskDB()
+            };
+            
+            var result = await PaginationList<TDailyTask>.CreateAsync(dataList, index.Value, pageSize, sortOrder);
+
             ViewData["PageIndex"] = index;
             ViewData["PageCount"] = result.TotalPage;
-            ViewData["TotalItem"] = dataList.Count();
+            ViewData["TotalItem"] = dataList.Count();           
 
             return View("~/Views/DailyTask/DailyTask/Index.cshtml", result);
         }

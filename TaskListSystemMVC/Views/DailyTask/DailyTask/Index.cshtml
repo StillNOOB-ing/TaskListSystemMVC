@@ -1,16 +1,9 @@
-﻿@using TaskListSystemMVC
-@using TaskListSystemMVC.Database
-@using TaskListSystemMVC.Models
-@inject IMasterHelper masterHelper
+﻿@inject IMasterHelper masterHelper
 
-@model TaskListSystemMVC.Database.PaginationList<TaskListSystemMVC.Database.Model.TDailyTask>
+@model PaginationList<TDailyTask>
 
 @{
 	ViewData["Title"] = "Daily Task";
-
-	var pageIndex = Convert.ToInt32(ViewData["PageIndex"]);
-	var pageCount = Convert.ToInt32(ViewData["PageCount"]);
-	var totalItem = Convert.ToInt32(ViewData["TotalItem"]);
 }
 
 <table>
@@ -19,7 +12,7 @@
 			<h4>Daily Task List</h4>			
 		</td>
 		<td style="padding-left:10px">
-			<span>(Total: @totalItem items)</span>
+			<span>(Total: @ViewData["TotalItem"] items)</span>
 		</td>
 		<td style="padding-left:25px">
 			<a href="@Url.Action("Create", "TDailyTask")" class="btn btn-success">ADD</a>
@@ -31,7 +24,19 @@
 	<thead>	
 		<tr>
 			<th></th>
-			<th><a asp-action="Index" asp-route-sortOrder="desc">Report ID</a></th>
+			<th>
+				<a asp-controller="TDailyTask" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]">
+					Report ID
+					@if (ViewData["CurrentSort"]?.ToString() == "asc")
+					{
+						<i class="bi bi-arrow-up"></i>
+					}
+					else if (ViewData["CurrentSort"]?.ToString() == "desc")
+					{
+						<i class="bi bi-arrow-down"></i>
+					}
+				</a>
+			</th>
 			<th>Reported On</th>
 			<th>Scheduled On</th>
 			<th>Title</th>
@@ -82,4 +87,4 @@
 	</tbody>
 </table>
 
-@await Html.PartialAsync("Pagination", (pageIndex, pageCount, "TDailyTask", "Index"))
+@await Html.PartialAsync("PageBar", ("TDailyTask", Model.PageIndex, Model.TotalPage, Model.SortOrder))

@@ -30,7 +30,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dailyTaskDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Task</a>
                             <ul class="dropdown-menu" aria-labelledby="dailyTaskDropDown">
                                 <li>
-                                    <a class="dropdown-item" href="@Url.Action("Index", "TDailyTask", new { index = 1 })">Daily Task</a>
+                                    <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index" asp-route-index="1" asp-route-sortOrder="desc">Daily Task</a>
                                 </li>
                             </ul>
                         </li>
@@ -38,11 +38,11 @@
                             <a class="nav-link dropdown-toggle" href="#" id="masterDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Master</a>
                             <ul class="dropdown-menu" aria-labelledby="masterDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="@Url.Action("Index", "MAccountInfo", new { index = 1 })">Account</a>
+                                    <a class="dropdown-item" asp-controller="MAccountInfo" asp-action="Index" asp-route-index="1" asp-route-sortOrder="desc">Account</a>
                                     <a class="dropdown-item" asp-controller="MUserLevelRight" asp-action="Index">User Level Right</a>
                                     <a class="dropdown-item" asp-controller="MStatus" asp-action="Index">Status</a>
                                     <a class="dropdown-item" asp-controller="MType" asp-action="Index">Type</a>
-                                    <a class="dropdown-item" href="@Url.Action("Index", "MPublicHoliday", new { index = 1 })">Public Holiday</a>
+                                    <a class="dropdown-item" asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="1" asp-route-sortOrder="desc">Public Holiday</a>
                                 </li>
                             </ul>
                         </li>
