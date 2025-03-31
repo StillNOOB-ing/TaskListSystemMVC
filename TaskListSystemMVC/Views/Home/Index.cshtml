@@ -1,0 +1,61 @@
+﻿@inject IMasterHelper masterHelper
+
+@model (List<TDailyTask> taskList, List<MPublicHoliday> holidayList)
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Today Task</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <th>Scheduled On</th>
+                        <th>Title</th>
+                        <th>PIC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.taskList)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("Edit", "TDailyTask", new { id = item.UID })" class="btn text-warning"><i class="bi bi-pencil"></i></a>
+                            </td>
+                            <td>@item.ScheduledOn</td>
+                            <td>@item.Title</td>
+                            <td>@(masterHelper.GetAccountInfoByID(item.PICID.Value)?.Result?.Name)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">    
+            <h3>Public Holiday</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Start Date</th>
+                        <th>Day</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.holidayList)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.StartDate</td>
+                            <td>@item.Day</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>        
+    </div>
+</div>
+

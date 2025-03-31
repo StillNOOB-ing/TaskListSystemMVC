@@ -1,0 +1,115 @@
+﻿@using TaskListSystemMVC
+@using TaskListSystemMVC.Database
+@using TaskListSystemMVC.Models
+
+@model TaskListSystemMVC.Database.Model.TDailyTask;
+
+@{
+    ViewData["Title"] = "Edit Daily Task";
+}
+
+<h2>Edit Daily Task</h2>
+
+<form asp-action="Edit" asp-controller="TDailyTask" method="post">
+    <input type="hidden" asp-for="UID" />
+    <input type="hidden" asp-for="CreatedBy" />
+    <input type="hidden" asp-for="CreatedOn" />
+    <input type="hidden" asp-for="UpdatedBy" />
+    <input type="hidden" asp-for="UpdatedOn" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="txtReportID" class="form-label">Report ID</label>
+                            <input id="txtReportID" asp-for="ReportByID" type="class" class="form-control readonly-disabled" readonly="true" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="dtReportOn" class="form-label">Reported On</label>
+                            <input id="dtReportOn" asp-for="ReportedOn" type="datetime-local" class="form-control readonly-disabled" readonly="true" />
+                        </div>
+					</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtTitle" class="form-label">Title</label>
+                    <input id="txtTitle" asp-for="Title" class="form-control" type="text" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="txtDescription" class="form-label">Description</label>
+                    <textarea id="txtDescription" asp-for="Description" class="form-control" rows="8"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="txtRemark" class="form-label">Remark</label>
+                    <textarea id="txtRemark" asp-for="Remark" class="form-control" rows="6"></textarea>
+                </div>
+
+                @* button *@
+                <div class="d-flex gap-2 pt-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="@Url.Action("Index", "TDailyTask")" class="btn btn-secondary">Cancel</a>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="cmbPIC" class="form-label">PIC</label>
+                    <select id="cmbPIC" class="form-select" asp-for="PICID" asp-items="ViewBag.PICList"></select>
+                    <span asp-validation-for="PICID" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="cmbStatus" class="form-label">Status</label>
+                    <select id="cmbStatus" class="form-select" asp-for="StatusID" asp-items="ViewBag.StatusList" onchange="OnCmbStatusChanged()"></select>
+                    <span asp-validation-for="StatusID" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="cmbType" class="form-label">Type</label>
+                    <select id="cmbType" class="form-select" asp-for="TypeID" asp-items="ViewBag.TypeList"></select>
+                    <span asp-validation-for="TypeID" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="dtScheduleOn" class="form-label">Scheduled On</label>
+                    <input id="dtScheduleOn" asp-for="ScheduledOn" type="datetime-local" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="dtCompleteOn" class="form-label">Completed On</label>
+                    <input id="dtCompleteOn" asp-for="CompletedOn" type="datetime-local" class="form-control readonly-disabled" readonly="true" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function OnCmbStatusChanged()
+    {
+        var cmbStatus = document.getElementById("cmbStatus");
+        var dtCompleteOn = document.getElementById("dtCompleteOn");
+        
+        if (cmbStatus.value == "@FixedStatus.COMPLETED_UID")
+        {
+            let dtNow = new Date().toISOString().slice(0, 16);
+            dtCompleteOn.value = dtNow;
+        }
+        else
+        {
+            dtCompleteOn.value = null;
+        }
+
+        // fetch('/TDailyTask/CmbStatusChanged', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ UID: selectedValue })
+        // })
+        // .then(response => response.json())
+        // .then(data => console.log("Status updated:", data))
+        // .catch(error => console.error("Error:", error));
+    }
+</script>

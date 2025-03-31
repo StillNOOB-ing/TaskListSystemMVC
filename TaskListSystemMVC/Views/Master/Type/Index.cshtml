@@ -1,0 +1,82 @@
+﻿@model List<TaskListSystemMVC.Database.Model.MType>
+
+@{
+	ViewData["Title"] = "Type";
+}
+
+<table>
+	<tr>
+		<td>
+			<h4>Type List</h4>
+		</td>
+		<td style="padding-left:25px">
+			<a href="@Url.Action("Create", "MType")" class="btn btn-success">ADD</a>
+		</td>
+	</tr>
+</table>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>UID</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Created By</th>
+			<th>Created On</th>
+			<th>Updated By</th>
+			<th>Updated On</th>
+		</tr>		
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					<a href="@Url.Action("Edit", "MType", new { id = item.UID })" class="btn btn-outline-warning">Edit</a>
+					<a href="@Url.Action("Delete", "MType", new { id = item.UID })" class="btn btn-outline-danger">Delete</a>
+				</td>
+				<td>@item.UID</td>
+				<td>@item.Name</td>
+				<td>@item.Description</td>
+				<td>@item.CreatedBy</td>
+				<td>@item.CreatedOn</td>
+				<td>@item.UpdatedBy</td>
+				<td>@item.UpdatedOn</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@* <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="createModalLabel">Type</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="modalContent"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+	$(document).ready(function () {
+
+		$('#createModal').on('show.bs.modal', function () {
+			$.ajax({
+				url: '@Url.Action("Create", "MType")',
+				type: 'GET',
+				success: function (data) {
+					$('#modalContent').html(data);
+				},
+				error: function () {
+					$('#modalContent').html('<p class="text-danger">Error loading form.</p>');
+				}
+			});
+		});
+	});
+</script> *@

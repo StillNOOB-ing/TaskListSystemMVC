@@ -1,0 +1,64 @@
+﻿@model TaskListSystemMVC.Database.PaginationList<TaskListSystemMVC.Database.Model.MPublicHoliday>
+
+@{
+	ViewData["Title"] = "Public Holiday";
+
+	var pageIndex = Convert.ToInt32(ViewData["PageIndex"]);
+	var pageCount = Convert.ToInt32(ViewData["PageCount"]);
+	var totalItem = Convert.ToInt32(ViewData["TotalItem"]);
+}
+
+<table>
+	<tr>
+		<td>
+			<h4>Public Holiday List</h4>
+		</td>
+		<td style="padding-left:10px">
+			<span>(Total: @totalItem items)</span>
+		</td>
+		<td style="padding-left:25px">
+			<a href="@Url.Action("Create", "MPublicHoliday")" class="btn btn-success">ADD</a>
+		</td>
+	</tr>
+</table>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>UID</th>
+			<th>Name</th>
+			<th>Remark</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Day</th>
+			<th>Created By</th>
+			<th>Created On</th>
+			<th>Updated By</th>
+			<th>Updated On</th>
+		</tr>		
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					<a href="@Url.Action("Edit", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-warning"><i class="bi bi-pencil"></i></a>
+					<a href="@Url.Action("Delete", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+				</td>
+				<td>@item.UID</td>
+				<td>@item.Name</td>
+				<td>@item.Remark</td>
+				<td>@item.StartDate</td>
+				<td>@item.EndDate</td>
+				<td>@item.Day</td>
+				<td>@item.CreatedBy</td>
+				<td>@item.CreatedOn</td>
+				<td>@item.UpdatedBy</td>
+				<td>@item.UpdatedOn</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@await Html.PartialAsync("Pagination", (pageIndex, pageCount, "MAccountInfo", "Index"))

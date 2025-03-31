@@ -1,0 +1,51 @@
+﻿@model (int pageIndex, int pageCount, string controllerName, string actionName)
+
+<div class="d-flex">
+	<nav aria-label="Page Navigation">
+		<ul class="pagination">
+			@if (Model.pageIndex > 1)
+			{
+				<li class="page-item">
+					<a class="page-link" href="@Url.Action(Model.actionName, Model.controllerName, new { index = Model.pageIndex - 1})">
+						<span aria-hidden="true">&laquo; Previous</span>
+					</a>
+				</li>
+			}
+			@for (int i = Math.Max(1, Model.pageIndex - 3); i <= Math.Min(Model.pageCount, Model.pageIndex + 3); i++)
+			{
+				<li class="page-item">
+					<a class="page-link @(i == Model.pageIndex ? "active" : "")" href="@Url.Action(Model.actionName, Model.controllerName, new { index = i})">@(i)</a>
+				</li>
+			}
+			@if (Model.pageIndex < Model.pageCount)
+			{
+				<li class="page-item">
+					<a class="page-link" href="@Url.Action(Model.actionName, Model.controllerName, new { index = Model.pageIndex + 1})">
+						<span aria-hidden="true">Next &raquo;</span>
+					</a>
+				</li>
+			}
+		</ul>
+	</nav>
+	<div style="width:10px"></div>
+	<div class="mb-3 d-flex align-items-center">
+		<span class="page-link bg-light border-0">(Total: @Model.pageCount pages)</span>
+		<input id="txtGoTo" type="number" min="1" max="@Model.pageCount" value="@Model.pageIndex" class="form-control" style="width: 80px; text-align: center; margin-left: 10px;" />
+		<a class="btn btn-secondary ms-2" onclick="GoToPage('@Model.controllerName', '@Model.actionName')">GO</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function GoToPage(controller, action)
+	{
+		var page = document.getElementById("txtGoTo").value;
+		var maxPage = @Model.pageCount;
+
+		if (page < 1 || page > maxPage || isNaN(page)) {
+			alert("Please enter a valid page number between 1 and " + maxPage);
+			return;
+		}
+
+		window.location.href = '/' + controller + '/' + action + '?index=' + page;
+	}
+</script>

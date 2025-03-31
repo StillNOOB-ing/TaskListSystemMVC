@@ -1,0 +1,81 @@
+﻿@model TaskListSystemMVC.Database.Model.MPublicHoliday;
+
+@{
+    ViewData["Title"] = "Create Public Holiday";
+}
+
+<h2>Create Public Holiday</h2>
+
+<form asp-action="Create" asp-controller="MPublicHoliday" method="post">
+    <input type="hidden" asp-for="CreatedBy" />
+    <input type="hidden" asp-for="CreatedOn" />
+    <input type="hidden" asp-for="UpdatedBy" />
+    <input type="hidden" asp-for="UpdatedOn" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="txtName" class="form-label">Name</label>
+                    <input id="txtName" asp-for="Name" class="form-control" type="text" required="true" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="txtRemark" class="form-label">Remark</label>
+                    <textarea id="txtRemark" asp-for="Remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <label for="dtStartDate" class="form-label">Start Date</label>
+                <input id="dtStartDate" asp-for="StartDate" class="form-control" type="date" required="true" oninput="CalculateDay()" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-5">
+                <label for="dtEndDate" class="form-label">End Date</label>
+                <input id="dtEndDate" asp-for="EndDate" class="form-control" type="date" required="true" oninput="CalculateDay()" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-2">
+                <label for="txtDay" class="form-label">Day</label>
+                <input id="txtDay" asp-for="Day" class="form-control readonly-disabled" type="number" readonly="true" />
+                <span asp-validation-for="Day" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-mb-12">
+                <div class="d-flex gap-2 pt-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="@Url.Action("Index", "MPublicHoliday")" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>        
+</form>
+
+<script type="text/javascript">
+    function CalculateDay(){
+        var start = document.getElementById("dtStartDate");
+        var end = document.getElementById("dtEndDate");
+        var day = document.getElementById("txtDay");
+
+        if (!start.value || !end.value){
+            day.value = null;
+            return;
+        }
+
+        var startDate = new Date(start.value);
+        var endDate = new Date(end.value);
+        var dayDiff = ((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1
+
+        // if (dayDiff < 0){
+        //     alert("End date must be after the start date");
+        //     start.value = null;
+        //     end.value = null;
+        //     day.value = null;
+        //     return;
+        // }
+
+        day.value = dayDiff;
+    }
+</script>

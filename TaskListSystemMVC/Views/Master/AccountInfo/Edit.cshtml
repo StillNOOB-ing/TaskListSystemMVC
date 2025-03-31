@@ -1,0 +1,40 @@
+﻿@model TaskListSystemMVC.Database.Model.MAccountInfo
+
+@{
+    ViewData["Title"] = "Edit Account";
+}
+
+<h2>Edit Account</h2>
+
+<form asp-action="Edit" asp-controller="MAccountInfo" method="post">
+    <input type="hidden" asp-for="UID" />
+    <input type="hidden" asp-for="Password" />
+    <input type="hidden" asp-for="ConfirmPassword" />
+    <input type="hidden" asp-for="CreatedBy" />
+    <input type="hidden" asp-for="CreatedOn" />
+    <input type="hidden" asp-for="UpdatedBy" />
+    <input type="hidden" asp-for="UpdatedOn" />
+    <div class="mb-3">
+        <label for="txtName" class="form-label">Name</label>
+        <input id="txtName" asp-for="Name" class="form-control" type="text" required="true" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="cmbLevel" class="form-label">Level Right</label>
+        <select id="cmbLevel" class="form-select" asp-for="LevelRightID" asp-items="ViewBag.LevelList" required="true"></select>
+    </div>
+    <div class="mb-3">
+        <label for="txtUsername" class="form-label">Username</label>
+        <input id="txtUsername" asp-for="Username" class="form-control" type="text" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="txtEmail" class="form-label">Email</label>
+        <input id="txtEmail" asp-for="Email" type="email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="d-flex gap-2 pt-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="@Url.Action("Index", "MAccountInfo")" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

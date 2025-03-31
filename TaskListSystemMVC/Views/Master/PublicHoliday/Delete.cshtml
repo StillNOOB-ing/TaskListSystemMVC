@@ -1,0 +1,51 @@
+﻿@model TaskListSystemMVC.Database.Model.MPublicHoliday;
+
+@{
+    ViewData["Title"] = "Delete Public Holiday";
+}
+
+<h2>Delete Public Holiday</h2>
+
+<form asp-action="Delete" asp-controller="MPublicHoliday" method="post">
+    <input type="hidden" asp-for="UID" />
+    <input type="hidden" asp-for="CreatedBy" />
+    <input type="hidden" asp-for="CreatedOn" />
+    <input type="hidden" asp-for="UpdatedBy" />
+    <input type="hidden" asp-for="UpdatedOn" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="txtName" class="form-label">Name</label>
+                    <input id="txtName" asp-for="Name" class="form-control readonly-readonly" type="text" readonly="true" />
+                </div>
+                <div class="mb-3">
+                    <label for="txtRemark" class="form-label">Remark</label>
+                    <textarea id="txtRemark" asp-for="Remark" class="form-control readonly-readonly" readonly="true"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <label for="dtStartDate" class="form-label">Start Date</label>
+                <input id="dtStartDate" asp-for="StartDate" class="form-control readonly-readonly" type="date" readonly="true" />
+            </div>
+            <div class="col-md-5">
+                <label for="dtEndDate" class="form-label">End Date</label>
+                <input id="dtEndDate" asp-for="EndDate" class="form-control readonly-readonly" type="date" readonly="true" />
+            </div>
+            <div class="col-md-2">
+                <label for="txtDay" class="form-label">Day</label>
+                <input id="txtDay" asp-for="Day" class="form-control readonly-readonly" readonly="true" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-mb-12">
+                <div class="d-flex gap-2 pt-2">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="@Url.Action("Index", "MPublicHoliday")" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

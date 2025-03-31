@@ -1,0 +1,49 @@
+﻿@model List<TaskListSystemMVC.Database.Model.MStatus>
+
+@{
+    ViewData["Title"] = "Status List";
+}
+
+<table>
+    <tr>
+        <td>
+            <h4>Status List</h4>
+        </td>
+        <td style="padding-left:25px">
+            <a href="@Url.Action("Create", "MStatus")" class="btn btn-success">ADD</a>
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created By</th>
+            <th>Created On</th>
+            <th>Updated By</th>
+            <th>Updated On</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Edit", "MStatus", new { id = item.UID })" class="btn btn-outline-warning">Edit</a>
+                    <a href="@Url.Action("Delete", "MStatus", new { id = item.UID })" class="btn btn-outline-danger">Delete</a>
+                </td>
+                <td>@item.UID</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.CreatedBy</td>
+                <td>@item.CreatedOn</td>
+                <td>@item.UpdatedBy</td>
+                <td>@item.UpdatedOn</td>
+            </tr>
+        }
+    </tbody>
+</table>
