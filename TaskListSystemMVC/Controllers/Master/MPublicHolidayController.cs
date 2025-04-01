@@ -29,9 +29,26 @@ namespace TaskListSystemMVC.Controllers.Master
 
             var dataList = sortOrder switch
             {
-                "desc" => mHelper.GetPublicHolidayDB().OrderByDescending(x => x.UID),
-                _ => mHelper.GetPublicHolidayDB()
+                "desc" => mHelper.GetPublicHolidayDB().OrderByDescending(x => x.StartDate),
+                _ => mHelper.GetPublicHolidayDB().OrderBy(x => x.StartDate).AsQueryable(),
             };
+
+            if (!string.IsNullOrEmpty(searchFilter))
+            {
+                searchFilter = searchFilter.ToLower();
+
+                dataList = dataList.Where(x =>
+                    x.UID.ToString().Contains(searchFilter) ||
+                    x.Name.ToString().Contains(searchFilter) ||
+                    x.StartDate.ToString().Contains(searchFilter) ||
+                    x.EndDate.ToString().Contains(searchFilter) ||
+                    x.Day.ToString().Contains(searchFilter) ||
+                    x.CreatedBy.ToString().Contains(searchFilter) ||
+                    x.CreatedOn.ToString().Contains(searchFilter) ||
+                    x.UpdatedBy.ToString().Contains(searchFilter) ||
+                    x.UpdatedOn.ToString().Contains(searchFilter)
+                );
+            }
 
             var result = await PaginationList<MPublicHoliday>.CreateAsync(dataList, index.Value, pageSize);
 
@@ -58,7 +75,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return NotFound();
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/PublicHoliday/Create.cshtml", item);
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -82,7 +101,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return NotFound();
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/PublicHoliday/Delete.cshtml", item);
         }
 
         public async Task<IActionResult> Delete(int id)

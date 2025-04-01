@@ -19,6 +19,17 @@ namespace TaskListSystemMVC.Helper
             return name ?? "Unknown";
         }
 
+        public int GetUserLevelID()
+        {
+            var id = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.GroupSid)?.Value;
+
+            if (id != null)
+            {
+                return Convert.ToInt32(id);
+            }
+            return -1;
+        }
+
         public string HashPassword(string inputPassword)
         {
             byte[] saltstr = Encoding.UTF8.GetBytes("TaskListSystemMVC");

@@ -2,9 +2,18 @@
 
 @{
     ViewData["Title"] = "Create Public Holiday";
+
+    string message = ViewData["AlertMessage"]?.ToString();
 }
 
 <h2>Create Public Holiday</h2>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger" role="alert">
+        @message
+    </div>
+}
 
 <form asp-action="Create" asp-controller="MPublicHoliday" method="post">
     <input type="hidden" asp-for="CreatedBy" />

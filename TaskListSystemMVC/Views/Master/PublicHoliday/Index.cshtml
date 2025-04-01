@@ -21,9 +21,11 @@
 	<thead>
 		<tr>
 			<th></th>
+			<th>Name</th>
+			<th>Remark</th>
 			<th>
 				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
-					UID
+					Start Date
 					@if (ViewData["SortOrder"]?.ToString() == "asc")
 					{
 						<i class="bi bi-arrow-up"></i>
@@ -34,15 +36,8 @@
 					}
 				</a>
 			</th>
-			<th>Name</th>
-			<th>Remark</th>
-			<th>Start Date</th>
 			<th>End Date</th>
 			<th>Day</th>
-			@* <th>Created By</th>
-			<th>Created On</th>
-			<th>Updated By</th>
-			<th>Updated On</th> *@
 		</tr>		
 	</thead>
 	<tbody>
@@ -50,19 +45,18 @@
 		{
 			<tr>
 				<td>
-					<a href="@Url.Action("Edit", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-warning"><i class="bi bi-pencil"></i></a>
-					<a href="@Url.Action("Delete", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+					<a href="@Url.Action("Edit", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-warning">
+						<i class="bi bi-pencil"></i>
+					</a>
+					<a href="@Url.Action("Delete", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-danger">
+						<i class="bi bi-trash"></i>
+					</a>
 				</td>
-				<td>@item.UID</td>
 				<td>@item.Name</td>
 				<td>@item.Remark</td>
 				<td>@item.StartDate</td>
 				<td>@item.EndDate</td>
 				<td>@item.Day</td>
-				@* <td>@item.CreatedBy</td>
-				<td>@item.CreatedOn</td>
-				<td>@item.UpdatedBy</td>
-				<td>@item.UpdatedOn</td> *@
 			</tr>
 		}
 	</tbody>

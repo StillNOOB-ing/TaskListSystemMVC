@@ -1,14 +1,21 @@
-﻿@using TaskListSystemMVC
-@using TaskListSystemMVC.Database
-@using TaskListSystemMVC.Models
+﻿@inject IMasterHelper masterHelper
 
 @model TaskListSystemMVC.Database.Model.TDailyTask;
 
 @{
     ViewData["Title"] = "Edit Daily Task";
+
+    string message = ViewData["AlertMessage"]?.ToString();
 }
 
 <h2>Edit Daily Task</h2>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger" role="alert">
+        @message
+    </div>
+}
 
 <form asp-action="Edit" asp-controller="TDailyTask" method="post">
     <input type="hidden" asp-for="UID" />
@@ -59,17 +66,17 @@
             <div class="col-md-4">
                 <div class="mb-3">
                     <label for="cmbPIC" class="form-label">PIC</label>
-                    <select id="cmbPIC" class="form-select" asp-for="PICID" asp-items="ViewBag.PICList"></select>
+                    <select id="cmbPIC" class="form-select" asp-for="PICID" asp-items="@await masterHelper.GetAccountInfoSelectItemList()" required="true"></select>
                     <span asp-validation-for="PICID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="cmbStatus" class="form-label">Status</label>
-                    <select id="cmbStatus" class="form-select" asp-for="StatusID" asp-items="ViewBag.StatusList" onchange="OnCmbStatusChanged()"></select>
+                    <select id="cmbStatus" class="form-select" asp-for="StatusID" asp-items="@await masterHelper.GetStatusSelectItemList()" onchange="OnCmbStatusChanged()" required="true"></select>
                     <span asp-validation-for="StatusID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="cmbType" class="form-label">Type</label>
-                    <select id="cmbType" class="form-select" asp-for="TypeID" asp-items="ViewBag.TypeList"></select>
+                    <select id="cmbType" class="form-select" asp-for="TypeID" asp-items="@await masterHelper.GetTypeSelectItemList()" required="true"></select>
                     <span asp-validation-for="TypeID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">

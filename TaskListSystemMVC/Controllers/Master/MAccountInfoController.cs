@@ -34,6 +34,22 @@ namespace TaskListSystemMVC.Controllers.Master
                 _ => mHelper.GetAccountInfoDB()
             };
 
+            if (!string.IsNullOrEmpty(searchFilter))
+            {
+                searchFilter = searchFilter.ToLower();
+
+                dataList = dataList.Where(x =>
+                    x.UID.ToString().Contains(searchFilter) ||
+                    x.Name.ToString().Contains(searchFilter) ||
+                    x.Active.ToString().Contains(searchFilter) ||
+                    x.LastLoginOn.ToString().Contains(searchFilter) ||
+                    x.CreatedBy.ToString().Contains(searchFilter) ||
+                    x.CreatedOn.ToString().Contains(searchFilter) ||
+                    x.UpdatedBy.ToString().Contains(searchFilter) ||
+                    x.UpdatedOn.ToString().Contains(searchFilter)
+                );
+            }
+
             var result = await PaginationList<MAccountInfo>.CreateAsync(dataList, index.Value, pageSize);
 
             return View("~/Views/Master/AccountInfo/Index.cshtml", result);
@@ -41,8 +57,6 @@ namespace TaskListSystemMVC.Controllers.Master
 
         public async Task<IActionResult> Create()
         {
-            ViewBag.LevelList = await mHelper.GetUserLevelRightSelectItemList();
-
             return View("~/Views/Master/AccountInfo/Create.cshtml");
         }
 
@@ -51,6 +65,23 @@ namespace TaskListSystemMVC.Controllers.Master
         {
             if (ModelState.IsValid)
             {
+                var accountList = mHelper.GetAccountInfoDB().Where(x => x.UID != item.UID).ToList();
+                if (accountList.Exists(x => x.Name.Trim().ToLower() == item.Name.Trim().ToLower()))
+                {
+                    ViewData["AlertMessage"] = "This name already existed!";
+                    return View("~/Views/Master/AccountInfo/Create.cshtml", item);
+                }
+                else if (accountList.Exists(x => x.Username.Trim().ToLower() == item.Username.Trim().ToLower()))
+                {
+                    ViewData["AlertMessage"] = "This username already existed!";
+                    return View("~/Views/Master/AccountInfo/Create.cshtml", item);
+                }
+                else if (accountList.Exists(x => x.Email.Trim().ToLower() == item.Email.Trim().ToLower()))
+                {
+                    ViewData["AlertMessage"] = "This email already existed!";
+                    return View("~/Views/Master/AccountInfo/Create.cshtml", item);
+                }
+
                 var result = await mHelper.InsertAccountInfo(item);
                 if (result.success)
                 {
@@ -61,7 +92,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return BadRequest(new { message = "Invalid Model!" });
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/AccountInfo/Create.cshtml", item);
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -71,8 +104,6 @@ namespace TaskListSystemMVC.Controllers.Master
 
             item.ConfirmPassword = item.Password;
 
-            ViewBag.LevelList = await mHelper.GetUserLevelRightSelectItemList();
-
             return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
         }
 
@@ -81,6 +112,23 @@ namespace TaskListSystemMVC.Controllers.Master
         {
             if (ModelState.IsValid)
             {
+                var accountList = mHelper.GetAccountInfoDB().Where(x => x.UID != item.UID).ToList();
+                if (accountList.Exists(x => x.Name.Trim().ToLower() == item.Name.Trim().ToLower()))
+                {
+                    ViewData["AlertMessage"] = "This name already existed!";
+                    return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
+                }
+                else if (accountList.Exists(x => x.Username.Trim().ToLower() == item.Username.Trim().ToLower()))
+                {
+                    ViewData["AlertMessage"] = "This username already existed!";
+                    return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
+                }
+                else if (accountList.Exists(x => x.Email.Trim().ToLower() == item.Email.Trim().ToLower()))
+                {
+                    ViewData["AlertMessage"] = "This email already existed!";
+                    return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
+                }
+
                 var result = await mHelper.UpdateAccountInfo(item);
                 if (result.success)
                 {
@@ -91,7 +139,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return BadRequest(new { message = "Invalid Model!" });
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -144,7 +194,14 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return BadRequest( new { message = "Invalid Model!" });
+            else if (item.Password != item.ConfirmPassword)
+            {
+                ViewData["AlertMessage"] = "The Password and Confirm Password is not same!";
+                return View("~/Views/Master/AccountInfo/ChangePassword.cshtml", item);
+            }
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/AccountInfo/ChangePassword.cshtml", item);
         }
     }
 }

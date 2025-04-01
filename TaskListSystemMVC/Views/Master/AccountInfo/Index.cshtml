@@ -1,4 +1,5 @@
-﻿@inject IMasterHelper helper
+﻿@inject IMasterHelper masterHelper
+@inject IAccountHelper accountHelper
 
 @model PaginationList<MAccountInfo>
 
@@ -11,7 +12,10 @@
         <td class="d-flex align-items-center">
             <h4>Account List</h4>
             <span style="margin-left:10px">(Total: @Model.TotalItem items)</span>
-            <a href="@Url.Action("Create", "MAccountInfo")" class="btn btn-success" style="margin-left:25px">ADD</a>
+            @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
+            {
+                <a href="@Url.Action("Create", "MAccountInfo")" class="btn btn-success" style="margin-left:25px">ADD</a>
+            }            
         </td>
         <td class="ms-auto">
             @await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
@@ -37,9 +41,9 @@
                 </a>
             </th>
             <th>Name</th>
+            <th>Active</th>
             <th>Level</th>
-            @* <th>Username</th>
-            <th>Email</th> *@
+            <th>Last Login On</th>
             <th>Created By</th>
             <th>Created On</th>
             <th>Updated By</th>
@@ -51,21 +55,30 @@
         {
             <tr>
                 <td>
-                    <a href="@Url.Action("Edit", "MAccountInfo", new { id = item.UID })" class="btn btn-outline-danger">
-                        <i class="bi bi-pencil-square text-warning"></i>
-                    </a>
-                    <a href="@Url.Action("Delete", "MAccountInfo", new { id = item.UID })" class="btn btn-outline-danger">
-                        <i class="bi bi-trash text-danger"></i>
-                    </a>
-                    <a href="@Url.Action("ChangePassword", "MAccountInfo", new { id = item.UID })", class="btn btn-outline-secondary">
-                        <i class="bi bi-key text-secondary"></i>
-                    </a>
+                    @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID || accountHelper.GetName() == item.Name)
+                    {
+                        <a href="@Url.Action("Edit", "MAccountInfo", new { id = item.UID })" class="btn btn-outline-danger">
+                            <i class="bi bi-pencil-square text-warning"></i>
+                        </a>                      
+                    }
+                    @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID && item.UID != 1)
+                    {
+                        <a href="@Url.Action("Delete", "MAccountInfo", new { id = item.UID })" class="btn btn-outline-danger">
+                            <i class="bi bi-trash text-danger"></i>
+                        </a>
+                    }
+                    @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID || accountHelper.GetName() == item.Name)
+                    {
+                        <a href="@Url.Action("ChangePassword", "MAccountInfo", new { id = item.UID })" , class="btn btn-outline-secondary">
+                            <i class="bi bi-key text-secondary"></i>
+                        </a>
+                    }                    
                 </td>
                 <td>@item.UID</td>
                 <td>@item.Name</td>
-                <td>@(item.LevelRightID != null ? helper.GetUserLevelRightByID(item.LevelRightID.Value)?.Result?.Name : string.Empty)</td>
-                @* <td>@item.Username</td>
-                <td>@item.Email</td> *@
+                <td>@item.Active</td>
+                <td>@item.LevelRightName</td>
+                <td>@item.LastLoginOn</td>
                 <td>@item.CreatedBy</td>
                 <td>@item.CreatedOn</td>
                 <td>@item.UpdatedBy</td>

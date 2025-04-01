@@ -11,12 +11,14 @@ namespace TaskListSystemMVC.Database.Helper
     public class TaskHelper: ITaskHelper
     {
         private readonly ITaskRepository repository;
-        private readonly IAccountHelper accHelper;
+        private readonly IAccountHelper accountHelper;
+        private readonly IMasterHelper masterHelper;
 
-        public TaskHelper(ITaskRepository Repository, IAccountHelper accountHelper)
+        public TaskHelper(ITaskRepository Repository, IAccountHelper AccountHelper, IMasterHelper MasterHelper)
         {
             repository = Repository;
-            accHelper = accountHelper;
+            accountHelper = AccountHelper;
+            masterHelper = MasterHelper;
         }
 
         #region DailyTask
@@ -45,15 +47,23 @@ namespace TaskListSystemMVC.Database.Helper
             item.ReportByID = $"{formattedDate}{formattedCount}"; ;
             item.ReportedOn = DateTime.Now;
 
+            item.StatusName = (await masterHelper.GetStatusByID(item.StatusID.Value)).Name;
+            item.PICName = (await masterHelper.GetAccountInfoByID(item.PICID.Value)).Name;
+            item.TypeName = (await masterHelper.GetTypeByID(item.TypeID.Value)).Name;
+
             item.CreatedOn = DateTime.Now;
-            item.CreatedBy = accHelper.GetName();
+            item.CreatedBy = accountHelper.GetName();
 
             return await repository.InsertDailyTask(item);
         }
         public async Task<ResultInfo> UpdateDailyTask(TDailyTask item)
         {
+            item.StatusName = (await masterHelper.GetStatusByID(item.StatusID.Value)).Name;
+            item.PICName = (await masterHelper.GetAccountInfoByID(item.PICID.Value)).Name;
+            item.TypeName = (await masterHelper.GetTypeByID(item.TypeID.Value)).Name;
+
             item.UpdatedOn = DateTime.Now;
-            item.UpdatedBy = accHelper.GetName();
+            item.UpdatedBy = accountHelper.GetName();
 
             return await repository.UpdateDailyTask(item);
         }

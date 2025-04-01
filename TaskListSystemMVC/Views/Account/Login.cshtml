@@ -2,19 +2,28 @@
 
 @{
 	ViewData["Title"] = "Login";
+
+	string message = ViewData["AlertMessage"]?.ToString();
 }
 
 <h2>Login</h2>
 
+@if (!string.IsNullOrEmpty(message))
+{
+	<div class="alert alert-danger" role="alert">
+		@message
+	</div>
+}
+
 <form asp-action="Login" asp-controller="Account" method="post">
 	<div class="mb-3">
-		<label for="txtEmail" class="form-label">Email</label>
-		<input id="txtEmail" asp-for="Email" class="form-control" />
+		<label for="txtEmail" class="form-label">Email or Username</label>
+		<input id="txtEmail" asp-for="Email" type="text" class="form-control" />
 		<span asp-validation-for="Email" class="text-danger"></span>
 	</div>
 	<div class="mb-3">
 		<label for="txtPassword" class="form-label">Password</label>
-		<input id="txtPassword" asp-for="Password" class="form-control" />
+		<input id="txtPassword" asp-for="Password" type="password" class="form-control" />
 		<span asp-validation-for="Password" class="text-danger"></span>
 	</div>
 	<button type="submit" class="btn btn-primary">Login</button>

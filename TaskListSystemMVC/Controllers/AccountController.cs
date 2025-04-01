@@ -33,11 +33,21 @@ namespace TaskListSystemMVC.Controllers
 
             var userList = await helper.GetAccountInfoAll();
             
-            var user = userList.Where(x => x.Email == model.Email).FirstOrDefault();
+            var user = userList.Where(x => x.Email == model.Email || x.Username == model.Email).FirstOrDefault();
 
-            if (user == null || !accHelper.VerifyPassword(model.Password, user.Password))
+            if (user == null)
             {
-                ModelState.AddModelError("", "Invalid email or password");
+                ViewData["AlertMessage"] = "Invalid username or email";
+                return View("~/Views/Account/Login.cshtml", model);
+            }
+            else if (!user.Active)
+            {
+                ViewData["AlertMessage"] = "Your account is deactivated!";
+                return View("~/Views/Account/Login.cshtml", model);
+            }
+            else if (!accHelper.VerifyPassword(model.Password, user.Password))
+            {
+                ViewData["AlertMessage"] = "Invalid username or email";
                 return View("~/Views/Account/Login.cshtml", model);
             }
 
@@ -46,6 +56,7 @@ namespace TaskListSystemMVC.Controllers
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.WindowsAccountName, user.Username),
                 new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GroupSid, user.LevelRightID.ToString()),
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

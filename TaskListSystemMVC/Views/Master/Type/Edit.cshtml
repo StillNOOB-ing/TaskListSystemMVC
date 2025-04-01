@@ -2,9 +2,18 @@
 
 @{
     ViewData["Title"] = "Edit Type";
+
+    string message = ViewData["AlertMessage"]?.ToString();
 }
 
 <h2>Edit Type</h2>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger" role="alert">
+        @message
+    </div>
+}
 
 <form asp-action="Edit" asp-controller="MType" method="post">
     <input type="hidden" asp-for="UID" />

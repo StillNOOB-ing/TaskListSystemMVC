@@ -26,5 +26,6 @@ namespace TaskListSystemMVC.Database.Model
         public DateTime? LastLoginOn { get; set; }
 
         public int? LevelRightID { get; set; }    
+        public string? LevelRightName { get; set; }
     }
 }

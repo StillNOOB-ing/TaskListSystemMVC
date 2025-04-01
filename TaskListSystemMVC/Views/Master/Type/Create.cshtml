@@ -2,9 +2,18 @@
 
 @{
     ViewData["Title"] = "Create Type";
+
+    string message = ViewData["AlertMessage"]?.ToString();
 }
 
 <h2>Create Type</h2>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger" role="alert">
+        @message
+    </div>
+}
 
 <form asp-action="Create" asp-controller="MType" method="post">
     <input type="hidden" asp-for="CreatedBy" />

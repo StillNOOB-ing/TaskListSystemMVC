@@ -13,8 +13,11 @@ namespace TaskListSystemMVC.Database.Model
         public string? Description { get; set; }
         public string? Remark { get; set; }
         [Required] public int? PICID { get; set; }
+        public string? PICName { get; set; }
         [Required] public int? StatusID { get; set; }
+        public string? StatusName { get; set; }
         [Required] public int? TypeID { get; set; }
+        public string? TypeName { get; set; }
         public DateTime? CompletedOn { get; set; }
         public DateTime? ScheduledOn { get; set; }
     }

@@ -1,4 +1,6 @@
-﻿@model List<TaskListSystemMVC.Database.Model.MStatus>
+﻿@inject IAccountHelper accountHelper
+
+@model List<TaskListSystemMVC.Database.Model.MStatus>
 
 @{
     ViewData["Title"] = "Status List";
@@ -10,7 +12,10 @@
             <h4>Status List</h4>
         </td>
         <td style="padding-left:25px">
-            <a href="@Url.Action("Create", "MStatus")" class="btn btn-success">ADD</a>
+            @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
+            {
+                <a href="@Url.Action("Create", "MStatus")" class="btn btn-success">ADD</a>
+            }            
         </td>
     </tr>
 </table>
@@ -33,12 +38,15 @@
         {
             <tr>
                 <td>
-                    <a href="@Url.Action("Edit", "MStatus", new { id = item.UID })" class="btn btn-outline-warning">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <a href="@Url.Action("Delete", "MStatus", new { id = item.UID })" class="btn btn-outline-danger">
-                        <i class="bi bi-trash"></i>
-                    </a>
+                    @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
+                    {
+                        <a href="@Url.Action("Edit", "MStatus", new { id = item.UID })" class="btn btn-outline-warning">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="@Url.Action("Delete", "MStatus", new { id = item.UID })" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    }                   
                 </td>
                 <td>@item.UID</td>
                 <td>@item.Name</td>

@@ -1,14 +1,21 @@
-﻿@using TaskListSystemMVC
-@using TaskListSystemMVC.Database
-@using TaskListSystemMVC.Models
+﻿@inject IMasterHelper masterHelper
 
 @model TaskListSystemMVC.Database.Model.TDailyTask;
 
 @{
     ViewData["Title"] = "Create Daily Task";
+
+    string message = ViewData["AlertMessage"]?.ToString();
 }
 
 <h2>Create Daily Task</h2>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger" role="alert">
+        @message
+    </div>
+}
 
 <form asp-action="Create" asp-controller="TDailyTask" method="post">
     <input type="hidden" asp-for="CreatedBy" />
@@ -23,13 +30,13 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="txtReportID" class="form-label">Report ID</label>
-                            <input id="txtReportID" asp-for="ReportByID" class="form-control readonly-disabled" type="text" />
+                            <input id="txtReportID" asp-for="ReportByID" class="form-control readonly-disabled" type="text" readonly="true" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="dtReportOn" class="form-label">Reported On</label>
-                            <input id="dtReportOn" asp-for="ReportedOn" class="form-control readonly-disabled" type="datetime-local" />
+                            <input id="dtReportOn" asp-for="ReportedOn" class="form-control readonly-disabled" type="datetime-local" readonly="true" />
                         </div>
                     </div>
                 </div>
@@ -58,17 +65,17 @@
             <div class="col-md-4">
                 <div class="mb-3">
                     <label for="cmbPIC" class="form-label">PIC</label>
-                    <select id="cmbPIC" class="form-select" asp-for="PICID" asp-items="ViewBag.PICList" required="true"></select>
+                    <select id="cmbPIC" class="form-select" asp-for="PICID" asp-items="@await masterHelper.GetAccountInfoSelectItemList()" required="true"></select>
                     <span asp-validation-for="PICID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="cmbStatus" class="form-label">Status</label>
-                    <select id="cmbStatus" class="form-select" asp-for="StatusID" asp-items="ViewBag.StatusList" onchange="OnCmbStatusChanged()" required="true"></select>
+                    <select id="cmbStatus" class="form-select" asp-for="StatusID" asp-items="@await masterHelper.GetStatusSelectItemList()" onchange="OnCmbStatusChanged()" required="true"></select>
                     <span asp-validation-for="StatusID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="cmbType" class="form-label">Type</label>
-                    <select id="cmbType" class="form-select" asp-for="TypeID" asp-items="ViewBag.TypeList" required="true"></select>
+                    <select id="cmbType" class="form-select" asp-for="TypeID" asp-items="@await masterHelper.GetTypeSelectItemList()" required="true"></select>
                     <span asp-validation-for="TypeID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
@@ -77,7 +84,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="dtCompleteOn" class="form-label">Completed On</label>
-                    <input id="dtCompleteOn" asp-for="CompletedOn" class="form-control readonly-disabled" type="datetime-local" />
+                    <input id="dtCompleteOn" asp-for="CompletedOn" class="form-control readonly-disabled" type="datetime-local" readonly="true" />
                 </div>
             </div>
         </div>

@@ -44,7 +44,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return BadRequest(new { message = "Invalid Model"});
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/UserLevelRight/Create.cshtml", item);
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -69,7 +71,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return BadRequest(new { message = "Invalid Model" });
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/UserLevelRight/Edit.cshtml", item);
         }
 
         public async Task<IActionResult> Delete(int id)

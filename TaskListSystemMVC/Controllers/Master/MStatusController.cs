@@ -42,7 +42,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return NotFound();
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/Status/Create.cshtml", item);
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -67,7 +69,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return NotFound();
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/Status/Edit.cshtml", item);
         }
 
         public async Task<IActionResult> Delete(int id)

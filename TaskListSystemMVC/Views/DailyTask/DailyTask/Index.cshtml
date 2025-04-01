@@ -9,9 +9,18 @@
 <table style="width:100%">
 	<tr class="d-flex justify-content-between align-items-center">
 		<td class="d-flex align-items-center">
+
 			<h4>Daily Task List</h4>	
 			<span style="margin-left:10px">(Total: @Model.TotalItem items)</span>
-			<a href="@Url.Action("Create", "TDailyTask")" class="btn btn-success" style="margin-left:25px">ADD</a>
+
+			<a href="@Url.Action("Create", "TDailyTask")" class="btn btn-success" style="margin-left:25px">
+				<i class="bi bi-plus-lg"></i>ADD
+			</a>
+
+			<a href="@Url.Action("ExportToExcel", "TDailyTask")" class="btn btn-primary" style="margin-left:5px">
+				<i class="bi bi-file-earmark-excel"></i> Export to Excel
+			</a>
+
 		</td>
 		<td class="ms-auto">
 			@await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
@@ -43,10 +52,6 @@
 			<th>PIC</th>
 			<th>Type</th>
 			<th>Completed On</th>
-			@* <th>Created By</th>
-			<th>Created On</th>
-			<th>Updated By</th>
-			<th>Updated On</th> *@
 		</tr>		
 	</thead>
 	<tbody>
@@ -62,25 +67,23 @@
 
 			<tr class="@rowclass">
 				<td>
-					<a href="@Url.Action("Edit", "TDailyTask", new { id = item.UID })" class="btn btn-outline-danger">
-						<i class="bi bi-pencil text-warning"></i>
-					</a>
-					<a href="@Url.Action("Delete", "TDailyTask", new { id = item.UID })" class="btn btn-outline-warning">
-						<i class="bi bi-trash text-danger"></i>
-					</a>
+					<div style="display:flex; gap:10px; align-items:center;">
+						<a href="@Url.Action("Edit", "TDailyTask", new { id = item.UID })">
+							<i class="bi bi-pencil text-warning"></i>
+						</a>
+						<a href="@Url.Action("Delete", "TDailyTask", new { id = item.UID })">
+							<i class="bi bi-trash text-danger"></i>
+						</a>
+					</div>					
 				</td>
 				<td>@item.ReportByID</td>
 				<td>@item.ReportedOn</td>
 				<td>@item.ScheduledOn</td>
 				<td>@item.Title</td>
-				<td>@(masterHelper.GetStatusByID(item.StatusID.Value)?.Result?.Name)</td>
-				<td>@(masterHelper.GetAccountInfoByID(item.PICID.Value)?.Result?.Name)</td>
-				<td>@(masterHelper.GetTypeByID(item.TypeID.Value)?.Result?.Name)</td>				
+				<td>@item.StatusName</td>
+				<td>@item.PICName</td>
+				<td>@item.TypeName</td>				
 				<td>@item.CompletedOn</td>
-				@* <td>@item.CreatedBy</td>
-				<td>@item.CreatedOn</td>
-				<td>@item.UpdatedBy</td>
-				<td>@item.UpdatedOn</td> *@
 			</tr>
 		}
 	</tbody>

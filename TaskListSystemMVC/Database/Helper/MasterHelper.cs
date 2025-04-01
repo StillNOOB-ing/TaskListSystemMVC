@@ -59,6 +59,8 @@ namespace TaskListSystemMVC.Database.Helper
         public async Task<ResultInfo> InsertAccountInfo(MAccountInfo item)
         {
             item.Password = accHelper.HashPassword(item.Password);
+
+            item.LevelRightName = (await GetUserLevelRightByID(item.LevelRightID.Value)).Name;
                         
             item.CreatedOn = DateTime.Now;
             item.CreatedBy = accHelper.GetName();
@@ -74,7 +76,9 @@ namespace TaskListSystemMVC.Database.Helper
                 {
                     item.Password = accHelper.HashPassword(item.Password);
                 }
-            }                       
+            }
+
+            item.LevelRightName = (await GetUserLevelRightByID(item.LevelRightID.Value)).Name;
 
             item.UpdatedOn = DateTime.Now;
             item.UpdatedBy = accHelper.GetName();
