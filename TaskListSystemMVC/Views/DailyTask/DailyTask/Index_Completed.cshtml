@@ -3,21 +3,21 @@
 @model PaginationList<TDailyTask>
 
 @{
-	ViewData["Title"] = "Daily Task";
+	ViewData["Title"] = "Completed Task";
 }
 
 <table style="width:100%">
 	<tr class="d-flex justify-content-between align-items-center">
 		<td class="d-flex align-items-center">
 
-			<h4>Daily Task List</h4>	
+			<h4>Completed Task List</h4>	
 			<span style="margin-left:10px">(Total: @Model.TotalItem items)</span>
 
-			<a asp-controller="TDailyTask" asp-action="Create" asp-route-sourcePage="DailyTask" class="btn btn-primary" style="margin-left:25px">
+			<a asp-controller="TDailyTask" asp-action="Create" asp-route-sourcePage="CompletedTask" class="btn btn-primary" style="margin-left:25px">
 				<i class="bi bi-plus"></i>ADD
 			</a>
 
-			<a asp-controller="TDailyTask" asp-action="ExportToExcel" asp-route-sourcePage="DailyTask" class="btn btn-primary" style="margin-left:5px">
+			<a asp-controller="TDailyTask" asp-action="ExportToExcel" asp-route-sourcePage="CompletedTask" class="btn btn-primary" style="margin-left:5px">
 				<i class="bi bi-file-earmark-excel"></i> Export to Excel
 			</a>
 
@@ -33,7 +33,7 @@
 		<tr>
 			<th></th>
 			<th>
-				<a asp-controller="TDailyTask" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+				<a asp-controller="TDailyTask" asp-action="Index_Completed" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
 					Report ID
 					@if (@ViewData["SortOrder"]?.ToString() == "asc")
 					{
@@ -68,10 +68,10 @@
 			<tr class="@rowclass">
 				<td>
 					<div style="display:flex; gap:10px; align-items:center;">
-						<a asp-controller="TDailyTask" asp-action="Edit" asp-route-id="@item.UID" asp-route-sourcePage="DailyTask">
+						<a asp-controller="TDailyTask" asp-action="Edit" asp-route-id="@item.UID" asp-route-sourcePage="CompletedTask">
 							<i class="bi bi-pencil text-warning"></i>
 						</a>
-						<a asp-controller="TDailyTask" asp-action="Delete" asp-route-id="@item.UID" asp-route-sourcePage="DailyTask">
+						<a asp-controller="TDailyTask" asp-action="Delete" asp-route-id="@item.UID" asp-route-sourcePage="CompletedTask">
 							<i class="bi bi-trash text-danger"></i>
 						</a>
 					</div>					
@@ -89,4 +89,4 @@
 	</tbody>
 </table>
 
-@await Html.PartialAsync("PageBar", ("TDailyTask", "Index", Model.PageIndex, Model.TotalPage))
+@await Html.PartialAsync("PageBar", ("TDailyTask", "Index_Completed", Model.PageIndex, Model.TotalPage))

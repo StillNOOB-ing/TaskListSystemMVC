@@ -28,13 +28,12 @@ namespace TaskListSystemMVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var taskList = taskHelper.GetDailyTaskDB().Where(x => 
-                x.PICName == accountHelper.GetName() && 
-                ((x.ScheduledOn >= DateTime.Today && x.ScheduledOn <= DateTime.Today.AddDays(1)) || 
-                (x.ScheduledOn == null))
+            var taskList = taskHelper.GetPendingDailyTaskDB().Where(x => 
+                x.PICName == accountHelper.GetName() &&
+                x.ScheduledOn != null && (x.ScheduledOn.Value.Date == DateTime.Today.Date || x.ScheduledOn < DateTime.Today)
             ).OrderBy(x => x.ScheduledOn).ToList();
 
-            var holidayList = masterHelper.GetPublicHolidayDB().Where(x => x.StartDate >= DateTime.Today && x.StartDate <= DateTime.Today.AddMonths(1)).ToList();
+            var holidayList = masterHelper.GetPublicHolidayDB().Where(x => x.StartDate >= DateTime.Today && x.StartDate <= DateTime.Today.AddMonths(2)).ToList();
 
             return View((taskList, holidayList));
         }

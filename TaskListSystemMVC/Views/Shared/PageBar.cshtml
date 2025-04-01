@@ -1,4 +1,4 @@
-﻿@model (string controllerName, int pageIndex, int totalPage)
+﻿@model (string controllerName, string actionName, int pageIndex, int totalPage)
 
 <div class="d-flex">
 	<nav aria-label="Page Navigation">
@@ -33,19 +33,19 @@
 	<div class="mb-3 d-flex align-items-center">
 		<span class="page-link bg-light border-0">(Total: @Model.totalPage pages)</span>
 		<input id="txtGoTo" type="number" min="1" max="@Model.totalPage" value="@Model.pageIndex" class="form-control" style="width: 80px; text-align: center; margin-left: 10px;" />
-		<a class="btn btn-secondary ms-2" onclick="BtnGoClick('@Model.totalPage')">GO</a>
+		<a class="btn btn-secondary ms-2" onclick="BtnGoClick(@Model.totalPage)">GO</a>
 	</div>
 	
 </div>
 
 <script type="text/javascript">
 
-	function GoToPage(index)
+	function GoToPage(pg)
 	{
 		var url = new URL(window.location.href);
 		var params = new URLSearchParams(url.search);
 
-		params.set("index", index);
+		params.set("index", pg);
 
 		window.location.href = `${url.pathname}?${params.toString()}`;
 	}
@@ -60,7 +60,7 @@
 			return;
 		}
 
-		GoToPage(page);
+		GoToPage(action, page);
 	}
 
 </script>

@@ -8,34 +8,38 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            <h4>Today Task</h4>
+        <div class="col-md-8">
+            <h4>Your Today Task</h4>
             <table class="table">
                 <thead>
                     <tr>
                         <td></td>
                         <th>Scheduled On</th>
                         <th>Title</th>
-                        <th>PIC</th>
+                        <th>Status</th>
+                        <th>Last Update By</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.taskList)
                     {
-                        <tr>
+                        <tr class="@(item.ScheduledOn < DateTime.Today ? "table-danger" : "")">
                             <td>
-                                <a href="@Url.Action("Edit", "TDailyTask", new { id = item.UID })" class="btn btn-outline-warning"><i class="bi bi-pencil"></i></a>
+                                <a asp-controller="TDailyTask" asp-action="Edit" asp-route-id="@item.UID" asp-route-sourcePage="DailyTask">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
                             </td>
                             <td>@item.ScheduledOn</td>
                             <td>@item.Title</td>
-                            <td>@(masterHelper.GetAccountInfoByID(item.PICID.Value)?.Result?.Name)</td>
+                            <td>@item.StatusName</td>
+                            <td>@(string.IsNullOrEmpty(item.UpdatedBy) ? item.CreatedBy : item.UpdatedBy)</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6">    
-            <h4>Public Holiday</h4>
+        <div class="col-md-4">    
+            <h4>Upcoming Holiday</h4>
             <table class="table">
                 <thead>
                     <tr>

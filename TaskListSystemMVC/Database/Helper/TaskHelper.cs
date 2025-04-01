@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Query;
 using TaskListSystemMVC.Helper;
+using System.Threading.Tasks;
 
 
 namespace TaskListSystemMVC.Database.Helper
@@ -34,6 +35,22 @@ namespace TaskListSystemMVC.Database.Helper
         public async Task<TDailyTask> GetDailyTaskByID(int id)
         {
             return (await repository.GetDailyTaskAll(x => x.UID == id)).FirstOrDefault();
+        }
+        public IQueryable<TDailyTask> GetPendingDailyTaskDB()
+        {
+            return repository.GetDailyTaskDB(x => x.StatusID != FixedStatus.COMPLETED_UID);
+        }
+        public async Task<List<TDailyTask>> GetPendingDailyTaskAll()
+        {
+            return await repository.GetDailyTaskAll(x => x.StatusID != FixedStatus.COMPLETED_UID);
+        }
+        public IQueryable<TDailyTask> GetCompletedDailyTaskDB()
+        {
+            return repository.GetDailyTaskDB(x => x.StatusID == FixedStatus.COMPLETED_UID);
+        }
+        public async Task<List<TDailyTask>> GetCompletedDailyTaskAll()
+        {
+            return await repository.GetDailyTaskAll(x => x.StatusID == FixedStatus.COMPLETED_UID);
         }
         public async Task<ResultInfo> InsertDailyTask(TDailyTask item)
         {

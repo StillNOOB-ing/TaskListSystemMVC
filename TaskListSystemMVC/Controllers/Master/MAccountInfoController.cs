@@ -66,20 +66,20 @@ namespace TaskListSystemMVC.Controllers.Master
             if (ModelState.IsValid)
             {
                 var accountList = mHelper.GetAccountInfoDB().Where(x => x.UID != item.UID).ToList();
-                if (accountList.Exists(x => x.Name.Trim().ToLower() == item.Name.Trim().ToLower()))
+                if (accountList.Exists(x => !string.IsNullOrEmpty(x.Name) && !string.IsNullOrEmpty(item.Name) && x.Name.Trim().Equals(item.Name.Trim(), StringComparison.CurrentCultureIgnoreCase)))
                 {
                     ViewData["AlertMessage"] = "This name already existed!";
-                    return View("~/Views/Master/AccountInfo/Create.cshtml", item);
+                    return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
                 }
-                else if (accountList.Exists(x => x.Username.Trim().ToLower() == item.Username.Trim().ToLower()))
+                else if (accountList.Exists(x => !string.IsNullOrEmpty(x.Username) && !string.IsNullOrEmpty(item.Username) && x.Username.Trim().Equals(item.Username.Trim(), StringComparison.CurrentCultureIgnoreCase)))
                 {
                     ViewData["AlertMessage"] = "This username already existed!";
-                    return View("~/Views/Master/AccountInfo/Create.cshtml", item);
+                    return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
                 }
-                else if (accountList.Exists(x => x.Email.Trim().ToLower() == item.Email.Trim().ToLower()))
+                else if (accountList.Exists(x => !string.IsNullOrEmpty(x.Email) && !string.IsNullOrEmpty(item.Email) && x.Email.Trim().Equals(item.Email.Trim(), StringComparison.CurrentCultureIgnoreCase)))
                 {
                     ViewData["AlertMessage"] = "This email already existed!";
-                    return View("~/Views/Master/AccountInfo/Create.cshtml", item);
+                    return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
                 }
 
                 var result = await mHelper.InsertAccountInfo(item);
@@ -113,17 +113,17 @@ namespace TaskListSystemMVC.Controllers.Master
             if (ModelState.IsValid)
             {
                 var accountList = mHelper.GetAccountInfoDB().Where(x => x.UID != item.UID).ToList();
-                if (accountList.Exists(x => x.Name.Trim().ToLower() == item.Name.Trim().ToLower()))
+                if (accountList.Exists(x => !string.IsNullOrEmpty(x.Name) && !string.IsNullOrEmpty(item.Name) && x.Name.Trim().Equals(item.Name.Trim(), StringComparison.CurrentCultureIgnoreCase)))
                 {
                     ViewData["AlertMessage"] = "This name already existed!";
                     return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
                 }
-                else if (accountList.Exists(x => x.Username.Trim().ToLower() == item.Username.Trim().ToLower()))
+                else if (accountList.Exists(x => !string.IsNullOrEmpty(x.Username) && !string.IsNullOrEmpty(item.Username) && x.Username.Trim().Equals(item.Username.Trim(), StringComparison.CurrentCultureIgnoreCase)))
                 {
                     ViewData["AlertMessage"] = "This username already existed!";
                     return View("~/Views/Master/AccountInfo/Edit.cshtml", item);
                 }
-                else if (accountList.Exists(x => x.Email.Trim().ToLower() == item.Email.Trim().ToLower()))
+                else if (accountList.Exists(x => !string.IsNullOrEmpty(x.Email) && !string.IsNullOrEmpty(item.Email) && x.Email.Trim().Equals(item.Email.Trim(), StringComparison.CurrentCultureIgnoreCase)))
                 {
                     ViewData["AlertMessage"] = "This email already existed!";
                     return View("~/Views/Master/AccountInfo/Edit.cshtml", item);

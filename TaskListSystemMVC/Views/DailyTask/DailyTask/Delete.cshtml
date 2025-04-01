@@ -1,17 +1,18 @@
 ﻿@model TaskListSystemMVC.Database.Model.TDailyTask;
 
 @{
-    ViewData["Title"] = "Delete Daily Task";
+    ViewData["Title"] = "Delete Task";
 }
 
-<h2>Delete Daily Task</h2>
+<h2>Delete Task</h2>
 
 <form asp-action="Delete" asp-controller="TDailyTask" method="post">
     <input type="hidden" asp-for="UID" />
     <input type="hidden" asp-for="CreatedBy" />
     <input type="hidden" asp-for="CreatedOn" />
     <input type="hidden" asp-for="UpdatedBy" />
-    <input type="hidden" asp-for="UpdatedOn" />
+    <input type="hidden" asp-for="UpdatedOn" />  
+    <input type="hidden" name="sourcePage" value="@ViewData["SourcePage"]" />
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -47,7 +48,18 @@
                 @* button *@
                 <div class="d-flex gap-2 pt-2">
                     <button type="submit" class="btn btn-danger">Delete</button>
-                    <a href="@Url.Action("Index", "TDailyTask")" class="btn btn-secondary">Cancel</a>
+                    @switch (ViewData["SourcePage"]?.ToString())
+                    {
+                        case "CompletedTask":
+                            <a href="@Url.Action("Index_Completed", "TDailyTask")" class="btn btn-secondary">Cancel</a>
+                            break;
+                        case "SummaryTask":
+                            <a href="@Url.Action("Index_Summary", "TDailyTask")" class="btn btn-secondary">Cancel</a>
+                            break;
+                        default:
+                            <a href="@Url.Action("Index", "TDailyTask")" class="btn btn-secondary">Cancel</a>
+                            break;
+                    }
                 </div>
 
             </div>
