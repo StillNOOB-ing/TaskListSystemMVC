@@ -28,7 +28,7 @@ cd TaskListSystemMVC
 ```
 2) Configure the Database
 - Open appsettings.json and update the database connection string.
-- Download and restore this [database](https://github.com/StillNOOB-ing/TaskListSystemMVC/blob/master/DatabaseBackup/TaskListSystem_2025-04-02.bak)
+- Select the latest database in [Database Backup](https://github.com/StillNOOB-ing/TaskListSystemMVC/tree/master/DatabaseBackup) and restore database in your SSMS.
 
 # Contribution
 
