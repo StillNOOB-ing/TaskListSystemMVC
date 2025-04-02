@@ -28,10 +28,7 @@ cd TaskListSystemMVC
 ```
 2) Configure the Database
 - Open appsettings.json and update the database connection string.
-- Download and restore this database.
-```
-https://github.com/StillNOOB-ing/TaskListSystemMVC/blob/master/DatabaseBackup/TaskListSystem_2025-04-02.bak
-```
+- Download and restore this [database](https://github.com/StillNOOB-ing/TaskListSystemMVC/blob/master/DatabaseBackup/TaskListSystem_2025-04-02.bak)
 
 # Contribution
 
