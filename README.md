@@ -19,6 +19,20 @@ TaskListSystemMVC is a web-based task management system built using ASP.NET Core
 - **Authentication:** ASP.NET Core Identity
 - **Excel Export:** EPPlus
 
+# Installation
+
+1) Clone the Repository
+```
+git clone https://github.com/StillNOOB-ing/TaskListSystemMVC.git
+cd TaskListSystemMVC
+```
+2) Configure the Database
+- Open appsettings.json and update the database connection string.
+- Download and restore this database.
+```
+https://github.com/StillNOOB-ing/TaskListSystemMVC/blob/master/DatabaseBackup/TaskListSystem_2025-04-02.bak
+```
+
 # Contribution
 
 Feel free to fork this repository and contribute to improving the system! Submit pull requests with clear documentation of changes.
