@@ -1,4 +1,6 @@
-﻿@model TaskListSystemMVC.Database.Model.TDailyTask;
+﻿@inject IMasterHelper masterHelper
+
+@model TaskListSystemMVC.Database.Model.TDailyTask;
 
 @{
     ViewData["Title"] = "Delete Task";
@@ -66,15 +68,15 @@
             <div class="col-md-4">
                 <div class="mb-3">
                     <label for="cmbPIC" class="form-label">PIC</label>
-                    <select id="cmbPIC" class="form-select readonly-disabled" asp-for="PICID" asp-items="ViewBag.PICList" readonly="true"></select>
+                    <select id="cmbPIC" class="form-select readonly-disabled" asp-for="PICID" asp-items="@await masterHelper.GetAccountInfoSelectItemList()" readonly="true"></select>
                 </div>
                 <div class="mb-3">
                     <label for="cmbStatus" class="form-label">Status</label>
-                    <select id="cmbStatus" class="form-select readonly-disabled" asp-for="StatusID" asp-items="ViewBag.StatusList" readonly="true"></select>
+                    <select id="cmbStatus" class="form-select readonly-disabled" asp-for="StatusID" asp-items="@await masterHelper.GetStatusSelectItemList()" readonly="true"></select>
                 </div>
                 <div class="mb-3">
                     <label for="cmbType" class="form-label">Type</label>
-                    <select id="cmbType" class="form-select readonly-disabled" asp-for="TypeID" asp-items="ViewBag.TypeList" readonly="true"></select>
+                    <select id="cmbType" class="form-select readonly-disabled" asp-for="TypeID" asp-items="@await masterHelper.GetTypeSelectItemList()" readonly="true"></select>
                 </div>
                 <div class="mb-3">
                     <label for="dtScheduleOn" class="form-label">Scheduled On</label>

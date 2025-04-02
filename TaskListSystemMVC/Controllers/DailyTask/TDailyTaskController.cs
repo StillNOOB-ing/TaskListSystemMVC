@@ -150,7 +150,7 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                             case "CompletedTask":
                                 return RedirectToAction("Index_Completed");
                             case "SummaryTask":
-                                return RedirectToAction("Index_SummaryTask");
+                                return RedirectToAction("Index_Summary");
                             default:
                                 return RedirectToAction("Index");
                         }
@@ -191,7 +191,7 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                             case "CompletedTask":
                                 return RedirectToAction("Index_Completed");
                             case "SummaryTask":
-                                return RedirectToAction("Index_SummaryTask");
+                                return RedirectToAction("Index_Summary");
                             default:
                                 return RedirectToAction("Index");
                         }
@@ -232,7 +232,7 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                             case "CompletedTask":
                                 return RedirectToAction("Index_Completed");
                             case "SummaryTask":
-                                return RedirectToAction("Index_SummaryTask");
+                                return RedirectToAction("Index_Summary");
                             default:
                                 return RedirectToAction("Index");
                         }
