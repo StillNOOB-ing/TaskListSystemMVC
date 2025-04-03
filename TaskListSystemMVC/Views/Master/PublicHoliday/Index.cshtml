@@ -20,7 +20,7 @@
 
 		</td>
 		<td class="ms-auto">
-			@await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
+			@await Html.PartialAsync("SearchBar", @ViewData["SearchString"])
 		</td>
 	</tr>
 </table>
@@ -32,7 +32,7 @@
 			<th>Name</th>
 			<th>Remark</th>
 			<th>
-				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamStartDate"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamStartDate"]" asp-route-searchFilter="@ViewData["SearchString"]">
 					Start Date
 					@if (ViewData["SortParamStartDate"]?.ToString() == "asc")
 					{

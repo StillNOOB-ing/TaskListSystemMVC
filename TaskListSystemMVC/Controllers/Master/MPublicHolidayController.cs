@@ -18,14 +18,14 @@ namespace TaskListSystemMVC.Controllers.Master
             mHelper = masterHelper;
         }
 
-        public async Task<IActionResult> Index(int? index, string sortOrder, string searchFilter)
+        public async Task<IActionResult> Index(int? index, string sortOrder, string searchString)
         {
             if (index == null || index <= 0) index = 1;
             int pageSize = 10;
 
-            ViewData["SearchFilter"] = searchFilter;
+            ViewData["SearchString"] = searchString;
             ViewData["SortOrder"] = sortOrder;
-            ViewData["SortParamStartDate"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "desc") ? "asc" : "desc";
+            //ViewData["SortParamStartDate"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "desc") ? "asc" : "desc";
 
             var dataList = sortOrder switch
             {
@@ -33,20 +33,20 @@ namespace TaskListSystemMVC.Controllers.Master
                 _ => mHelper.GetPublicHolidayDB().OrderBy(x => x.StartDate).AsQueryable(),
             };
 
-            if (!string.IsNullOrEmpty(searchFilter))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                searchFilter = searchFilter.ToLower();
+                searchString = searchString.ToLower();
 
                 dataList = dataList.Where(x =>
-                    x.UID.ToString().Contains(searchFilter) ||
-                    x.Name.ToString().Contains(searchFilter) ||
-                    x.StartDate.ToString().Contains(searchFilter) ||
-                    x.EndDate.ToString().Contains(searchFilter) ||
-                    x.Day.ToString().Contains(searchFilter) ||
-                    x.CreatedBy.ToString().Contains(searchFilter) ||
-                    x.CreatedOn.ToString().Contains(searchFilter) ||
-                    x.UpdatedBy.ToString().Contains(searchFilter) ||
-                    x.UpdatedOn.ToString().Contains(searchFilter)
+                    x.UID.ToString().Contains(searchString) ||
+                    x.Name.ToString().Contains(searchString) ||
+                    x.StartDate.ToString().Contains(searchString) ||
+                    x.EndDate.ToString().Contains(searchString) ||
+                    x.Day.ToString().Contains(searchString) ||
+                    x.CreatedBy.ToString().Contains(searchString) ||
+                    x.CreatedOn.ToString().Contains(searchString) ||
+                    x.UpdatedBy.ToString().Contains(searchString) ||
+                    x.UpdatedOn.ToString().Contains(searchString)
                 );
             }
 

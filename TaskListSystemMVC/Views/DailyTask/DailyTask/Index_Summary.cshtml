@@ -6,6 +6,44 @@
 	ViewData["Title"] = "Summary Task";
 }
 
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<label for="cmbPIC" class="form-label">PIC</label>
+			<select id="cmbPIC" class="form-select" asp-items="@await masterHelper.GetAccountInfoSelectItemList()"></select>
+		</div>
+		<div class="col-md-3">
+			<label for="cmbStatus" class="form-label">Status</label>
+			<select id="cmbStatus" class="form-select" asp-items="@await masterHelper.GetStatusSelectItemList()"></select>
+		</div>
+		<div class="col-md-3">
+			<label for="cmbType" class="form-label">Type</label>
+			<select id="cmbType" class="form-select" asp-items="@await masterHelper.GetTypeSelectItemList()"></select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<label for="dtReportFrom" class="form-label">Reported From</label>
+			<input id="dtReportFrom" class="form-control" type="datetime-local" />
+		</div>
+		<div class="col-md-3">
+			<label for="dtReportTo" class="form-label">Reported To</label>
+			<input id="dtReportTo" class="form-control" type="datetime-local" />
+		</div>
+		<div class="col-md-3">
+			<label for="dtScheduleFrom" class="form-label">Scheduled From</label>
+			<input id="dtScheduleFrom" class="form-control" type="datetime-local" />
+		</div>
+		<div class="col-md-3">
+			<label for="dtScheduleTo" class="form-label">Scheduled To</label>
+			<input id="dtScheduleTo" class="form-control" type="datetime-local" />
+		</div>
+	</div>
+	<div class="row2">
+		<a class="btn btn-primary" onclick="Filter()"><i class="bi bi-search"></i></a>
+	</div>
+</div>
+
 <table style="width:100%">
 	<tr class="d-flex justify-content-between align-items-center">
 		<td class="d-flex align-items-center">
@@ -17,13 +55,13 @@
 				<i class="bi bi-plus"></i>ADD
 			</a>
 
-			<a asp-controller="TDailyTask" asp-action="ExportToExcel" asp-route-sourcePage="SummaryTask" class="btn btn-primary" style="margin-left:5px">
+			<a asp-controller="TDailyTask" asp-action="ExportToExcel" asp-route-sourcePage="SummaryTask" asp-route-filterString="@ViewData["FilterString"]" class="btn btn-primary" style="margin-left:5px">
 				<i class="bi bi-file-earmark-excel"></i> Export to Excel
 			</a>
 
 		</td>
 		<td class="ms-auto">
-			@await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
+			@* @await Html.PartialAsync("SearchBar", @ViewData["SearchString"]) *@
 		</td>
 	</tr>
 </table>
@@ -33,7 +71,7 @@
 		<tr>
 			<th></th>
 			<th>
-				<a asp-controller="TDailyTask" asp-action="Index_Summary" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+				<a asp-controller="TDailyTask" asp-action="Index_Summary" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchString"]" asp-route-filterString="@ViewData["FilterString"]">
 					Report ID
 					@if (@ViewData["SortOrder"]?.ToString() == "asc")
 					{
@@ -94,3 +132,58 @@
 </table>
 
 @await Html.PartialAsync("PageBar", ("TDailyTask", "Index_Summary", Model.PageIndex, Model.TotalPage))
+
+<script>
+
+	document.addEventListener("DOMContentLoaded", function () {
+		var urlParams = new URLSearchParams(window.location.search);
+		var filterString = urlParams.get("filterString");
+
+		if (filterString) {
+			var filters = filterString.split('|');
+
+			filters.forEach(filter => {
+				if (filter.startsWith("PIC")) {
+					document.getElementById("cmbPIC").value = filter.replace("PIC", "");
+				}
+				if (filter.startsWith("Status")) {
+					document.getElementById("cmbStatus").value = filter.replace("Status", "");
+				}
+				if (filter.startsWith("Type")) {
+					document.getElementById("cmbType").value = filter.replace("Type", "");
+				}
+				if (filter.startsWith("ReportFrom")) {
+					document.getElementById("dtReportFrom").value = filter.replace("ReportFrom", "");
+				}
+				if (filter.startsWith("ReportTo")) {
+					document.getElementById("dtReportTo").value = filter.replace("ReportTo", "");
+				}
+				if (filter.startsWith("ScheduleFrom")) {
+					document.getElementById("dtScheduleFrom").value = filter.replace("ScheduleFrom", "");
+				}
+				if (filter.startsWith("ScheduleTo")) {
+					document.getElementById("dtScheduleTo").value = filter.replace("ScheduleTo", "");
+				}
+			});
+		}
+	});
+
+	function Filter(){
+			var pic = document.getElementById("cmbPIC").value.toString();
+			var status = document.getElementById("cmbStatus").value.toString();
+			var type = document.getElementById("cmbType").value.toString();
+			var reportFrom = document.getElementById("dtReportFrom").value.toString();
+			var reportTo = document.getElementById("dtReportTo").value.toString();
+			var scheduleFrom = document.getElementById("dtScheduleFrom").value.toString();
+			var scheduleTo = document.getElementById("dtScheduleTo").value.toString();
+
+			var filterStr = `PIC${pic}|Status${status}|Type${type}|ReportFrom${reportFrom}|ReportTo${reportTo}|ScheduleFrom${scheduleFrom}|ScheduleTo${scheduleTo}`;
+
+			var url = new URL(window.location.href);
+			var params = new URLSearchParams(url.search);
+
+			params.set("filterString", filterStr);
+
+			window.location.href = `${url.pathname}?${params.toString()}`;
+		}
+</script>

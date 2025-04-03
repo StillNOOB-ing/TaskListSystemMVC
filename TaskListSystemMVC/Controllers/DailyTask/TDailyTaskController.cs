@@ -24,12 +24,13 @@ namespace TaskListSystemMVC.Controllers.DailyTask
             masHelper = mHelper;
         }
 
-        public async Task<IActionResult> Index(int? index, string sortOrder, string searchFilter)
+        public async Task<IActionResult> Index(int? index, string sortOrder, string searchString, string filterString)
         {
             if (index == null || index <= 0) index = 1;
-            int pageSize = 10;
+            int pageSize = 20;
 
-            ViewData["SearchFilter"] = searchFilter;
+            ViewData["SearchString"] = searchString;
+            ViewData["FilterString"] = filterString;
             ViewData["SortOrder"] = sortOrder;
             ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
 
@@ -39,30 +40,79 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                 _ => taskHelper.GetPendingDailyTaskDB()
             };
 
-            if (!string.IsNullOrEmpty(searchFilter))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                searchFilter = searchFilter.ToLower();
+                searchString = searchString.ToLower();
 
                 dataList = dataList.Where(x =>
-                    x.ReportByID.Contains(searchFilter) ||
-                    x.ReportedOn.ToString().Contains(searchFilter) ||
-                    x.ScheduledOn.ToString().Contains(searchFilter) ||
-                    x.Title.ToLower().Contains(searchFilter) ||
-                    x.CompletedOn.ToString().Contains(searchFilter)
+                    x.ReportByID.Contains(searchString) ||
+                    x.ReportedOn.ToString().Contains(searchString) ||
+                    x.ScheduledOn.ToString().Contains(searchString) ||
+                    x.Title.ToLower().Contains(searchString) ||
+                    x.PICName.ToLower().Contains(searchString) ||
+                    x.StatusName.ToLower().Contains(searchString) ||
+                    x.TypeName.ToLower().Contains(searchString) ||
+                    x.CompletedOn.ToString().Contains(searchString)
                 );
             }
-            
+
+            if (!string.IsNullOrEmpty(filterString))
+            {
+                var filters = filterString.Split('|');
+
+                string pic = filters.FirstOrDefault(f => f.StartsWith("PIC"))?.Replace("PIC", "");
+                string status = filters.FirstOrDefault(f => f.StartsWith("Status"))?.Replace("Status", "");
+                string type = filters.FirstOrDefault(f => f.StartsWith("Type"))?.Replace("Type", "");
+                string reportFrom = filters.FirstOrDefault(f => f.StartsWith("ReportFrom"))?.Replace("ReportFrom", "");
+                string reportTo = filters.FirstOrDefault(f => f.StartsWith("ReportTo"))?.Replace("ReportTo", "");
+                string scheduleFrom = filters.FirstOrDefault(f => f.StartsWith("ScheduleFrom"))?.Replace("ScheduleFrom", "");
+                string scheduleTo = filters.FirstOrDefault(f => f.StartsWith("ScheduleTo"))?.Replace("ScheduleTo", "");
+
+                if (!string.IsNullOrEmpty(pic) && int.TryParse(pic, out int picName))
+                {
+                    dataList = dataList.Where(x => x.PICID == picName);
+                }
+                if (!string.IsNullOrEmpty(status) && int.TryParse(status, out int statusName))
+                {
+                    dataList = dataList.Where(x => x.StatusID == statusName);
+                }
+                if (!string.IsNullOrEmpty(type) && int.TryParse(type, out int typeName))
+                {
+                    dataList = dataList.Where(x => x.TypeID == typeName);
+                }
+                if (!string.IsNullOrEmpty(reportFrom) && DateTime.TryParse(reportFrom, out DateTime ReportFrom))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn >= ReportFrom);
+                }
+                if (!string.IsNullOrEmpty(reportTo) && DateTime.TryParse(reportTo, out DateTime ReportTo))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn <= ReportTo);
+                }
+                if (!string.IsNullOrEmpty(scheduleFrom) && DateTime.TryParse(scheduleFrom, out DateTime ScheduleFrom))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn >= ScheduleFrom);
+                }
+                if (!string.IsNullOrEmpty(scheduleTo) && DateTime.TryParse(scheduleTo, out DateTime ScheduleTo))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn <= ScheduleTo);
+                }
+            }
+
             var result = await PaginationList<TDailyTask>.CreateAsync(dataList, index.Value, pageSize);
 
             return View("~/Views/DailyTask/DailyTask/Index.cshtml", result);
         }
 
-        public async Task<IActionResult> Index_Completed(int? index, string sortOrder, string searchFilter)
+        public async Task<IActionResult> Index_Completed(int? index, string sortOrder, string searchString, string filterString)
         {
             if (index == null || index <= 0) index = 1;
             int pageSize = 10;
 
-            ViewData["SearchFilter"] = searchFilter;
+            ViewData["SearchString"] = searchString;
+            ViewData["FilterString"] = filterString;
+
+            //string[] sort = sortOrder.Split("|");
+
             ViewData["SortOrder"] = sortOrder;
             ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
 
@@ -72,17 +122,62 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                 _ => taskHelper.GetCompletedDailyTaskDB()
             };
 
-            if (!string.IsNullOrEmpty(searchFilter))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                searchFilter = searchFilter.ToLower();
+                searchString = searchString.ToLower();
 
                 dataList = dataList.Where(x =>
-                    x.ReportByID.Contains(searchFilter) ||
-                    x.ReportedOn.ToString().Contains(searchFilter) ||
-                    x.ScheduledOn.ToString().Contains(searchFilter) ||
-                    x.Title.ToLower().Contains(searchFilter) ||
-                    x.CompletedOn.ToString().Contains(searchFilter)
+                    x.ReportByID.Contains(searchString) ||
+                    x.ReportedOn.ToString().Contains(searchString) ||
+                    x.ScheduledOn.ToString().Contains(searchString) ||
+                    x.Title.ToLower().Contains(searchString) ||
+                    x.PICName.ToLower().Contains(searchString) ||
+                    x.StatusName.ToLower().Contains(searchString) ||
+                    x.TypeName.ToLower().Contains(searchString) ||
+                    x.CompletedOn.ToString().Contains(searchString)
                 );
+            }
+
+            if (!string.IsNullOrEmpty(filterString))
+            {
+                var filters = filterString.Split('|');
+
+                string pic = filters.FirstOrDefault(f => f.StartsWith("PIC"))?.Replace("PIC", "");
+                string status = filters.FirstOrDefault(f => f.StartsWith("Status"))?.Replace("Status", "");
+                string type = filters.FirstOrDefault(f => f.StartsWith("Type"))?.Replace("Type", "");
+                string reportFrom = filters.FirstOrDefault(f => f.StartsWith("ReportFrom"))?.Replace("ReportFrom", "");
+                string reportTo = filters.FirstOrDefault(f => f.StartsWith("ReportTo"))?.Replace("ReportTo", "");
+                string scheduleFrom = filters.FirstOrDefault(f => f.StartsWith("ScheduleFrom"))?.Replace("ScheduleFrom", "");
+                string scheduleTo = filters.FirstOrDefault(f => f.StartsWith("ScheduleTo"))?.Replace("ScheduleTo", "");
+
+                if (!string.IsNullOrEmpty(pic) && int.TryParse(pic, out int picName))
+                {
+                    dataList = dataList.Where(x => x.PICID == picName);
+                }
+                if (!string.IsNullOrEmpty(status) && int.TryParse(status, out int statusName))
+                {
+                    dataList = dataList.Where(x => x.StatusID == statusName);
+                }
+                if (!string.IsNullOrEmpty(type) && int.TryParse(type, out int typeName))
+                {
+                    dataList = dataList.Where(x => x.TypeID == typeName);
+                }
+                if (!string.IsNullOrEmpty(reportFrom) && DateTime.TryParse(reportFrom, out DateTime ReportFrom))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn >= ReportFrom);
+                }
+                if (!string.IsNullOrEmpty(reportTo) && DateTime.TryParse(reportTo, out DateTime ReportTo))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn <= ReportTo);
+                }
+                if (!string.IsNullOrEmpty(scheduleFrom) && DateTime.TryParse(scheduleFrom, out DateTime ScheduleFrom))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn >= ScheduleFrom);
+                }
+                if (!string.IsNullOrEmpty(scheduleTo) && DateTime.TryParse(scheduleTo, out DateTime ScheduleTo))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn <= ScheduleTo);
+                }
             }
 
             var result = await PaginationList<TDailyTask>.CreateAsync(dataList, index.Value, pageSize);
@@ -90,12 +185,13 @@ namespace TaskListSystemMVC.Controllers.DailyTask
             return View("~/Views/DailyTask/DailyTask/Index_Completed.cshtml", result);
         }
 
-        public async Task<IActionResult> Index_Summary(int? index, string sortOrder, string searchFilter)
+        public async Task<IActionResult> Index_Summary(int? index, string sortOrder, string searchString, string filterString)
         {
             if (index == null || index <= 0) index = 1;
             int pageSize = 10;
 
-            ViewData["SearchFilter"] = searchFilter;
+            ViewData["SearchString"] = searchString;
+            ViewData["FilterString"] = filterString;
             ViewData["SortOrder"] = sortOrder;
             ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
 
@@ -105,17 +201,62 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                 _ => taskHelper.GetDailyTaskDB()
             };
 
-            if (!string.IsNullOrEmpty(searchFilter))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                searchFilter = searchFilter.ToLower();
+                searchString = searchString.ToLower();
 
                 dataList = dataList.Where(x =>
-                    x.ReportByID.Contains(searchFilter) ||
-                    x.ReportedOn.ToString().Contains(searchFilter) ||
-                    x.ScheduledOn.ToString().Contains(searchFilter) ||
-                    x.Title.ToLower().Contains(searchFilter) ||
-                    x.CompletedOn.ToString().Contains(searchFilter)
+                    x.ReportByID.Contains(searchString) ||
+                    x.ReportedOn.ToString().Contains(searchString) ||
+                    x.ScheduledOn.ToString().Contains(searchString) ||
+                    x.Title.ToLower().Contains(searchString) || 
+                    x.PICName.ToLower().Contains(searchString) ||
+                    x.StatusName.ToLower().Contains(searchString) ||
+                    x.TypeName.ToLower().Contains(searchString) ||
+                    x.CompletedOn.ToString().Contains(searchString)
                 );
+            }
+
+            if (!string.IsNullOrEmpty(filterString))
+            {
+                var filters = filterString.Split('|');
+
+                string pic = filters.FirstOrDefault(f => f.StartsWith("PIC"))?.Replace("PIC", "");
+                string status = filters.FirstOrDefault(f => f.StartsWith("Status"))?.Replace("Status", "");
+                string type = filters.FirstOrDefault(f => f.StartsWith("Type"))?.Replace("Type", "");
+                string reportFrom = filters.FirstOrDefault(f => f.StartsWith("ReportFrom"))?.Replace("ReportFrom", "");
+                string reportTo = filters.FirstOrDefault(f => f.StartsWith("ReportTo"))?.Replace("ReportTo", "");
+                string scheduleFrom = filters.FirstOrDefault(f => f.StartsWith("ScheduleFrom"))?.Replace("ScheduleFrom", "");
+                string scheduleTo = filters.FirstOrDefault(f => f.StartsWith("ScheduleTo"))?.Replace("ScheduleTo", "");
+
+                if (!string.IsNullOrEmpty(pic) && int.TryParse(pic, out int picName))
+                {
+                    dataList = dataList.Where(x => x.PICID == picName);
+                }
+                if (!string.IsNullOrEmpty(status) && int.TryParse(status, out int statusName))
+                {
+                    dataList = dataList.Where(x => x.StatusID == statusName);
+                }
+                if (!string.IsNullOrEmpty(type) && int.TryParse(type, out int typeName))
+                {
+                    dataList = dataList.Where(x => x.TypeID == typeName);
+                }
+                if (!string.IsNullOrEmpty(reportFrom) && DateTime.TryParse(reportFrom, out DateTime ReportFrom))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn >= ReportFrom);
+                }
+                if (!string.IsNullOrEmpty(reportTo) && DateTime.TryParse(reportTo, out DateTime ReportTo))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn <= ReportTo);
+                }
+                if (!string.IsNullOrEmpty(scheduleFrom) && DateTime.TryParse(scheduleFrom, out DateTime ScheduleFrom))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn >= ScheduleFrom);
+                }
+                if (!string.IsNullOrEmpty(scheduleTo) && DateTime.TryParse(scheduleTo, out DateTime ScheduleTo))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn <= ScheduleTo);
+                }
             }
 
             var result = await PaginationList<TDailyTask>.CreateAsync(dataList, index.Value, pageSize);
@@ -246,7 +387,7 @@ namespace TaskListSystemMVC.Controllers.DailyTask
             return BadRequest(new { message = "Invalid Model!" });
         }
 
-        public async Task<IActionResult> ExportToExcel(string sourcePage)
+        public async Task<IActionResult> ExportToExcel(string sourcePage, string filterString)
         {
             var dataList = new List<TDailyTask>();
             switch (sourcePage)
@@ -260,9 +401,49 @@ namespace TaskListSystemMVC.Controllers.DailyTask
                 case "SummaryTask":
                     dataList = await taskHelper.GetDailyTaskAll();
                     break;
-                default:
-                    break;
-            }            
+            }
+
+            if (!string.IsNullOrEmpty(filterString))
+            {
+                var filters = filterString.Split('|');
+
+                string pic = filters.FirstOrDefault(f => f.StartsWith("PIC"))?.Replace("PIC", "");
+                string status = filters.FirstOrDefault(f => f.StartsWith("Status"))?.Replace("Status", "");
+                string type = filters.FirstOrDefault(f => f.StartsWith("Type"))?.Replace("Type", "");
+                string reportFrom = filters.FirstOrDefault(f => f.StartsWith("ReportFrom"))?.Replace("ReportFrom", "");
+                string reportTo = filters.FirstOrDefault(f => f.StartsWith("ReportTo"))?.Replace("ReportTo", "");
+                string scheduleFrom = filters.FirstOrDefault(f => f.StartsWith("ScheduleFrom"))?.Replace("ScheduleFrom", "");
+                string scheduleTo = filters.FirstOrDefault(f => f.StartsWith("ScheduleTo"))?.Replace("ScheduleTo", "");
+
+                if (!string.IsNullOrEmpty(pic) && int.TryParse(pic, out int picName))
+                {
+                    dataList = dataList.Where(x => x.PICID == picName).ToList();
+                }
+                if (!string.IsNullOrEmpty(status) && int.TryParse(status, out int statusName))
+                {
+                    dataList = dataList.Where(x => x.StatusID == statusName).ToList();
+                }
+                if (!string.IsNullOrEmpty(type) && int.TryParse(type, out int typeName))
+                {
+                    dataList = dataList.Where(x => x.TypeID == typeName).ToList();
+                }
+                if (!string.IsNullOrEmpty(reportFrom) && DateTime.TryParse(reportFrom, out DateTime ReportFrom))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn >= ReportFrom).ToList();
+                }
+                if (!string.IsNullOrEmpty(reportTo) && DateTime.TryParse(reportTo, out DateTime ReportTo))
+                {
+                    dataList = dataList.Where(x => x.ReportedOn <= ReportTo).ToList();
+                }
+                if (!string.IsNullOrEmpty(scheduleFrom) && DateTime.TryParse(scheduleFrom, out DateTime ScheduleFrom))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn >= ScheduleFrom).ToList();
+                }
+                if (!string.IsNullOrEmpty(scheduleTo) && DateTime.TryParse(scheduleTo, out DateTime ScheduleTo))
+                {
+                    dataList = dataList.Where(x => x.ScheduledOn <= ScheduleTo).ToList();
+                }
+            }
 
             if (dataList.Count > 0)
             {

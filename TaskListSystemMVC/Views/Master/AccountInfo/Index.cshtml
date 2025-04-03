@@ -18,7 +18,7 @@
             }            
         </td>
         <td class="ms-auto">
-            @await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
+            @await Html.PartialAsync("SearchBar", @ViewData["SearchString"])
         </td>
     </tr>
 </table>
@@ -31,7 +31,7 @@
                 
             </th>
             <th>
-                <a asp-controller="MAccountInfo" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamName"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+                <a asp-controller="MAccountInfo" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamName"]" asp-route-searchFilter="@ViewData["SearchString"]">
                     Name
                     @if (ViewData["SortParamName"]?.ToString() == "asc")
                     {

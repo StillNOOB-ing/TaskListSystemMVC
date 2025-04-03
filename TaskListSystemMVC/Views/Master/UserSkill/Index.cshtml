@@ -12,7 +12,7 @@
 			<a href="@Url.Action("Create", "MUserSkill")" class="btn btn-success" style="margin-left:25px">ADD</a>
 		</td>
 		<td class="ms-auto">
-			@await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
+			@await Html.PartialAsync("SearchBar", @ViewData["SearchString"])
 		</td>
 	</tr>
 </table>
@@ -22,7 +22,7 @@
 		<tr>
 			<th></th>
 			<th>
-				<a asp-controller="MUserSkill" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamName"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+				<a asp-controller="MUserSkill" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamName"]" asp-route-searchFilter="@ViewData["SearchString"]">
 					Name
 					@if (ViewData["SortParamName"]?.ToString() == "asc")
 					{

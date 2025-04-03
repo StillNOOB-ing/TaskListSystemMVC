@@ -16,7 +16,7 @@
 			var url = new URL(window.location.href);
 			var params = new URLSearchParams(url.search);
 
-			params.set("searchFilter", searchStr);
+			params.set("searchString", searchStr);
 
 			window.location.href = `${url.pathname}?${params.toString()}`;
 		}

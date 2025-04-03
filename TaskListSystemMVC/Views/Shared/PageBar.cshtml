@@ -31,7 +31,7 @@
 	</nav>
 	<div style="width:10px"></div>
 	<div class="mb-3 d-flex align-items-center">
-		<span class="page-link bg-light border-0">(Total: @Model.totalPage pages)</span>
+		<span class="page-link border-0">(Total: @Model.totalPage pages)</span>
 		<input id="txtGoTo" type="number" min="1" max="@Model.totalPage" value="@Model.pageIndex" class="form-control" style="width: 80px; text-align: center; margin-left: 10px;" />
 		<a class="btn btn-secondary ms-2" onclick="BtnGoClick(@Model.totalPage)">GO</a>
 	</div>

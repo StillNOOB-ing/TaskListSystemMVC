@@ -16,7 +16,7 @@ namespace TaskListSystemMVC.Helper
         public string GetName()
         {
             var name = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
-            return name ?? "Unknown";
+            return name ?? string.Empty;
         }
 
         public int GetUserLevelID()

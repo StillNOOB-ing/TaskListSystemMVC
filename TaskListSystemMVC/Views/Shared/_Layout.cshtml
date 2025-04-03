@@ -38,51 +38,57 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                        
-                        @if (accountHelper.GetUserLevelID() != FixedUserLevel.GUEST_UID)
+                        @if (!string.IsNullOrEmpty(accountHelper.GetName()))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dailyTaskDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Task</a>
-                                <ul class="dropdown-menu" aria-labelledby="dailyTaskDropDown">
-                                    <li>
-                                        <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index" asp-route-index="1" asp-route-sortOrder="desc">Daily Task</a>
-                                        <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Completed" asp-route-index="1" asp-route-sortOrder="desc">Completed Task</a>
-                                        <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Summary" asp-route-index="1" asp-route-sortOrder="desc">Summary Task</a>
-                                    </li>
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="masterDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Master</a>
-                                <ul class="dropdown-menu" aria-labelledby="masterDropdown">
-                                    <li>
-                                        <a class="dropdown-item" asp-controller="MAccountInfo" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Account</a>
-                                        <a class="dropdown-item" asp-controller="MUserLevelRight" asp-action="Index">User Level Right</a>
-                                        <a class="dropdown-item" asp-controller="MStatus" asp-action="Index">Status</a>
-                                        <a class="dropdown-item" asp-controller="MType" asp-action="Index">Type</a>
-                                        <a class="dropdown-item" asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Public Holiday</a>
-                                        @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
-                                        {
-                                            <a class="dropdown-item" asp-controller="MUserSkill" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">User Skill</a>
-                                            <a class="dropdown-item" asp-controller="MUserHobby" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">User Hobby</a>
-                                        }
-                                    </li>
-                                </ul>
+                            @if (accountHelper.GetUserLevelID() != FixedUserLevel.GUEST_UID)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="dailyTaskDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Task</a>
+                                    <ul class="dropdown-menu" aria-labelledby="dailyTaskDropDown">
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index" asp-route-index="1" asp-route-sortOrder="desc">Daily Task</a>
+                                            <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Completed" asp-route-index="1" asp-route-sortOrder="desc">Completed Task</a>
+                                            <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Summary" asp-route-index="1" asp-route-sortOrder="desc">Summary Task</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="masterDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Master</a>
+                                    <ul class="dropdown-menu" aria-labelledby="masterDropdown">
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="MAccountInfo" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Account</a>
+                                            <a class="dropdown-item" asp-controller="MUserLevelRight" asp-action="Index">User Level Right</a>
+                                            <a class="dropdown-item" asp-controller="MStatus" asp-action="Index">Status</a>
+                                            <a class="dropdown-item" asp-controller="MType" asp-action="Index">Type</a>
+                                            <a class="dropdown-item" asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Public Holiday</a>
+                                            @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
+                                            {
+                                                <a class="dropdown-item" asp-controller="MUserSkill" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">User Skill</a>
+                                                <a class="dropdown-item" asp-controller="MUserHobby" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">User Hobby</a>
+                                            }
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
                         }                       
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                     </ul>
                 </div>
                 <div style="padding-right:10px">
                     @accountHelper.GetName()
                 </div>
                 <div>
-                    <form asp-controller="Account" asp-action="Logout" method="post">
-                        <button type="submit" class="btn btn-primary">Logout</button>
-                    </form>
+                    @if (!string.IsNullOrEmpty(accountHelper.GetName()))
+                    {
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-primary">Logout</button>
+                        </form>
+                    }                    
                 </div>
             </div>
         </nav>
