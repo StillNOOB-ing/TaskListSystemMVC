@@ -6,6 +6,26 @@
     ViewData["Title"] = "Create Account";
 
     var message = ViewData["AlertMessage"]?.ToString();
+
+    var skillList = new List<DropdownItem>();
+    var skilldropdown = masterHelper.GetUserSkillDB().OrderBy(x => x.Name).ToList();
+    foreach (var item in skilldropdown)
+    {
+        if (!string.IsNullOrEmpty(item.Name))
+        {
+            skillList.Add(new DropdownItem { Name = item.Name });
+        }        
+    }
+
+    var hobbyList = new List<DropdownItem>();
+    var hobbydropdown = masterHelper.GetUserHobbyDB().OrderBy(x => x.Name).ToList();
+    foreach (var item in hobbydropdown)
+    {
+        if (!string.IsNullOrEmpty(item.Name))
+        {
+            hobbyList.Add(new DropdownItem { Name = item.Name });
+        }
+    }
 }
 
 <h2>Create Account</h2>
@@ -22,41 +42,67 @@
     <input type="hidden" asp-for="CreatedOn" />
     <input type="hidden" asp-for="UpdatedBy" />
     <input type="hidden" asp-for="UpdatedOn" />
-    <div class="mb-3">
-        <label for="txtName" class="form-label">Name</label>
-        <input id="txtName" asp-for="Name" class="form-control" type="text" required="true" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="chkActive" class="form-check-label">Active</label>
-        <input id="chkActive" asp-for="Active" class="form-check-input" type="checkbox" required="true" value="false" />
-    </div>
-    <div class="mb-3">
-        <label for="cmbLevel" class="form-label">Level Right</label>
-        <select id="cmbLevel" class="form-select" asp-for="LevelRightID" asp-items="@await masterHelper.GetUserLevelRightSelectItemList()" required="true"></select>
-    </div>
-    <div class="mb-3">
-        <label for="txtUsername" class="form-label">Username</label>
-        <input id="txtUsername" asp-for="Username" class="form-control" type="text" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="txtEmail" class="form-label">Email</label>
-        <input id="txtEmail" asp-for="Email" type="email" class="form-control" required="true"/>
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="txtPassword" class="form-label">Password</label>
-        <input id="txtPassword" asp-for="Password" type="password" class="form-control" required="true"/>
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="txtConfirmPassword" class="form-label">Confirm Password</label>
-        <input id="txtConfirmPassword" asp-for="ConfirmPassword" type="password" class="form-control" required="true" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-    <div class="d-flex gap-2 pt-2">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a href="@Url.Action("Index", "MAccountInfo")" class="btn btn-secondary">Cancel</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Profile Info</h4>
+                <div class="mb-3">
+                    <label for="txtName" class="form-label">Name</label>
+                    <input id="txtName" asp-for="Name" class="form-control" type="text" required="true" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>                
+                <div class="mb-3">
+                    <label for="txtContactNumber" class="form-label">Contact Number</label>
+                    <input id="txtContactNumber" asp-for="ContactNumber" class="form-control" type="text" />
+                </div>
+                <div class="mb-3">
+                    <label for="cmbSkill" class="form-label">Skill</label>
+                    <input type="hidden" asp-for="Skill" id="cmbSkill"/>
+                    @await Html.PartialAsync("Dropdown", (skillList, "cmbSkill"))
+                </div>
+                <div class="mb-3">
+                    <label for="cmbHobby" class="form-label">Hobby</label>
+                    <input type="hidden" asp-for="Hobby" id="cmbHobby" />
+                    @await Html.PartialAsync("Dropdown", (hobbyList, "cmbHobby"))
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4>Account Info</h4>
+                <div class="mb-3">
+                    <label for="chkActive" class="form-check-label">Active</label>
+                    <input id="chkActive" asp-for="Active" class="form-check-input" type="checkbox" value="false" />
+                </div>
+                <div class="mb-3">
+                    <label for="cmbLevel" class="form-label">Level Right</label>
+                    <select id="cmbLevel" class="form-select" asp-for="LevelRightID" asp-items="@await masterHelper.GetUserLevelRightSelectItemList()" required="true"></select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtUsername" class="form-label">Username</label>
+                    <input id="txtUsername" asp-for="Username" class="form-control" type="text" required="true" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="txtEmail" class="form-label">Email</label>
+                    <input id="txtEmail" asp-for="Email" type="email" class="form-control" required="true" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="txtPassword" class="form-label">Password</label>
+                    <input id="txtPassword" asp-for="Password" type="password" class="form-control" required="true" placeholder="Password must be more than or equal to 6 characters" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="txtConfirmPassword" class="form-label">Confirm Password</label>
+                    <input id="txtConfirmPassword" asp-for="ConfirmPassword" type="password" class="form-control" required="true" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="d-flex gap-2 pt-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="@Url.Action("Index", "MAccountInfo")" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
     </div>
 </form>

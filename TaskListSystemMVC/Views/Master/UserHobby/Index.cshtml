@@ -1,0 +1,65 @@
+﻿@model TaskListSystemMVC.Database.PaginationList<TaskListSystemMVC.Database.Model.MUserHobby>
+
+@{
+	ViewData["Title"] = "User Hobby";
+}
+
+<table style="width:100%">
+	<tr class="d-flex justify-content-between align-items-center">
+		<td class="d-flex align-items-center">
+			<h4>User Hobby List</h4>
+			<span style="margin-left:10px">(Total: @Model.TotalItem items)</span>
+			<a href="@Url.Action("Create", "MUserHobby")" class="btn btn-success" style="margin-left:25px">ADD</a>
+		</td>
+		<td class="ms-auto">
+			@await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
+		</td>
+	</tr>
+</table>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>
+				<a asp-controller="MUserHobby" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamName"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+					Name
+					@if (ViewData["SortParamName"]?.ToString() == "asc")
+					{
+						<i class="bi bi-arrow-up"></i>
+					}
+					else if (ViewData["SortParamName"]?.ToString() == "desc")
+					{
+						<i class="bi bi-arrow-down"></i>
+					}
+				</a>
+			</th>
+			<th>Description</th>
+			<th>Last Updated On</th>
+			<th>Last Updated By</th>
+		</tr>		
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					<div style="display:flex; gap:5px">
+						<a href="@Url.Action("Edit", "MUserHobby", new { id = item.UID })">
+							<i class="bi bi-pencil text-warning"></i>
+						</a>
+						<a href="@Url.Action("Delete", "MUserHobby", new { id = item.UID })">
+							<i class="bi bi-trash text-danger"></i>
+						</a>
+					</div>					
+				</td>
+				<td>@item.Name</td>
+				<td>@item.Description</td>
+				<td>@(item.UpdatedOn == null ? item.CreatedOn : item.UpdatedOn)</td>
+				<td>@(item.UpdatedBy == null ? item.CreatedBy : item.UpdatedBy)</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@await Html.PartialAsync("PageBar", ("MUserHobby", "Index", Model.PageIndex, Model.TotalPage))

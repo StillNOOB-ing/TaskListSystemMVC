@@ -464,5 +464,185 @@ namespace TaskListSystemMVC.Database.Repository
         }
 
         #endregion
+
+        #region UserSkill
+
+        public IQueryable<MUserSkill> GetUserSkillDB(Expression<Func<MUserSkill, bool>> predicate)
+        {
+            return context.UserSkills.AsNoTracking().Where(predicate).AsQueryable();
+        }
+        public async Task<List<MUserSkill>> GetUserSkillAll(Expression<Func<MUserSkill, bool>> predicate)
+        {
+            return await context.UserSkills.AsNoTracking().Where(predicate).ToListAsync();
+        }
+        public async Task<ResultInfo> InsertUserSkill(MUserSkill item)
+        {
+            ResultInfo result = new ResultInfo();
+            try
+            {
+                var findItem = new MUserSkill();
+                findItem = item.Clone();
+
+                await context.UserSkills.AddAsync(findItem);
+                await context.SaveChangesAsync();
+
+                result.message = "Successful";
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+        public async Task<ResultInfo> UpdateUserSkill(MUserSkill item)
+        {
+            ResultInfo result = new ResultInfo();
+            try
+            {
+                var findItem = await context.UserSkills.FindAsync(item.UID);
+                if (findItem != null)
+                {
+                    context.Entry(findItem).CurrentValues.SetValues(item);
+
+                    await context.SaveChangesAsync();
+
+                    result.message = "Successful";
+                    result.success = true;
+                }
+                else
+                {
+                    result.message = "No Item Found";
+                    result.success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+        public async Task<ResultInfo> DeleteUserSkill(MUserSkill item)
+        {
+            ResultInfo result = new ResultInfo();
+            try
+            {
+                var findItem = await context.UserSkills.FindAsync(item.UID);
+                if (findItem != null)
+                {
+                    context.UserSkills.Remove(findItem);
+
+                    await context.SaveChangesAsync();
+
+                    result.message = "Successful";
+                    result.success = true;
+                }
+                else
+                {
+                    result.message = "No Item Found";
+                    result.success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region UserHobby
+
+        public IQueryable<MUserHobby> GetUserHobbyDB(Expression<Func<MUserHobby, bool>> predicate)
+        {
+            return context.UserHobbys.AsNoTracking().Where(predicate).AsQueryable();
+        }
+        public async Task<List<MUserHobby>> GetUserHobbyAll(Expression<Func<MUserHobby, bool>> predicate)
+        {
+            return await context.UserHobbys.AsNoTracking().Where(predicate).ToListAsync();
+        }
+        public async Task<ResultInfo> InsertUserHobby(MUserHobby item)
+        {
+            ResultInfo result = new ResultInfo();
+            try
+            {
+                var findItem = new MUserHobby();
+                findItem = item.Clone();
+
+                await context.UserHobbys.AddAsync(findItem);
+                await context.SaveChangesAsync();
+
+                result.message = "Successful";
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+        public async Task<ResultInfo> UpdateUserHobby(MUserHobby item)
+        {
+            ResultInfo result = new ResultInfo();
+            try
+            {
+                var findItem = await context.UserHobbys.FindAsync(item.UID);
+                if (findItem != null)
+                {
+                    context.Entry(findItem).CurrentValues.SetValues(item);
+
+                    await context.SaveChangesAsync();
+
+                    result.message = "Successful";
+                    result.success = true;
+                }
+                else
+                {
+                    result.message = "No Item Found";
+                    result.success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+        public async Task<ResultInfo> DeleteUserHobby(MUserHobby item)
+        {
+            ResultInfo result = new ResultInfo();
+            try
+            {
+                var findItem = await context.UserHobbys.FindAsync(item.UID);
+                if (findItem != null)
+                {
+                    context.UserHobbys.Remove(findItem);
+
+                    await context.SaveChangesAsync();
+
+                    result.message = "Successful";
+                    result.success = true;
+                }
+                else
+                {
+                    result.message = "No Item Found";
+                    result.success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+
+        #endregion
     }
 }

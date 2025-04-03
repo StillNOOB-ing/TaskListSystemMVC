@@ -9,11 +9,11 @@ using Microsoft.Data.SqlClient;
 namespace TaskListSystemMVC.Controllers.Master
 {
     [Authorize]
-    public class MPublicHolidayController : Controller
+    public class MUserSkillController : Controller
     {
         private readonly IMasterHelper mHelper;
 
-        public MPublicHolidayController(IMasterHelper masterHelper)
+        public MUserSkillController(IMasterHelper masterHelper)
         {
             mHelper = masterHelper;
         }
@@ -25,12 +25,12 @@ namespace TaskListSystemMVC.Controllers.Master
 
             ViewData["SearchFilter"] = searchFilter;
             ViewData["SortOrder"] = sortOrder;
-            ViewData["SortParamStartDate"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "desc") ? "asc" : "desc";
+            ViewData["SortParamName"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
 
             var dataList = sortOrder switch
             {
-                "desc" => mHelper.GetPublicHolidayDB().OrderByDescending(x => x.StartDate),
-                _ => mHelper.GetPublicHolidayDB().OrderBy(x => x.StartDate).AsQueryable(),
+                "desc" => mHelper.GetUserSkillDB().OrderByDescending(x => x.Name),
+                _ => mHelper.GetUserSkillDB().OrderBy(x => x.Name).AsQueryable(),
             };
 
             if (!string.IsNullOrEmpty(searchFilter))
@@ -40,9 +40,6 @@ namespace TaskListSystemMVC.Controllers.Master
                 dataList = dataList.Where(x =>
                     x.UID.ToString().Contains(searchFilter) ||
                     x.Name.ToString().Contains(searchFilter) ||
-                    x.StartDate.ToString().Contains(searchFilter) ||
-                    x.EndDate.ToString().Contains(searchFilter) ||
-                    x.Day.ToString().Contains(searchFilter) ||
                     x.CreatedBy.ToString().Contains(searchFilter) ||
                     x.CreatedOn.ToString().Contains(searchFilter) ||
                     x.UpdatedBy.ToString().Contains(searchFilter) ||
@@ -50,22 +47,29 @@ namespace TaskListSystemMVC.Controllers.Master
                 );
             }
 
-            var result = await PaginationList<MPublicHoliday>.CreateAsync(dataList, index.Value, pageSize);
+            var result = await PaginationList<MUserSkill>.CreateAsync(dataList, index.Value, pageSize);
 
-            return View("~/Views/Master/PublicHoliday/Index.cshtml", result);
+            return View("~/Views/Master/UserSkill/Index.cshtml", result);
         }
 
         public IActionResult Create()
         {
-            return View("~/Views/Master/PublicHoliday/Create.cshtml");
+            return View("~/Views/Master/UserSkill/Create.cshtml");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(MPublicHoliday item)
+        public async Task<IActionResult> Create(MUserSkill item)
         {
             if (ModelState.IsValid)
             {
-                var result = await mHelper.InsertPublicHoliday(item);
+                var skillList = await mHelper.GetUserSkillAll();
+                if (skillList.Exists(x => x.Name == item.Name))
+                {
+                    ViewData["AlertMessage"] = "This skill has been registered.";
+                    return View("~/Views/Master/UserSkill/Create.cshtml", item);
+                }
+
+                var result = await mHelper.InsertUserSkill(item);
                 if (result.success)
                 {
                     return RedirectToAction("Index");
@@ -77,21 +81,28 @@ namespace TaskListSystemMVC.Controllers.Master
             }
 
             ViewData["AlertMessage"] = "Invalid Model!";
-            return View("~/Views/Master/PublicHoliday/Create.cshtml", item);
+            return View("~/Views/Master/UserSkill/Create.cshtml", item);
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var item = await mHelper.GetPublicHolidayByID(id);
-            return View("~/Views/Master/PublicHoliday/Edit.cshtml", item);
+            var item = await mHelper.GetUserSkillByID(id);
+            return View("~/Views/Master/UserSkill/Edit.cshtml", item);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(MPublicHoliday item)
+        public async Task<IActionResult> Edit(MUserSkill item)
         {
             if (ModelState.IsValid)
             {
-                var result = await mHelper.UpdatePublicHoliday(item);
+                var skillList = await mHelper.GetUserSkillAll();
+                if (skillList.Exists(x => x.Name == item.Name && x.Description == item.Description))
+                {
+                    ViewData["AlertMessage"] = "This skill has been registered.";
+                    return View("~/Views/Master/UserSkill/Create.cshtml", item);
+                }
+
+                var result = await mHelper.UpdateUserSkill(item);
                 if (result.success)
                 {
                     return RedirectToAction("Index");
@@ -103,21 +114,21 @@ namespace TaskListSystemMVC.Controllers.Master
             }
 
             ViewData["AlertMessage"] = "Invalid Model!";
-            return View("~/Views/Master/PublicHoliday/Delete.cshtml", item);
+            return View("~/Views/Master/UserSkill/Delete.cshtml", item);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await mHelper.GetPublicHolidayByID(id);
-            return View("~/Views/Master/PublicHoliday/Delete.cshtml", item);
+            var item = await mHelper.GetUserSkillByID(id);
+            return View("~/Views/Master/UserSkill/Delete.cshtml", item);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(MPublicHoliday item)
+        public async Task<IActionResult> Delete(MUserSkill item)
         {
             if (ModelState.IsValid)
             {
-                var result = await mHelper.DeletePublicHoliday(item);
+                var result = await mHelper.DeleteUserSkill(item);
                 if (result.success)
                 {
                     return RedirectToAction("Index");
@@ -127,7 +138,9 @@ namespace TaskListSystemMVC.Controllers.Master
                     return BadRequest(new { result.message });
                 }
             }
-            return NotFound();
+
+            ViewData["AlertMessage"] = "Invalid Model!";
+            return View("~/Views/Master/UserSkill/Delete.cshtml", item);
         }
     }
 }

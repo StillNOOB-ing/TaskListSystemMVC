@@ -27,10 +27,8 @@
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Created By</th>
-            <th>Created On</th>
-            <th>Updated By</th>
-            <th>Updated On</th>
+            <th>Last Updated On</th>
+            <th>Last Updated By</th>
         </tr>
     </thead>
     <tbody>
@@ -51,10 +49,8 @@
                 <td>@item.UID</td>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
-                <td>@item.CreatedBy</td>
-                <td>@item.CreatedOn</td>
-                <td>@item.UpdatedBy</td>
-                <td>@item.UpdatedOn</td>
+                <td>@(item.UpdatedOn == null ? item.CreatedOn : item.UpdatedOn)</td>
+                <td>@(item.UpdatedBy == null ? item.CreatedBy : item.UpdatedBy)</td>
             </tr>
         }
     </tbody>

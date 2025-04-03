@@ -28,26 +28,26 @@
         <tr>
             <th></th>
             <th>
-                <a asp-controller="MAccountInfo" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
-                    UID
-                    @if (ViewData["SortOrder"]?.ToString() == "asc")
+                
+            </th>
+            <th>
+                <a asp-controller="MAccountInfo" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamName"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+                    Name
+                    @if (ViewData["SortParamName"]?.ToString() == "asc")
                     {
                         <i class="bi bi-arrow-up"></i>
                     }
-                    else if (ViewData["SortOrder"]?.ToString() == "desc")
+                    else if (ViewData["SortParamName"]?.ToString() == "desc")
                     {
                         <i class="bi bi-arrow-down"></i>
                     }
                 </a>
             </th>
-            <th>Name</th>
             <th>Active</th>
             <th>Level</th>
             <th>Last Login On</th>
-            <th>Created By</th>
-            <th>Created On</th>
-            <th>Updated By</th>
-            <th>Updated On</th>
+            <th>Last Updated On</th>
+            <th>Last Updated By</th>
         </tr>
     </thead>
     <tbody>
@@ -79,10 +79,8 @@
                 <td>@item.Active</td>
                 <td>@item.LevelRightName</td>
                 <td>@item.LastLoginOn</td>
-                <td>@item.CreatedBy</td>
-                <td>@item.CreatedOn</td>
-                <td>@item.UpdatedBy</td>
-                <td>@item.UpdatedOn</td>
+                <td>@(item.UpdatedOn == null ? item.CreatedOn : item.UpdatedOn)</td>
+                <td>@(item.UpdatedBy == null ? item.CreatedBy : item.UpdatedBy)</td>
             </tr>
         }
     </tbody>

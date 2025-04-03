@@ -13,17 +13,17 @@
     <link rel="stylesheet" href="~/TaskListSytemMVC.styles.css" asp-append-version="true" />
     <style>
         html, body {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
         }
 
         .container {
-            flex: 1;
+        flex: 1;
         }
 
         .footer {
-            margin-top: auto;
+        margin-top: auto;
         }
     </style>
 </head>
@@ -33,36 +33,44 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Task List Sytem</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dailyTaskDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Task</a>
-                            <ul class="dropdown-menu" aria-labelledby="dailyTaskDropDown">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index" asp-route-index="1" asp-route-sortOrder="desc">Daily Task</a>
-                                    <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Completed" asp-route-index="1" asp-route-sortOrder="desc">Completed Task</a>
-                                    <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Summary" asp-route-index="1" asp-route-sortOrder="desc">Summary Task</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="masterDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Master</a>
-                            <ul class="dropdown-menu" aria-labelledby="masterDropdown">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="MAccountInfo" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Account</a>
-                                    <a class="dropdown-item" asp-controller="MUserLevelRight" asp-action="Index">User Level Right</a>
-                                    <a class="dropdown-item" asp-controller="MStatus" asp-action="Index">Status</a>
-                                    <a class="dropdown-item" asp-controller="MType" asp-action="Index">Type</a>
-                                    <a class="dropdown-item" asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Public Holiday</a>
-                                </li>
-                            </ul>
-                        </li>
+                        </li>                        
+                        @if (accountHelper.GetUserLevelID() != FixedUserLevel.GUEST_UID)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dailyTaskDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Task</a>
+                                <ul class="dropdown-menu" aria-labelledby="dailyTaskDropDown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index" asp-route-index="1" asp-route-sortOrder="desc">Daily Task</a>
+                                        <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Completed" asp-route-index="1" asp-route-sortOrder="desc">Completed Task</a>
+                                        <a class="dropdown-item" asp-controller="TDailyTask" asp-action="Index_Summary" asp-route-index="1" asp-route-sortOrder="desc">Summary Task</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="masterDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Master</a>
+                                <ul class="dropdown-menu" aria-labelledby="masterDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="MAccountInfo" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Account</a>
+                                        <a class="dropdown-item" asp-controller="MUserLevelRight" asp-action="Index">User Level Right</a>
+                                        <a class="dropdown-item" asp-controller="MStatus" asp-action="Index">Status</a>
+                                        <a class="dropdown-item" asp-controller="MType" asp-action="Index">Type</a>
+                                        <a class="dropdown-item" asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">Public Holiday</a>
+                                        @if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
+                                        {
+                                            <a class="dropdown-item" asp-controller="MUserSkill" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">User Skill</a>
+                                            <a class="dropdown-item" asp-controller="MUserHobby" asp-action="Index" asp-route-index="1" asp-route-sortOrder="asc">User Hobby</a>
+                                        }
+                                    </li>
+                                </ul>
+                            </li>
+                        }                       
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>

@@ -64,5 +64,29 @@ namespace TaskListSystemMVC.Database.Interface
         public Task<ResultInfo> DeletePublicHoliday(MPublicHoliday item);
 
         #endregion
+
+        #region UserSkill
+
+        public IQueryable<MUserSkill> GetUserSkillDB();
+        public Task<List<MUserSkill>> GetUserSkillAll();
+        public Task<MUserSkill> GetUserSkillByID(int id);
+        public Task<List<SelectListItem>> GetUserSkillSelectItemList(bool setDefault = false);
+        public Task<ResultInfo> InsertUserSkill(MUserSkill item);
+        public Task<ResultInfo> UpdateUserSkill(MUserSkill item);
+        public Task<ResultInfo> DeleteUserSkill(MUserSkill item);
+
+        #endregion
+
+        #region UserHobby
+
+        public IQueryable<MUserHobby> GetUserHobbyDB();
+        public Task<List<MUserHobby>> GetUserHobbyAll();
+        public Task<MUserHobby> GetUserHobbyByID(int id);
+        public Task<List<SelectListItem>> GetUserHobbySelectItemList(bool setDefault = false);
+        public Task<ResultInfo> InsertUserHobby(MUserHobby item);
+        public Task<ResultInfo> UpdateUserHobby(MUserHobby item);
+        public Task<ResultInfo> DeleteUserHobby(MUserHobby item);
+
+        #endregion
     }
 }

@@ -12,10 +12,11 @@ namespace TaskListSystemMVC.Database
 
         public DbSet<TDailyTask> DailyTasks { get; set; }
         public DbSet<MAccountInfo> AccountInfos { get; set; }
+        public DbSet<MUserSkill> UserSkills { get; set; }
+        public DbSet<MUserHobby> UserHobbys { get; set; }
         public DbSet<MUserLevelRight> UserLevelRights { get; set; }
         public DbSet<MStatus> Statuss { get; set; }
         public DbSet<MType> Types { get; set; }
-
         public DbSet<MPublicHoliday> PublicHolidays { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

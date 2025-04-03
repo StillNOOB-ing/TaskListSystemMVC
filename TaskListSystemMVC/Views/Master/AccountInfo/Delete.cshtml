@@ -1,4 +1,6 @@
-﻿@model TaskListSystemMVC.Database.Model.MAccountInfo
+﻿@inject IMasterHelper masterHelper
+
+@model TaskListSystemMVC.Database.Model.MAccountInfo
 
 @{
     ViewData["Title"] = "Delete Account";
@@ -8,7 +10,9 @@
 
 <form asp-action="Delete" asp-controller="MAccountInfo" method="post">
     <input type="hidden" asp-for="UID" />
-    <input type="hidden" asp-for="LevelRightID" />
+    <input type="hidden" asp-for="ContactNumber" />
+    <input type="hidden" asp-for="Skill" />
+    <input type="hidden" asp-for="Hobby" />
     <input type="hidden" asp-for="Password" />
     <input type="hidden" asp-for="ConfirmPassword" />
     <input type="hidden" asp-for="CreatedBy" />
@@ -18,6 +22,10 @@
     <div class="mb-3">
         <label for="txtName" class="form-label">Name</label>
         <input id="txtName" asp-for="Name" class="form-control readonly-disabled" type="text" readonly="true" />
+    </div>
+    <div class="mb-3">
+        <label for="cmbLevel" class="form-label">Level Right</label>
+        <select id="cmbLevel" class="form-select" asp-for="LevelRightID" asp-items="@await masterHelper.GetUserLevelRightSelectItemList()" required="true"></select>
     </div>
     <div class="mb-3">
         <label for="txtUsername" class="form-label">Username</label>

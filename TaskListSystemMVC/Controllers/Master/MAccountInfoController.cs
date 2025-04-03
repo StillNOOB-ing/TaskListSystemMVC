@@ -6,6 +6,7 @@ using TaskListSystemMVC.Database.Interface;
 using TaskListSystemMVC.Database.Model;
 using TaskListSystemMVC.Database;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace TaskListSystemMVC.Controllers.Master
 {
@@ -26,12 +27,12 @@ namespace TaskListSystemMVC.Controllers.Master
 
             ViewData["SearchFilter"] = searchFilter;
             ViewData["SortOrder"] = sortOrder;
-            ViewData["SortParamReportID"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "asc") ? "desc" : "asc";
+            ViewData["SortParamName"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "desc") ? "asc" : "desc";
 
             var dataList = sortOrder switch
             {
-                "desc" => mHelper.GetAccountInfoDB().OrderByDescending(x => x.UID),
-                _ => mHelper.GetAccountInfoDB()
+                "desc" => mHelper.GetAccountInfoDB().OrderByDescending(x => x.Name).AsQueryable(),
+                _ => mHelper.GetAccountInfoDB().OrderBy(x => x.Name).AsQueryable()
             };
 
             if (!string.IsNullOrEmpty(searchFilter))

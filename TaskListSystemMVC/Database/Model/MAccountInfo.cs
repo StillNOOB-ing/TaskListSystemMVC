@@ -27,5 +27,8 @@ namespace TaskListSystemMVC.Database.Model
 
         public int? LevelRightID { get; set; }    
         public string? LevelRightName { get; set; }
+        public string? ContactNumber { get; set; }
+        public string? Skill { get; set; }
+        public string? Hobby { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿@model TaskListSystemMVC.Database.PaginationList<TaskListSystemMVC.Database.Model.MPublicHoliday>
+﻿@inject IAccountHelper accountHelper
+
+@model TaskListSystemMVC.Database.PaginationList<TaskListSystemMVC.Database.Model.MPublicHoliday>
 
 @{
 	ViewData["Title"] = "Public Holiday";
@@ -7,9 +9,15 @@
 <table style="width:100%">
 	<tr class="d-flex justify-content-between align-items-center">
 		<td class="d-flex align-items-center">
+
 			<h4>Public Holiday List</h4>
 			<span style="margin-left:10px">(Total: @Model.TotalItem items)</span>
-			<a href="@Url.Action("Create", "MPublicHoliday")" class="btn btn-success" style="margin-left:25px">ADD</a>
+
+			@if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
+			{
+				<a href="@Url.Action("Create", "MPublicHoliday")" class="btn btn-success" style="margin-left:25px">ADD</a>
+			}			
+
 		</td>
 		<td class="ms-auto">
 			@await Html.PartialAsync("SearchBar", @ViewData["SearchFilter"])
@@ -24,13 +32,13 @@
 			<th>Name</th>
 			<th>Remark</th>
 			<th>
-				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamReportID"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
+				<a asp-controller="MPublicHoliday" asp-action="Index" asp-route-index="@Model.PageIndex" asp-route-sortOrder="@ViewData["SortParamStartDate"]" asp-route-searchFilter="@ViewData["SearchFilter"]">
 					Start Date
-					@if (ViewData["SortOrder"]?.ToString() == "asc")
+					@if (ViewData["SortParamStartDate"]?.ToString() == "asc")
 					{
 						<i class="bi bi-arrow-up"></i>
 					}
-					else if (ViewData["SortOrder"]?.ToString() == "desc")
+					else if (ViewData["SortParamStartDate"]?.ToString() == "desc")
 					{
 						<i class="bi bi-arrow-down"></i>
 					}
@@ -45,12 +53,15 @@
 		{
 			<tr>
 				<td>
-					<a href="@Url.Action("Edit", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-warning">
-						<i class="bi bi-pencil"></i>
-					</a>
-					<a href="@Url.Action("Delete", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-danger">
-						<i class="bi bi-trash"></i>
-					</a>
+					@if (accountHelper.GetUserLevelID() == FixedUserLevel.SUPERADMIN_UID)
+					{
+						<a href="@Url.Action("Edit", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-warning">
+							<i class="bi bi-pencil"></i>
+						</a>
+						<a href="@Url.Action("Delete", "MPublicHoliday", new { id = item.UID })" class="btn btn-outline-danger">
+							<i class="bi bi-trash"></i>
+						</a>
+					}					
 				</td>
 				<td>@item.Name</td>
 				<td>@item.Remark</td>

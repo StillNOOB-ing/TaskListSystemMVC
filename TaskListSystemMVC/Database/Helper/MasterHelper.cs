@@ -61,7 +61,32 @@ namespace TaskListSystemMVC.Database.Helper
             item.Password = accHelper.HashPassword(item.Password);
 
             item.LevelRightName = (await GetUserLevelRightByID(item.LevelRightID.Value)).Name;
-                        
+
+            if (!string.IsNullOrEmpty(item.Skill))
+            {
+                string[] skillItems = item.Skill.Split(',');
+                var skillList = await GetUserSkillAll();
+                foreach (string skill in skillItems)
+                {
+                    if (!string.IsNullOrEmpty(skill) && !skillList.Exists(x => x.Name == skill.Trim()))
+                    {
+                        await InsertUserSkill(new MUserSkill { Name = skill.Trim() });
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(item.Hobby))
+            {
+                string[] hobbyItems = item.Hobby.Split(',');
+                var hobbyList = await GetUserHobbyAll();
+                foreach (string hobby in hobbyItems)
+                {
+                    if (!string.IsNullOrEmpty(hobby) && !hobbyList.Exists(x => x.Name == hobby.Trim()))
+                    {
+                        await InsertUserHobby(new MUserHobby { Name = hobby.Trim() });
+                    }
+                }
+            }
+
             item.CreatedOn = DateTime.Now;
             item.CreatedBy = accHelper.GetName();
 
@@ -79,6 +104,31 @@ namespace TaskListSystemMVC.Database.Helper
             }
 
             item.LevelRightName = (await GetUserLevelRightByID(item.LevelRightID.Value)).Name;
+
+            if (!string.IsNullOrEmpty(item.Skill))
+            {
+                string[] skillItems = item.Skill.Split(',');
+                var skillList = await GetUserSkillAll();
+                foreach (string skill in skillItems)
+                {
+                    if (!string.IsNullOrEmpty(skill) && !skillList.Exists(x => x.Name == skill.Trim()))
+                    {
+                        await InsertUserSkill(new MUserSkill { Name = skill.Trim() });
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(item.Hobby))
+            {
+                string[] hobbyItems = item.Hobby.Split(',');
+                var hobbyList = await GetUserHobbyAll();
+                foreach (string hobby in hobbyItems)
+                {
+                    if (!string.IsNullOrEmpty(hobby) && !hobbyList.Exists(x => x.Name == hobby.Trim()))
+                    {
+                        await InsertUserHobby(new MUserHobby { Name = hobby.Trim() });
+                    }
+                }
+            }
 
             item.UpdatedOn = DateTime.Now;
             item.UpdatedBy = accHelper.GetName();
@@ -285,6 +335,114 @@ namespace TaskListSystemMVC.Database.Helper
         public async Task<ResultInfo> DeletePublicHoliday(MPublicHoliday item)
         {
             return await repository.DeletePublicHoliday(item);
+        }
+
+        #endregion
+
+        #region UserSkill
+
+        public IQueryable<MUserSkill> GetUserSkillDB()
+        {
+            return repository.GetUserSkillDB(x => true);
+        }
+        public async Task<List<MUserSkill>> GetUserSkillAll()
+        {
+            return await repository.GetUserSkillAll(x => true);
+        }
+        public async Task<MUserSkill> GetUserSkillByID(int id)
+        {
+            return (await repository.GetUserSkillAll(x => x.UID == id)).FirstOrDefault();
+        }
+        public async Task<List<SelectListItem>> GetUserSkillSelectItemList(bool setDefault = false)
+        {
+            var result = await GetUserSkillAll();
+
+            var list = new List<SelectListItem>();
+            if (!setDefault)
+            {
+                list.Add(new SelectListItem { Value = null, Text = string.Empty });
+            }
+            foreach (var item in result)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = item.UID.ToString(),
+                    Text = item.Name
+                });
+            }
+            return list;
+        }
+        public async Task<ResultInfo> InsertUserSkill(MUserSkill item)
+        {
+            item.CreatedOn = DateTime.Now;
+            item.CreatedBy = accHelper.GetName();
+
+            return await repository.InsertUserSkill(item);
+        }
+        public async Task<ResultInfo> UpdateUserSkill(MUserSkill item)
+        {
+            item.UpdatedOn = DateTime.Now;
+            item.UpdatedBy = accHelper.GetName();
+
+            return await repository.UpdateUserSkill(item);
+        }
+        public async Task<ResultInfo> DeleteUserSkill(MUserSkill item)
+        {
+            return await repository.DeleteUserSkill(item);
+        }
+
+        #endregion
+
+        #region UserHobby
+
+        public IQueryable<MUserHobby> GetUserHobbyDB()
+        {
+            return repository.GetUserHobbyDB(x => true);
+        }
+        public async Task<List<MUserHobby>> GetUserHobbyAll()
+        {
+            return await repository.GetUserHobbyAll(x => true);
+        }
+        public async Task<MUserHobby> GetUserHobbyByID(int id)
+        {
+            return (await repository.GetUserHobbyAll(x => x.UID == id)).FirstOrDefault();
+        }
+        public async Task<List<SelectListItem>> GetUserHobbySelectItemList(bool setDefault = false)
+        {
+            var result = await GetUserHobbyAll();
+
+            var list = new List<SelectListItem>();
+            if (!setDefault)
+            {
+                list.Add(new SelectListItem { Value = null, Text = string.Empty });
+            }
+            foreach (var item in result)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = item.UID.ToString(),
+                    Text = item.Name
+                });
+            }
+            return list;
+        }
+        public async Task<ResultInfo> InsertUserHobby(MUserHobby item)
+        {
+            item.CreatedOn = DateTime.Now;
+            item.CreatedBy = accHelper.GetName();
+
+            return await repository.InsertUserHobby(item);
+        }
+        public async Task<ResultInfo> UpdateUserHobby(MUserHobby item)
+        {
+            item.UpdatedOn = DateTime.Now;
+            item.UpdatedBy = accHelper.GetName();
+
+            return await repository.UpdateUserHobby(item);
+        }
+        public async Task<ResultInfo> DeleteUserHobby(MUserHobby item)
+        {
+            return await repository.DeleteUserHobby(item);
         }
 
         #endregion

@@ -1,0 +1,156 @@
+﻿@model (List<DropdownItem> dataList, string inputFieldID)
+
+@{
+    // Generate unique IDs to prevent duplication
+    string dropdownID = "Dropdown_" + Guid.NewGuid().ToString("N");
+    string textAreaID = "textArea_" + Guid.NewGuid().ToString("N");
+    string dropdownMenuButtonID = "dropdownMenuButton_" + Guid.NewGuid().ToString("N");
+    string searchInputID = "searchInput_" + Guid.NewGuid().ToString("N");
+}
+
+<div class="dropdown-container">
+    <!-- Textarea for input -->
+    <textarea id="@textAreaID" class="form-control" placeholder="Type or select"></textarea>
+
+    <!-- Dropdown toggle button -->
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="@dropdownMenuButtonID" data-bs-toggle="dropdown"></button>
+
+    <!-- Dropdown menu -->
+    <div class="dropdown-menu p-2 w-100" id="@dropdownID">
+        <!-- Search Bar -->
+        <input type="text" id="@searchInputID" class="form-control mb-2" placeholder="Search..." onkeyup="filterDropdown('@dropdownID', '@searchInputID')">
+
+        <!-- Grid Layout for Dropdown Items -->
+        <div class="dropdown-grid">
+            @foreach (var item in Model.dataList)
+            {
+                <a class="dropdown-item data-item" href="#" data-value="@item.Name">@item.Name</a>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // function SyncText() {
+    //     let textArea = document.getElementById("@textAreaID");
+    //     let inputField = document.getElementById("@Model.inputFieldID");
+
+    //     console.log(textArea);
+    //     console.log(inputField);
+        
+    // }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let dropdown = document.getElementById("@dropdownID");
+        let textArea = document.getElementById("@textAreaID");
+        let inputField = document.getElementById("@Model.inputFieldID");
+        let searchField = document.getElementById("@searchInputID");
+
+        // Ensure dropdown width matches textarea width
+        dropdown.style.width = textArea.offsetWidth + "px";
+
+        if (inputField && textArea) {
+            textArea.value = inputField.value;
+
+            textArea.addEventListener("keyup", function (){
+                // Sync for manuall user input
+                if (inputField && textArea) {
+                    inputField.value = textArea.value;
+                }
+            });
+        }
+
+        dropdown.querySelectorAll(".dropdown-item").forEach(item => {
+            item.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                if (textArea.value.includes(this.textContent)) return;
+
+                if (textArea.value === "" || textArea.value === null) {
+                    textArea.value = this.textContent;
+                } else {
+                    textArea.value = textArea.value + ", " + this.textContent;
+                }
+
+                inputField.value = textArea.value; // Update the actual input field
+                searchField.value = null;
+                filterDropdown('@dropdownID', '@searchInputID');
+            });
+        });
+
+        // Resize dropdown dynamically if textarea resizes
+        window.addEventListener("resize", function () {
+            dropdown.style.width = textArea.offsetWidth + "px";
+        });
+    });
+
+    // Filter function for dropdown search
+    function filterDropdown(dropdownID, searchInputID) {
+        let input = document.getElementById(searchInputID);
+        let filter = input.value.toLowerCase();
+        let dropdown = document.getElementById(dropdownID);
+        let items = dropdown.getElementsByClassName("dropdown-item");
+
+        for (let i = 0; i < items.length; i++) {
+            let txtValue = items[i].textContent || items[i].innerText;
+            items[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+        }
+    }
+</script>
+
+<style>
+    /* Ensure dropdown aligns under textarea */
+    .dropdown-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Dropdown menu should be positioned under textarea */
+    .dropdown-menu {
+        position: absolute;
+        top: 100%; /* Moves dropdown below the textarea */
+        left: 0;
+        width: 100%;
+        max-height: 400px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+    }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+    /* Aligns dropdown under textarea */
+    .dropdown-container textarea {
+        width: 100%;
+        resize: none;
+    }
+
+    /* Grid layout for dropdown */
+    .dropdown-grid {
+        display: grid;
+        grid-template-columns: repeat(6, auto);
+        grid-gap: 5px;
+        padding: 10px;
+        width: 100%;
+    }
+
+    /* Style for dropdown items */
+    .data-item {
+        text-align: center;
+        padding: 8px;
+        display: block;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+        white-space: nowrap;
+    }
+
+        .data-item:hover {
+            background-color: #f1f1f1;
+        }
+</style>

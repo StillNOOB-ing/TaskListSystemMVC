@@ -51,7 +51,8 @@
 			<th>Status</th>
 			<th>PIC</th>
 			<th>Type</th>
-			<th>Completed On</th>
+			<th>Updated On</th>
+			<th>Updated By</th>
 		</tr>		
 	</thead>
 	<tbody>
@@ -82,8 +83,9 @@
 				<td>@item.Title</td>
 				<td>@item.StatusName</td>
 				<td>@item.PICName</td>
-				<td>@item.TypeName</td>				
-				<td>@item.CompletedOn</td>
+				<td>@item.TypeName</td>
+				<td>@(item.UpdatedOn == null ? item.CreatedOn : item.UpdatedOn)</td>
+				<td>@(item.UpdatedBy == null ? item.CreatedBy : item.UpdatedBy)</td>
 			</tr>
 		}
 	</tbody>
