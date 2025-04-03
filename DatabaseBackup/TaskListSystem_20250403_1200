@@ -1,0 +1,637 @@
+USE [master]
+GO
+/****** Object:  Database [TaskListSystem]    Script Date: 4/3/2025 12:00:58 PM ******/
+CREATE DATABASE [TaskListSystem]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'TaskListSystem', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\TaskListSystem.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'TaskListSystem_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\TaskListSystem_log.ldf' , SIZE = 204800KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [TaskListSystem] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [TaskListSystem].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [TaskListSystem] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [TaskListSystem] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [TaskListSystem] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [TaskListSystem] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [TaskListSystem] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET RECOVERY FULL 
+GO
+ALTER DATABASE [TaskListSystem] SET  MULTI_USER 
+GO
+ALTER DATABASE [TaskListSystem] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [TaskListSystem] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [TaskListSystem] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [TaskListSystem] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [TaskListSystem] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [TaskListSystem] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'TaskListSystem', N'ON'
+GO
+ALTER DATABASE [TaskListSystem] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [TaskListSystem] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [TaskListSystem]
+GO
+/****** Object:  Table [dbo].[AccountInfo]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AccountInfo](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[Name] [nvarchar](50) NULL,
+	[Username] [nvarchar](50) NULL,
+	[Email] [nvarchar](255) NULL,
+	[Password] [nvarchar](255) NULL,
+	[Active] [bit] NOT NULL,
+	[LastLoginOn] [datetime] NULL,
+	[LevelRightID] [int] NULL,
+	[LevelRightName] [nvarchar](50) NULL,
+	[ContactNumber] [nvarchar](20) NULL,
+	[Skill] [nvarchar](max) NULL,
+	[Hobby] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AccountInfo] PRIMARY KEY CLUSTERED 
+(
+	[UID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DailyTask]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DailyTask](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[ReportByID] [nvarchar](20) NULL,
+	[ReportedOn] [datetime] NULL,
+	[Title] [nvarchar](100) NULL,
+	[Description] [nvarchar](max) NULL,
+	[Remark] [nvarchar](max) NULL,
+	[PICID] [int] NULL,
+	[PICName] [nvarchar](50) NULL,
+	[StatusID] [int] NULL,
+	[StatusName] [nvarchar](50) NULL,
+	[TypeID] [int] NULL,
+	[TypeName] [nvarchar](50) NULL,
+	[CompletedOn] [datetime] NULL,
+	[ScheduledOn] [datetime] NULL,
+ CONSTRAINT [PK_DailyTask] PRIMARY KEY CLUSTERED 
+(
+	[UID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PublicHoliday]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PublicHoliday](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[Name] [nvarchar](50) NULL,
+	[Remark] [nvarchar](max) NULL,
+	[StartDate] [datetime] NULL,
+	[EndDate] [datetime] NULL,
+	[Day] [int] NULL,
+ CONSTRAINT [PK_PublicHoliday] PRIMARY KEY CLUSTERED 
+(
+	[UID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Status]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Status](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[Name] [nvarchar](50) NULL,
+	[Description] [nvarchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Type]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Type](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[Name] [nvarchar](50) NULL,
+	[Description] [nvarchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserHobby]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserHobby](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[Name] [nvarchar](50) NULL,
+	[Description] [nvarchar](max) NULL,
+ CONSTRAINT [PK_UserHobby] PRIMARY KEY CLUSTERED 
+(
+	[UID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserLevelRight]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserLevelRight](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[Name] [nvarchar](50) NULL,
+	[Description] [nvarchar](max) NULL,
+ CONSTRAINT [PK_UserLevelRights] PRIMARY KEY CLUSTERED 
+(
+	[UID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserSkill]    Script Date: 4/3/2025 12:00:59 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserSkill](
+	[UID] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[UpdatedOn] [datetime] NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[Name] [nvarchar](50) NULL,
+	[Description] [nvarchar](max) NULL,
+ CONSTRAINT [PK_UserSkill] PRIMARY KEY CLUSTERED 
+(
+	[UID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[AccountInfo] ON 
+GO
+INSERT [dbo].[AccountInfo] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Username], [Email], [Password], [Active], [LastLoginOn], [LevelRightID], [LevelRightName], [ContactNumber], [Skill], [Hobby]) VALUES (1, CAST(N'2025-03-26T11:18:25.000' AS DateTime), N'Admin', CAST(N'2025-04-02T21:46:20.480' AS DateTime), N'Admin', N'Admin', N'admin', N'trainee1@wincom-tech.com', N'FXT8Ci2pq08OTFYNENPny7lMmS/j3O8mkwkLC/G8Vx8=', 1, NULL, 1, N'Super Admin', NULL, NULL, NULL)
+GO
+INSERT [dbo].[AccountInfo] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Username], [Email], [Password], [Active], [LastLoginOn], [LevelRightID], [LevelRightName], [ContactNumber], [Skill], [Hobby]) VALUES (6, CAST(N'2025-04-01T15:27:34.000' AS DateTime), N'Admin', CAST(N'2025-04-03T11:55:52.703' AS DateTime), N'Admin', N'Jun Quan', N'Jun Quan', N'soulkeeper1234567890@gmail.com', N'cR8f5g5vwTaftFOSYhq5ovvuhVldsXXU6GqZsQSev9Y=', 1, NULL, 2, N'Admin', NULL, N'ASP.NET Core, Blender, C#, C++, HTML, Unity', N'Playing video games, Badminton, Gym, Jogging')
+GO
+INSERT [dbo].[AccountInfo] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Username], [Email], [Password], [Active], [LastLoginOn], [LevelRightID], [LevelRightName], [ContactNumber], [Skill], [Hobby]) VALUES (8, CAST(N'2025-04-02T12:05:22.000' AS DateTime), N'Admin', CAST(N'2025-04-02T21:46:40.133' AS DateTime), N'Admin', N'Guest', N'Guest', N'guest@gmail.com', N'FXT8Ci2pq08OTFYNENPny7lMmS/j3O8mkwkLC/G8Vx8=', 1, NULL, 4, N'Guest', NULL, NULL, NULL)
+GO
+INSERT [dbo].[AccountInfo] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Username], [Email], [Password], [Active], [LastLoginOn], [LevelRightID], [LevelRightName], [ContactNumber], [Skill], [Hobby]) VALUES (9, CAST(N'2025-04-02T19:19:16.000' AS DateTime), N'Admin', CAST(N'2025-04-03T11:54:55.150' AS DateTime), N'Admin', N'Kai', N'Kai', N'kai@gmail.com', N'4pCAgOsOEu1uZhO72viCrjNDVAe+psg0m6B1QWacNqQ=', 1, NULL, 2, N'Admin', NULL, N'ASP.NET Core, C#, Critical Thinking, Programming', N'Gymnastics, Jogging, Knitting, Eating')
+GO
+SET IDENTITY_INSERT [dbo].[AccountInfo] OFF
+GO
+SET IDENTITY_INSERT [dbo].[DailyTask] ON 
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (1, CAST(N'2025-02-02T15:15:00.000' AS DateTime), N'Admin', CAST(N'2025-04-02T12:04:02.190' AS DateTime), N'Admin', N'202502020001', CAST(N'2025-02-02T15:15:00.000' AS DateTime), N'Task 1', N'Test description 1', N'Remark sample 1', 7, N'Dionnis', 1, N'New', 2, N'Request', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (2, CAST(N'2025-02-14T18:05:00.000' AS DateTime), N'Dionnis', CAST(N'2025-02-15T19:17:00.000' AS DateTime), N'Dionnis', N'202502140002', CAST(N'2025-02-14T18:05:00.000' AS DateTime), N'Task 2', N'Test description 2', N'Remark sample 2', 6, N'Jun Quan', 4, N'Completed', 2, N'Request', CAST(N'2025-02-16T23:44:00.000' AS DateTime), CAST(N'2025-02-15T01:18:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (3, CAST(N'2025-05-04T14:50:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-02T12:04:33.420' AS DateTime), N'Admin', N'202505040003', CAST(N'2025-05-04T14:50:00.000' AS DateTime), N'Task 3', N'Test description 3', N'Remark sample 3', 1, N'Admin', 4, N'Completed', 2, N'Request', CAST(N'2025-05-04T18:13:00.000' AS DateTime), CAST(N'2025-05-04T15:15:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (6, CAST(N'2025-04-20T14:49:00.000' AS DateTime), N'Dionnis', CAST(N'2025-04-25T21:04:00.000' AS DateTime), N'Dionnis', N'202504200006', CAST(N'2025-04-20T14:49:00.000' AS DateTime), N'Task 6', N'Test description 6', N'Remark sample 6', 7, N'Dionnis', 4, N'Completed', 2, N'Request', CAST(N'2025-04-21T21:57:00.000' AS DateTime), NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (10, CAST(N'2025-03-31T16:08:00.000' AS DateTime), N'Dionnis', CAST(N'2025-04-05T01:06:00.000' AS DateTime), N'Jun Quan', N'202503310010', CAST(N'2025-03-31T16:08:00.000' AS DateTime), N'Task 10', N'Test description 10', N'Remark sample 10', 6, N'Jun Quan', 2, N'Work In Progress', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (11, CAST(N'2025-03-15T18:56:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-03-20T11:08:00.000' AS DateTime), N'Dionnis', N'202503150011', CAST(N'2025-03-15T18:56:00.000' AS DateTime), N'Task 11', N'Test description 11', N'Remark sample 11', 6, N'Jun Quan', 2, N'Work In Progress', 2, N'Request', NULL, CAST(N'2025-03-16T16:03:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (12, CAST(N'2025-05-10T13:34:00.000' AS DateTime), N'Dionnis', CAST(N'2025-05-16T07:15:00.000' AS DateTime), N'Jun Quan', N'202505100012', CAST(N'2025-05-10T13:34:00.000' AS DateTime), N'Task 12', N'Test description 12', N'Remark sample 12', 1, N'Admin', 2, N'Work In Progress', 1, N'Defeat', NULL, CAST(N'2025-05-18T00:32:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (13, CAST(N'2025-02-13T04:43:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-02-19T02:27:00.000' AS DateTime), N'Dionnis', N'202502130013', CAST(N'2025-02-13T04:43:00.000' AS DateTime), N'Task 13', N'Test description 13', N'Remark sample 13', 1, N'Admin', 3, N'Hold', 2, N'Request', NULL, CAST(N'2025-02-16T19:45:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (14, CAST(N'2025-06-24T11:47:00.000' AS DateTime), N'Dionnis', CAST(N'2025-06-29T09:09:00.000' AS DateTime), N'Admin', N'202506240014', CAST(N'2025-06-24T11:47:00.000' AS DateTime), N'Task 14', N'Test description 14', N'Remark sample 14', 1, N'Admin', 2, N'Work In Progress', 2, N'Request', NULL, CAST(N'2025-06-28T14:40:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (15, CAST(N'2025-02-16T23:05:00.000' AS DateTime), N'Dionnis', NULL, NULL, N'202502160015', CAST(N'2025-02-16T23:05:00.000' AS DateTime), N'Task 15', N'Test description 15', N'Remark sample 15', 7, N'Dionnis', 1, N'New', 2, N'Request', NULL, CAST(N'2025-02-19T23:31:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (16, CAST(N'2025-03-20T13:35:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-03-27T00:19:00.000' AS DateTime), N'Jun Quan', N'202503200016', CAST(N'2025-03-20T13:35:00.000' AS DateTime), N'Task 16', N'Test description 16', N'Remark sample 16', 7, N'Dionnis', 4, N'Completed', 1, N'Defeat', CAST(N'2025-03-26T16:57:00.000' AS DateTime), CAST(N'2025-03-27T20:25:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (17, CAST(N'2025-04-05T10:43:00.000' AS DateTime), N'Admin', CAST(N'2025-04-09T19:39:00.000' AS DateTime), N'Admin', N'202504050017', CAST(N'2025-04-05T10:43:00.000' AS DateTime), N'Task 17', N'Test description 17', N'Remark sample 17', 7, N'Dionnis', 2, N'Work In Progress', 2, N'Request', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (18, CAST(N'2025-04-25T17:20:00.000' AS DateTime), N'Admin', CAST(N'2025-05-01T16:38:00.000' AS DateTime), N'Admin', N'202504250018', CAST(N'2025-04-25T17:20:00.000' AS DateTime), N'Task 18', N'Test description 18', N'Remark sample 18', 1, N'Admin', 4, N'Completed', 1, N'Defeat', CAST(N'2025-05-02T03:19:00.000' AS DateTime), CAST(N'2025-04-28T08:12:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (19, CAST(N'2025-06-12T12:12:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-06-17T04:31:00.000' AS DateTime), N'Admin', N'202506120019', CAST(N'2025-06-12T12:12:00.000' AS DateTime), N'Task 19', N'Test description 19', N'Remark sample 19', 7, N'Dionnis', 3, N'Hold', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (20, CAST(N'2025-01-22T08:13:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-01-24T22:16:00.000' AS DateTime), N'Admin', N'202501220020', CAST(N'2025-01-22T08:13:00.000' AS DateTime), N'Task 20', N'Test description 20', N'Remark sample 20', 6, N'Jun Quan', 3, N'Hold', 1, N'Defeat', NULL, CAST(N'2025-01-23T00:57:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (21, CAST(N'2025-01-28T21:31:00.000' AS DateTime), N'Dionnis', CAST(N'2025-04-01T21:55:29.090' AS DateTime), N'Jun Quan', N'202501280021', CAST(N'2025-01-28T21:31:00.000' AS DateTime), N'Task 21', N'Test description 21', N'Remark sample 21', 6, N'Jun Quan', 3, N'Hold', 2, N'Request', NULL, CAST(N'2025-04-01T05:31:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (22, CAST(N'2025-01-08T17:21:00.000' AS DateTime), N'Admin', CAST(N'2025-01-10T17:41:00.000' AS DateTime), N'Admin', N'202501080022', CAST(N'2025-01-08T17:21:00.000' AS DateTime), N'Task 22', N'Test description 22', N'Remark sample 22', 1, N'Admin', 4, N'Completed', 2, N'Request', CAST(N'2025-01-12T04:25:00.000' AS DateTime), CAST(N'2025-01-13T11:10:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (23, CAST(N'2025-04-16T11:28:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-20T09:13:00.000' AS DateTime), N'Jun Quan', N'202504160023', CAST(N'2025-04-16T11:28:00.000' AS DateTime), N'Task 23', N'Test description 23', N'Remark sample 23', 7, N'Dionnis', 4, N'Completed', 1, N'Defeat', CAST(N'2025-04-17T04:42:00.000' AS DateTime), CAST(N'2025-04-16T23:37:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (24, CAST(N'2025-06-06T18:40:00.000' AS DateTime), N'Dionnis', NULL, NULL, N'202506060024', CAST(N'2025-06-06T18:40:00.000' AS DateTime), N'Task 24', N'Test description 24', N'Remark sample 24', 6, N'Jun Quan', 1, N'New', 1, N'Defeat', NULL, CAST(N'2025-06-12T21:40:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (25, CAST(N'2025-04-19T16:00:00.000' AS DateTime), N'Jun Quan', NULL, NULL, N'202504190025', CAST(N'2025-04-19T16:00:00.000' AS DateTime), N'Task 25', N'Test description 25', N'Remark sample 25', 7, N'Dionnis', 1, N'New', 1, N'Defeat', NULL, CAST(N'2025-04-22T17:19:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (26, CAST(N'2025-04-26T22:34:00.000' AS DateTime), N'Admin', CAST(N'2025-04-30T14:00:00.000' AS DateTime), N'Jun Quan', N'202504260026', CAST(N'2025-04-26T22:34:00.000' AS DateTime), N'Task 26', N'Test description 26', N'Remark sample 26', 6, N'Jun Quan', 2, N'Work In Progress', 1, N'Defeat', NULL, CAST(N'2025-04-27T06:16:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (27, CAST(N'2025-01-14T12:36:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-01T21:44:12.507' AS DateTime), N'Jun Quan', N'202501140027', CAST(N'2025-01-14T12:36:00.000' AS DateTime), N'Task 27', N'Test description 27', N'Remark sample 27', 6, N'Jun Quan', 3, N'Hold', 1, N'Defeat', NULL, CAST(N'2025-01-16T17:28:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (28, CAST(N'2025-06-02T06:33:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-06-06T08:44:00.000' AS DateTime), N'Admin', N'202506020028', CAST(N'2025-06-02T06:33:00.000' AS DateTime), N'Task 28', N'Test description 28', N'Remark sample 28', 7, N'Dionnis', 3, N'Hold', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (29, CAST(N'2025-05-03T06:33:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-05-08T08:22:00.000' AS DateTime), N'Admin', N'202505030029', CAST(N'2025-05-03T06:33:00.000' AS DateTime), N'Task 29', N'Test description 29', N'Remark sample 29', 1, N'Admin', 4, N'Completed', 1, N'Defeat', CAST(N'2025-05-03T19:46:00.000' AS DateTime), CAST(N'2025-05-03T08:52:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (30, CAST(N'2025-03-01T20:57:00.000' AS DateTime), N'Admin', CAST(N'2025-03-03T11:31:00.000' AS DateTime), N'Admin', N'202503010030', CAST(N'2025-03-01T20:57:00.000' AS DateTime), N'Task 30', N'Test description 30', N'Remark sample 30', 1, N'Admin', 4, N'Completed', 1, N'Defeat', CAST(N'2025-03-06T21:29:00.000' AS DateTime), CAST(N'2025-03-05T05:46:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (31, CAST(N'2025-02-14T12:57:00.000' AS DateTime), N'Admin', CAST(N'2025-02-16T22:03:00.000' AS DateTime), N'Jun Quan', N'202502140031', CAST(N'2025-02-14T12:57:00.000' AS DateTime), N'Task 31', N'Test description 31', N'Remark sample 31', 1, N'Admin', 3, N'Hold', 3, N'Enhancement', NULL, CAST(N'2025-02-16T02:20:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (32, CAST(N'2025-05-08T23:50:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-05-13T02:54:00.000' AS DateTime), N'Dionnis', N'202505080032', CAST(N'2025-05-08T23:50:00.000' AS DateTime), N'Task 32', N'Test description 32', N'Remark sample 32', 6, N'Jun Quan', 3, N'Hold', 2, N'Request', NULL, CAST(N'2025-05-12T03:53:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (33, CAST(N'2025-03-19T15:50:00.000' AS DateTime), N'Dionnis', CAST(N'2025-04-01T18:51:24.513' AS DateTime), N'Dionnis', N'202503190033', CAST(N'2025-03-19T15:50:00.000' AS DateTime), N'Task 33', N'Test description 33', N'Remark sample 33', 7, N'Dionnis', 1, N'New', 2, N'Request', NULL, CAST(N'2025-04-01T06:22:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (34, CAST(N'2025-03-17T23:15:00.000' AS DateTime), N'Admin', CAST(N'2025-03-19T18:39:00.000' AS DateTime), N'Jun Quan', N'202503170034', CAST(N'2025-03-17T23:15:00.000' AS DateTime), N'Task 34', N'Test description 34', N'Remark sample 34', 6, N'Jun Quan', 2, N'Work In Progress', 1, N'Defeat', NULL, CAST(N'2025-03-18T19:33:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (35, CAST(N'2025-05-27T08:40:00.000' AS DateTime), N'Admin', NULL, NULL, N'202505270035', CAST(N'2025-05-27T08:40:00.000' AS DateTime), N'Task 35', N'Test description 35', N'Remark sample 35', 1, N'Admin', 1, N'New', 1, N'Defeat', NULL, CAST(N'2025-06-01T23:24:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (36, CAST(N'2025-02-08T01:34:00.000' AS DateTime), N'Admin', NULL, NULL, N'202502080036', CAST(N'2025-02-08T01:34:00.000' AS DateTime), N'Task 36', N'Test description 36', N'Remark sample 36', 1, N'Admin', 1, N'New', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (37, CAST(N'2025-01-31T13:30:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-02-08T01:25:00.000' AS DateTime), N'Dionnis', N'202501310037', CAST(N'2025-01-31T13:30:00.000' AS DateTime), N'Task 37', N'Test description 37', N'Remark sample 37', 1, N'Admin', 3, N'Hold', 1, N'Defeat', NULL, CAST(N'2025-02-04T05:19:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (38, CAST(N'2025-06-08T04:19:00.000' AS DateTime), N'Dionnis', CAST(N'2025-06-12T22:05:00.000' AS DateTime), N'Admin', N'202506080038', CAST(N'2025-06-08T04:19:00.000' AS DateTime), N'Task 38', N'Test description 38', N'Remark sample 38', 6, N'Jun Quan', 3, N'Hold', 1, N'Defeat', NULL, CAST(N'2025-06-12T12:28:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (39, CAST(N'2025-01-10T01:00:00.000' AS DateTime), N'Dionnis', CAST(N'2025-01-12T06:24:00.000' AS DateTime), N'Jun Quan', N'202501100039', CAST(N'2025-01-10T01:00:00.000' AS DateTime), N'Task 39', N'Test description 39', N'Remark sample 39', 1, N'Admin', 4, N'Completed', 2, N'Request', CAST(N'2025-01-15T18:18:00.000' AS DateTime), CAST(N'2025-01-13T00:11:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (40, CAST(N'2025-02-25T08:23:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-02-28T12:49:00.000' AS DateTime), N'Admin', N'202502250040', CAST(N'2025-02-25T08:23:00.000' AS DateTime), N'Task 40', N'Test description 40', N'Remark sample 40', 6, N'Jun Quan', 2, N'Work In Progress', 1, N'Defeat', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (41, CAST(N'2025-02-24T07:55:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-02-24T08:07:00.000' AS DateTime), N'Dionnis', N'202502240041', CAST(N'2025-02-24T07:55:00.000' AS DateTime), N'Task 41', N'Test description 41', N'Remark sample 41', 7, N'Dionnis', 4, N'Completed', 2, N'Request', CAST(N'2025-02-27T00:34:00.000' AS DateTime), NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (42, CAST(N'2025-06-21T04:21:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-06-22T01:27:00.000' AS DateTime), N'Jun Quan', N'202506210042', CAST(N'2025-06-21T04:21:00.000' AS DateTime), N'Task 42', N'Test description 42', N'Remark sample 42', 6, N'Jun Quan', 4, N'Completed', 2, N'Request', CAST(N'2025-06-22T06:33:00.000' AS DateTime), CAST(N'2025-06-22T14:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (43, CAST(N'2025-05-29T08:59:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-06-01T00:15:00.000' AS DateTime), N'Jun Quan', N'202505290043', CAST(N'2025-05-29T08:59:00.000' AS DateTime), N'Task 43', N'Test description 43', N'Remark sample 43', 1, N'Admin', 2, N'Work In Progress', 2, N'Request', NULL, CAST(N'2025-06-05T10:12:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (44, CAST(N'2025-05-23T16:20:00.000' AS DateTime), N'Admin', NULL, NULL, N'202505230044', CAST(N'2025-05-23T16:20:00.000' AS DateTime), N'Task 44', N'Test description 44', N'Remark sample 44', 7, N'Dionnis', 1, N'New', 3, N'Enhancement', NULL, CAST(N'2025-05-28T15:23:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (45, CAST(N'2025-03-20T15:06:00.000' AS DateTime), N'Admin', CAST(N'2025-03-27T13:29:00.000' AS DateTime), N'Jun Quan', N'202503200045', CAST(N'2025-03-20T15:06:00.000' AS DateTime), N'Task 45', N'Test description 45', N'Remark sample 45', 7, N'Dionnis', 4, N'Completed', 2, N'Request', CAST(N'2025-03-25T07:47:00.000' AS DateTime), CAST(N'2025-03-25T13:23:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (46, CAST(N'2025-06-05T23:33:00.000' AS DateTime), N'Dionnis', CAST(N'2025-06-11T17:28:00.000' AS DateTime), N'Jun Quan', N'202506050046', CAST(N'2025-06-05T23:33:00.000' AS DateTime), N'Task 46', N'Test description 46', N'Remark sample 46', 7, N'Dionnis', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-06-08T04:21:00.000' AS DateTime), CAST(N'2025-06-07T22:43:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (47, CAST(N'2025-05-11T16:13:00.000' AS DateTime), N'Dionnis', CAST(N'2025-05-11T23:55:00.000' AS DateTime), N'Jun Quan', N'202505110047', CAST(N'2025-05-11T16:13:00.000' AS DateTime), N'Task 47', N'Test description 47', N'Remark sample 47', 7, N'Dionnis', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-05-17T03:16:00.000' AS DateTime), CAST(N'2025-05-18T16:49:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (48, CAST(N'2025-03-30T14:27:00.000' AS DateTime), N'Dionnis', CAST(N'2025-03-31T11:22:00.000' AS DateTime), N'Admin', N'202503300048', CAST(N'2025-03-30T14:27:00.000' AS DateTime), N'Task 48', N'Test description 48', N'Remark sample 48', 6, N'Jun Quan', 2, N'Work In Progress', 2, N'Request', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (49, CAST(N'2025-06-26T17:52:00.000' AS DateTime), N'Admin', CAST(N'2025-06-30T21:10:00.000' AS DateTime), N'Dionnis', N'202506260049', CAST(N'2025-06-26T17:52:00.000' AS DateTime), N'Task 49', N'Test description 49', N'Remark sample 49', 7, N'Dionnis', 3, N'Hold', 1, N'Defeat', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (50, CAST(N'2025-02-05T21:26:00.000' AS DateTime), N'Dionnis', CAST(N'2025-02-07T01:17:00.000' AS DateTime), N'Dionnis', N'202502050050', CAST(N'2025-02-05T21:26:00.000' AS DateTime), N'Task 50', N'Test description 50', N'Remark sample 50', 1, N'Admin', 3, N'Hold', 2, N'Request', NULL, CAST(N'2025-02-06T08:11:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (51, CAST(N'2025-04-11T06:04:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-12T16:07:00.000' AS DateTime), N'Admin', N'202504110051', CAST(N'2025-04-11T06:04:00.000' AS DateTime), N'Task 51', N'Test description 51', N'Remark sample 51', 7, N'Dionnis', 2, N'Work In Progress', 1, N'Defeat', NULL, CAST(N'2025-04-11T09:07:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (52, CAST(N'2025-03-23T05:05:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-03-28T09:44:00.000' AS DateTime), N'Dionnis', N'202503230052', CAST(N'2025-03-23T05:05:00.000' AS DateTime), N'Task 52', N'Test description 52', N'Remark sample 52', 7, N'Dionnis', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-03-24T13:43:00.000' AS DateTime), CAST(N'2025-03-29T18:49:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (53, CAST(N'2025-05-31T02:41:00.000' AS DateTime), N'Admin', CAST(N'2025-06-05T06:09:00.000' AS DateTime), N'Jun Quan', N'202505310053', CAST(N'2025-05-31T02:41:00.000' AS DateTime), N'Task 53', N'Test description 53', N'Remark sample 53', 7, N'Dionnis', 2, N'Work In Progress', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (54, CAST(N'2025-04-01T00:37:00.000' AS DateTime), N'Dionnis', CAST(N'2025-04-04T00:58:00.000' AS DateTime), N'Admin', N'202504010054', CAST(N'2025-04-01T00:37:00.000' AS DateTime), N'Task 54', N'Test description 54', N'Remark sample 54', 1, N'Admin', 4, N'Completed', 2, N'Request', CAST(N'2025-04-06T02:17:00.000' AS DateTime), CAST(N'2025-04-05T18:34:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (55, CAST(N'2025-04-04T14:43:00.000' AS DateTime), N'Admin', CAST(N'2025-04-11T01:20:00.000' AS DateTime), N'Admin', N'202504040055', CAST(N'2025-04-04T14:43:00.000' AS DateTime), N'Task 55', N'Test description 55', N'Remark sample 55', 1, N'Admin', 3, N'Hold', 1, N'Defeat', NULL, CAST(N'2025-04-07T15:10:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (56, CAST(N'2025-02-03T21:41:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-02-10T06:07:00.000' AS DateTime), N'Dionnis', N'202502030056', CAST(N'2025-02-03T21:41:00.000' AS DateTime), N'Task 56', N'Test description 56', N'Remark sample 56', 7, N'Dionnis', 3, N'Hold', 1, N'Defeat', NULL, CAST(N'2025-02-04T21:50:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (57, CAST(N'2025-06-25T14:01:00.000' AS DateTime), N'Admin', CAST(N'2025-06-28T15:37:00.000' AS DateTime), N'Jun Quan', N'202506250057', CAST(N'2025-06-25T14:01:00.000' AS DateTime), N'Task 57', N'Test description 57', N'Remark sample 57', 1, N'Admin', 2, N'Work In Progress', 3, N'Enhancement', NULL, CAST(N'2025-06-26T04:19:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (58, CAST(N'2025-01-17T23:40:00.000' AS DateTime), N'Dionnis', CAST(N'2025-01-18T17:42:00.000' AS DateTime), N'Jun Quan', N'202501170058', CAST(N'2025-01-17T23:40:00.000' AS DateTime), N'Task 58', N'Test description 58', N'Remark sample 58', 7, N'Dionnis', 2, N'Work In Progress', 2, N'Request', NULL, CAST(N'2025-01-18T18:12:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (59, CAST(N'2025-04-15T18:37:00.000' AS DateTime), N'Dionnis', NULL, NULL, N'202504150059', CAST(N'2025-04-15T18:37:00.000' AS DateTime), N'Task 59', N'Test description 59', N'Remark sample 59', 6, N'Jun Quan', 1, N'New', 2, N'Request', NULL, CAST(N'2025-04-20T23:57:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (60, CAST(N'2025-04-01T11:17:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-05T05:01:00.000' AS DateTime), N'Jun Quan', N'202504010060', CAST(N'2025-04-01T11:17:00.000' AS DateTime), N'Task 60', N'Test description 60', N'Remark sample 60', 7, N'Dionnis', 4, N'Completed', 1, N'Defeat', CAST(N'2025-04-02T14:32:00.000' AS DateTime), CAST(N'2025-04-05T16:06:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (61, CAST(N'2025-03-11T16:39:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-02T11:51:27.233' AS DateTime), N'Admin', N'202503110061', CAST(N'2025-03-11T16:39:00.000' AS DateTime), N'Task 61', N'Test description 61', N'Remark sample 61', 6, N'Jun Quan', 2, N'Work In Progress', 1, N'Defeat', NULL, CAST(N'2025-03-15T20:14:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (62, CAST(N'2025-03-23T19:00:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-03-28T00:59:00.000' AS DateTime), N'Jun Quan', N'202503230062', CAST(N'2025-03-23T19:00:00.000' AS DateTime), N'Task 62', N'Test description 62', N'Remark sample 62', 7, N'Dionnis', 4, N'Completed', 2, N'Request', CAST(N'2025-03-24T13:29:00.000' AS DateTime), CAST(N'2025-03-26T22:50:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (63, CAST(N'2025-01-05T15:39:00.000' AS DateTime), N'Admin', NULL, NULL, N'202501050063', CAST(N'2025-01-05T15:39:00.000' AS DateTime), N'Task 63', N'Test description 63', N'Remark sample 63', 7, N'Dionnis', 1, N'New', 1, N'Defeat', NULL, CAST(N'2025-01-08T17:44:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (64, CAST(N'2025-04-13T00:57:00.000' AS DateTime), N'Dionnis', CAST(N'2025-04-17T09:13:00.000' AS DateTime), N'Jun Quan', N'202504130064', CAST(N'2025-04-13T00:57:00.000' AS DateTime), N'Task 64', N'Test description 64', N'Remark sample 64', 1, N'Admin', 4, N'Completed', 1, N'Defeat', CAST(N'2025-04-17T01:15:00.000' AS DateTime), CAST(N'2025-04-13T20:00:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (65, CAST(N'2025-06-17T10:53:00.000' AS DateTime), N'Admin', CAST(N'2025-06-19T04:28:00.000' AS DateTime), N'Dionnis', N'202506170065', CAST(N'2025-06-17T10:53:00.000' AS DateTime), N'Task 65', N'Test description 65', N'Remark sample 65', 6, N'Jun Quan', 3, N'Hold', 1, N'Defeat', NULL, CAST(N'2025-06-23T20:57:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (66, CAST(N'2025-04-22T02:29:00.000' AS DateTime), N'Jun Quan', NULL, NULL, N'202504220066', CAST(N'2025-04-22T02:29:00.000' AS DateTime), N'Task 66', N'Test description 66', N'Remark sample 66', 1, N'Admin', 1, N'New', 3, N'Enhancement', NULL, CAST(N'2025-04-24T14:24:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (67, CAST(N'2025-02-08T08:16:00.000' AS DateTime), N'Admin', CAST(N'2025-02-08T12:13:00.000' AS DateTime), N'Admin', N'202502080067', CAST(N'2025-02-08T08:16:00.000' AS DateTime), N'Task 67', N'Test description 67', N'Remark sample 67', 1, N'Admin', 4, N'Completed', 1, N'Defeat', CAST(N'2025-02-13T07:20:00.000' AS DateTime), CAST(N'2025-02-13T23:28:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (68, CAST(N'2025-07-01T18:24:00.000' AS DateTime), N'Admin', CAST(N'2025-07-07T06:02:00.000' AS DateTime), N'Jun Quan', N'202507010068', CAST(N'2025-07-01T18:24:00.000' AS DateTime), N'Task 68', N'Test description 68', N'Remark sample 68', 6, N'Jun Quan', 4, N'Completed', 2, N'Request', CAST(N'2025-07-02T05:01:00.000' AS DateTime), CAST(N'2025-07-06T01:36:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (69, CAST(N'2025-05-10T22:10:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-05-10T22:55:00.000' AS DateTime), N'Jun Quan', N'202505100069', CAST(N'2025-05-10T22:10:00.000' AS DateTime), N'Task 69', N'Test description 69', N'Remark sample 69', 1, N'Admin', 4, N'Completed', 2, N'Request', CAST(N'2025-05-10T23:27:00.000' AS DateTime), CAST(N'2025-05-16T01:20:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (70, CAST(N'2025-04-19T23:01:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-23T09:13:00.000' AS DateTime), N'Jun Quan', N'202504190070', CAST(N'2025-04-19T23:01:00.000' AS DateTime), N'Task 70', N'Test description 70', N'Remark sample 70', 1, N'Admin', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-04-21T21:50:00.000' AS DateTime), CAST(N'2025-04-22T15:24:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (71, CAST(N'2025-04-30T16:05:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-05-02T15:01:00.000' AS DateTime), N'Dionnis', N'202504300071', CAST(N'2025-04-30T16:05:00.000' AS DateTime), N'Task 71', N'Test description 71', N'Remark sample 71', 1, N'Admin', 3, N'Hold', 2, N'Request', NULL, CAST(N'2025-05-01T19:31:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (72, CAST(N'2025-05-30T13:27:00.000' AS DateTime), N'Admin', NULL, NULL, N'202505300072', CAST(N'2025-05-30T13:27:00.000' AS DateTime), N'Task 72', N'Test description 72', N'Remark sample 72', 7, N'Dionnis', 1, N'New', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (73, CAST(N'2025-01-05T13:13:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-01-11T07:48:00.000' AS DateTime), N'Admin', N'202501050073', CAST(N'2025-01-05T13:13:00.000' AS DateTime), N'Task 73', N'Test description 73', N'Remark sample 73', 6, N'Jun Quan', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-01-08T11:58:00.000' AS DateTime), NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (74, CAST(N'2025-04-09T03:45:00.000' AS DateTime), N'Admin', CAST(N'2025-04-12T19:50:00.000' AS DateTime), N'Dionnis', N'202504090074', CAST(N'2025-04-09T03:45:00.000' AS DateTime), N'Task 74', N'Test description 74', N'Remark sample 74', 6, N'Jun Quan', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-04-10T13:11:00.000' AS DateTime), NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (75, CAST(N'2025-01-14T11:55:00.000' AS DateTime), N'Dionnis', CAST(N'2025-01-21T18:08:00.000' AS DateTime), N'Dionnis', N'202501140075', CAST(N'2025-01-14T11:55:00.000' AS DateTime), N'Task 75', N'Test description 75', N'Remark sample 75', 7, N'Dionnis', 2, N'Work In Progress', 1, N'Defeat', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (76, CAST(N'2025-01-03T22:47:00.000' AS DateTime), N'Admin', CAST(N'2025-01-04T17:21:00.000' AS DateTime), N'Admin', N'202501030076', CAST(N'2025-01-03T22:47:00.000' AS DateTime), N'Task 76', N'Test description 76', N'Remark sample 76', 1, N'Admin', 4, N'Completed', 1, N'Defeat', CAST(N'2025-01-11T06:36:00.000' AS DateTime), CAST(N'2025-01-08T10:23:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (77, CAST(N'2025-01-10T14:34:00.000' AS DateTime), N'Dionnis', NULL, NULL, N'202501100077', CAST(N'2025-01-10T14:34:00.000' AS DateTime), N'Task 77', N'Test description 77', N'Remark sample 77', 1, N'Admin', 1, N'New', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (78, CAST(N'2025-05-21T18:52:00.000' AS DateTime), N'Dionnis', CAST(N'2025-05-28T01:24:00.000' AS DateTime), N'Admin', N'202505210078', CAST(N'2025-05-21T18:52:00.000' AS DateTime), N'Task 78', N'Test description 78', N'Remark sample 78', 1, N'Admin', 3, N'Hold', 3, N'Enhancement', NULL, CAST(N'2025-05-24T06:01:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (79, CAST(N'2025-02-17T19:43:00.000' AS DateTime), N'Admin', CAST(N'2025-02-25T02:26:00.000' AS DateTime), N'Jun Quan', N'202502170079', CAST(N'2025-02-17T19:43:00.000' AS DateTime), N'Task 79', N'Test description 79', N'Remark sample 79', 6, N'Jun Quan', 4, N'Completed', 1, N'Defeat', CAST(N'2025-02-22T08:36:00.000' AS DateTime), CAST(N'2025-02-22T12:25:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (80, CAST(N'2025-06-24T06:22:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-06-30T04:42:00.000' AS DateTime), N'Admin', N'202506240080', CAST(N'2025-06-24T06:22:00.000' AS DateTime), N'Task 80', N'Test description 80', N'Remark sample 80', 1, N'Admin', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-06-24T13:53:00.000' AS DateTime), NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (81, CAST(N'2025-01-08T04:54:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-01-08T11:54:00.000' AS DateTime), N'Dionnis', N'202501080081', CAST(N'2025-01-08T04:54:00.000' AS DateTime), N'Task 81', N'Test description 81', N'Remark sample 81', 7, N'Dionnis', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-01-11T21:27:00.000' AS DateTime), CAST(N'2025-01-13T20:08:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (83, CAST(N'2025-01-26T13:27:00.000' AS DateTime), N'Jun Quan', NULL, NULL, N'202501260083', CAST(N'2025-01-26T13:27:00.000' AS DateTime), N'Task 83', N'Test description 83', N'Remark sample 83', 6, N'Jun Quan', 1, N'New', 2, N'Request', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (84, CAST(N'2025-06-04T06:19:00.000' AS DateTime), N'Dionnis', NULL, NULL, N'202506040084', CAST(N'2025-06-04T06:19:00.000' AS DateTime), N'Task 84', N'Test description 84', N'Remark sample 84', 6, N'Jun Quan', 1, N'New', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (85, CAST(N'2025-05-30T11:37:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-06-03T19:26:00.000' AS DateTime), N'Dionnis', N'202505300085', CAST(N'2025-05-30T11:37:00.000' AS DateTime), N'Task 85', N'Test description 85', N'Remark sample 85', 6, N'Jun Quan', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-06-02T02:19:00.000' AS DateTime), CAST(N'2025-05-30T22:15:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (86, CAST(N'2025-02-09T21:18:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-02-12T09:10:00.000' AS DateTime), N'Jun Quan', N'202502090086', CAST(N'2025-02-09T21:18:00.000' AS DateTime), N'Task 86', N'Test description 86', N'Remark sample 86', 7, N'Dionnis', 4, N'Completed', 2, N'Request', CAST(N'2025-02-11T07:20:00.000' AS DateTime), CAST(N'2025-02-10T07:48:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (87, CAST(N'2025-03-06T01:40:00.000' AS DateTime), N'Admin', CAST(N'2025-04-02T11:51:40.327' AS DateTime), N'Admin', N'202503060087', CAST(N'2025-03-06T01:40:00.000' AS DateTime), N'Task 87', N'Test description 87', N'Remark sample 87', 1, N'Admin', 3, N'Hold', 2, N'Request', NULL, CAST(N'2025-04-02T04:57:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (88, CAST(N'2025-04-24T14:06:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-26T19:08:00.000' AS DateTime), N'Jun Quan', N'202504240088', CAST(N'2025-04-24T14:06:00.000' AS DateTime), N'Task 88', N'Test description 88', N'Remark sample 88', 6, N'Jun Quan', 4, N'Completed', 2, N'Request', CAST(N'2025-04-28T00:29:00.000' AS DateTime), CAST(N'2025-04-25T12:18:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (89, CAST(N'2025-02-06T20:41:00.000' AS DateTime), N'Admin', NULL, NULL, N'202502060089', CAST(N'2025-02-06T20:41:00.000' AS DateTime), N'Task 89', N'Test description 89', N'Remark sample 89', 6, N'Jun Quan', 1, N'New', 1, N'Defeat', NULL, CAST(N'2025-02-13T09:19:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (90, CAST(N'2025-05-01T17:10:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-05-08T18:04:00.000' AS DateTime), N'Jun Quan', N'202505010090', CAST(N'2025-05-01T17:10:00.000' AS DateTime), N'Task 90', N'Test description 90', N'Remark sample 90', 6, N'Jun Quan', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-05-08T08:06:00.000' AS DateTime), CAST(N'2025-05-02T17:10:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (91, CAST(N'2025-03-22T13:38:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-03-29T17:52:00.000' AS DateTime), N'Dionnis', N'202503220091', CAST(N'2025-03-22T13:38:00.000' AS DateTime), N'Task 91', N'Test description 91', N'Remark sample 91', 6, N'Jun Quan', 2, N'Work In Progress', 1, N'Defeat', NULL, CAST(N'2025-03-29T17:43:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (92, CAST(N'2025-03-14T12:26:00.000' AS DateTime), N'Dionnis', CAST(N'2025-03-16T16:24:00.000' AS DateTime), N'Jun Quan', N'202503140092', CAST(N'2025-03-14T12:26:00.000' AS DateTime), N'Task 92', N'Test description 92', N'Remark sample 92', 1, N'Admin', 4, N'Completed', 2, N'Request', CAST(N'2025-03-21T22:07:00.000' AS DateTime), CAST(N'2025-03-20T18:11:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (93, CAST(N'2025-02-18T07:58:00.000' AS DateTime), N'Dionnis', CAST(N'2025-02-20T10:22:00.000' AS DateTime), N'Admin', N'202502180093', CAST(N'2025-02-18T07:58:00.000' AS DateTime), N'Task 93', N'Test description 93', N'Remark sample 93', 6, N'Jun Quan', 4, N'Completed', 1, N'Defeat', CAST(N'2025-02-19T02:22:00.000' AS DateTime), CAST(N'2025-02-19T21:35:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (94, CAST(N'2025-02-05T01:08:00.000' AS DateTime), N'Jun Quan', NULL, NULL, N'202502050094', CAST(N'2025-02-05T01:08:00.000' AS DateTime), N'Task 94', N'Test description 94', N'Remark sample 94', 6, N'Jun Quan', 1, N'New', 2, N'Request', NULL, CAST(N'2025-02-05T20:54:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (95, CAST(N'2025-05-16T10:30:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-05-16T11:11:00.000' AS DateTime), N'Dionnis', N'202505160095', CAST(N'2025-05-16T10:30:00.000' AS DateTime), N'Task 95', N'Test description 95', N'Remark sample 95', 6, N'Jun Quan', 4, N'Completed', 2, N'Request', CAST(N'2025-05-22T19:45:00.000' AS DateTime), CAST(N'2025-05-19T11:55:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (96, CAST(N'2025-06-21T07:35:00.000' AS DateTime), N'Admin', CAST(N'2025-06-27T02:47:00.000' AS DateTime), N'Jun Quan', N'202506210096', CAST(N'2025-06-21T07:35:00.000' AS DateTime), N'Task 96', N'Test description 96', N'Remark sample 96', 6, N'Jun Quan', 3, N'Hold', 3, N'Enhancement', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (97, CAST(N'2025-02-12T09:32:00.000' AS DateTime), N'Admin', CAST(N'2025-02-13T21:07:00.000' AS DateTime), N'Dionnis', N'202502120097', CAST(N'2025-02-12T09:32:00.000' AS DateTime), N'Task 97', N'Test description 97', N'Remark sample 97', 6, N'Jun Quan', 2, N'Work In Progress', 3, N'Enhancement', NULL, CAST(N'2025-02-16T05:40:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (98, CAST(N'2025-02-05T22:39:00.000' AS DateTime), N'Admin', NULL, NULL, N'202502050098', CAST(N'2025-02-05T22:39:00.000' AS DateTime), N'Task 98', N'Test description 98', N'Remark sample 98', 1, N'Admin', 1, N'New', 2, N'Request', NULL, CAST(N'2025-02-06T13:32:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (99, CAST(N'2025-02-01T22:49:00.000' AS DateTime), N'Admin', CAST(N'2025-02-05T05:34:00.000' AS DateTime), N'Dionnis', N'202502010099', CAST(N'2025-02-01T22:49:00.000' AS DateTime), N'Task 99', N'Test description 99', N'Remark sample 99', 1, N'Admin', 4, N'Completed', 1, N'Defeat', CAST(N'2025-02-04T06:17:00.000' AS DateTime), CAST(N'2025-02-08T15:33:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (100, CAST(N'2025-07-02T06:42:00.000' AS DateTime), N'Jun Quan', CAST(N'2025-04-02T11:58:30.370' AS DateTime), N'Admin', N'202507020100', CAST(N'2025-07-02T06:42:00.000' AS DateTime), N'Task 100', N'Test description 100', N'Remark sample 100', 1, N'Admin', 4, N'Completed', 3, N'Enhancement', CAST(N'2025-04-02T03:58:00.000' AS DateTime), CAST(N'2025-07-09T09:06:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (101, CAST(N'2025-04-02T11:52:07.000' AS DateTime), N'Admin', CAST(N'2025-04-02T11:53:45.250' AS DateTime), N'Admin', N'202504020001', CAST(N'2025-04-02T11:52:07.827' AS DateTime), N'qewqwe', N'qeqweqweeqwwe', N'qweqwewqewqewe', 1, N'Admin', 4, N'Completed', 2, N'Request', CAST(N'2025-04-02T03:53:00.000' AS DateTime), CAST(N'2025-04-11T11:52:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (102, CAST(N'2025-04-02T11:55:05.770' AS DateTime), N'Admin', NULL, NULL, N'202504020002', CAST(N'2025-04-02T11:55:05.753' AS DateTime), N'qwewqewqe', N'eqeeqweqwe', N'qweqwewqeqw', 7, N'Dionnis', 3, N'Hold', 1, N'Defeat', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (103, CAST(N'2025-04-02T11:56:36.093' AS DateTime), N'Admin', NULL, NULL, N'202504020003', CAST(N'2025-04-02T11:56:36.063' AS DateTime), N'asdasdas', N'asdsadasd', N'asdasd', 1, N'Admin', 1, N'New', 1, N'Defeat', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (104, CAST(N'2025-04-02T12:03:57.443' AS DateTime), N'Admin', NULL, NULL, N'202504020004', CAST(N'2025-04-02T12:03:57.427' AS DateTime), N'asdasd', N'dasdsaasd', N'adsadsadsad', 1, N'Admin', 1, N'New', 1, N'Defeat', NULL, CAST(N'2025-04-22T12:03:00.000' AS DateTime))
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (105, CAST(N'2025-04-02T12:04:16.920' AS DateTime), N'Admin', NULL, NULL, N'202504020005', CAST(N'2025-04-02T12:04:16.907' AS DateTime), N'adsadasd', N'asdsad', N'asdsdasd', 6, N'Jun Quan', 2, N'Work In Progress', 1, N'Defeat', NULL, NULL)
+GO
+INSERT [dbo].[DailyTask] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ReportByID], [ReportedOn], [Title], [Description], [Remark], [PICID], [PICName], [StatusID], [StatusName], [TypeID], [TypeName], [CompletedOn], [ScheduledOn]) VALUES (106, CAST(N'2025-04-02T12:04:31.290' AS DateTime), N'Admin', NULL, NULL, N'202504020006', CAST(N'2025-04-02T12:04:31.283' AS DateTime), N'asdsad', N'asdasd', N'asdasdasd', 1, N'Admin', 2, N'Work In Progress', 3, N'Enhancement', NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[DailyTask] OFF
+GO
+SET IDENTITY_INSERT [dbo].[PublicHoliday] ON 
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (3, CAST(N'2025-03-31T16:45:53.537' AS DateTime), N'Admin', NULL, NULL, N'NEW YEAR DAY', NULL, CAST(N'2025-01-01T00:00:00.000' AS DateTime), CAST(N'2025-01-01T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (4, CAST(N'2025-03-31T16:46:54.103' AS DateTime), N'Admin', NULL, NULL, N'CHINESE NEW YEAR', NULL, CAST(N'2025-01-29T00:00:00.000' AS DateTime), CAST(N'2025-01-30T00:00:00.000' AS DateTime), 2)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (5, CAST(N'2025-03-31T16:47:19.577' AS DateTime), N'Admin', NULL, NULL, N'THAIPUSAM', NULL, CAST(N'2025-02-11T00:00:00.000' AS DateTime), CAST(N'2025-02-11T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (6, CAST(N'2025-03-31T16:47:45.987' AS DateTime), N'Admin', NULL, NULL, N'HARI RAYA AIDILFITRI', NULL, CAST(N'2025-03-31T00:00:00.000' AS DateTime), CAST(N'2025-04-01T00:00:00.000' AS DateTime), 2)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (7, CAST(N'2025-03-31T16:47:58.713' AS DateTime), N'Admin', NULL, NULL, N'LABOUR DAY', NULL, CAST(N'2025-05-01T00:00:00.000' AS DateTime), CAST(N'2025-05-01T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (8, CAST(N'2025-03-31T17:01:01.033' AS DateTime), N'Admin', NULL, NULL, N'WESAK DAY', NULL, CAST(N'2025-05-12T00:00:00.000' AS DateTime), CAST(N'2025-05-12T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (10, CAST(N'2025-04-02T21:14:05.630' AS DateTime), N'Admin', NULL, NULL, N'HARI RAYA HAJI', NULL, CAST(N'2025-06-07T00:00:00.000' AS DateTime), CAST(N'2025-06-07T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (11, CAST(N'2025-04-02T21:14:46.000' AS DateTime), N'Admin', CAST(N'2025-04-02T21:16:40.537' AS DateTime), N'Admin', N'NATIONAL DAY', N'Malaysia', CAST(N'2025-08-31T00:00:00.000' AS DateTime), CAST(N'2025-08-31T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (12, CAST(N'2025-04-02T21:15:06.033' AS DateTime), N'Admin', NULL, NULL, N'MALAYSIA DAY', NULL, CAST(N'2025-09-16T00:00:00.000' AS DateTime), CAST(N'2025-09-16T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (13, CAST(N'2025-04-02T21:15:29.260' AS DateTime), N'Admin', NULL, NULL, N'DEEPAVALI', NULL, CAST(N'2025-10-20T00:00:00.000' AS DateTime), CAST(N'2025-10-20T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (14, CAST(N'2025-04-02T21:15:52.507' AS DateTime), N'Admin', NULL, NULL, N'CHRISTMAS', NULL, CAST(N'2025-12-25T00:00:00.000' AS DateTime), CAST(N'2025-12-25T00:00:00.000' AS DateTime), 1)
+GO
+INSERT [dbo].[PublicHoliday] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Remark], [StartDate], [EndDate], [Day]) VALUES (15, CAST(N'2025-04-02T21:17:09.000' AS DateTime), N'Admin', CAST(N'2025-04-02T21:17:17.880' AS DateTime), N'Admin', N'NATIONAL DAY', N'Singapore', CAST(N'2025-08-07T00:00:00.000' AS DateTime), CAST(N'2025-08-07T00:00:00.000' AS DateTime), 1)
+GO
+SET IDENTITY_INSERT [dbo].[PublicHoliday] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Status] ON 
+GO
+INSERT [dbo].[Status] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (1, CAST(N'2025-03-29T20:55:55.000' AS DateTime), N'Admin', CAST(N'2025-04-02T12:07:38.507' AS DateTime), N'Admin', N'New', NULL)
+GO
+INSERT [dbo].[Status] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (2, CAST(N'2025-03-29T20:56:01.503' AS DateTime), N'Admin', NULL, NULL, N'Work In Progress', NULL)
+GO
+INSERT [dbo].[Status] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (3, CAST(N'2025-03-29T20:56:15.850' AS DateTime), N'Admin', NULL, NULL, N'Hold', NULL)
+GO
+INSERT [dbo].[Status] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (4, CAST(N'2025-03-29T20:56:33.853' AS DateTime), N'Admin', NULL, NULL, N'Completed', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Status] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Type] ON 
+GO
+INSERT [dbo].[Type] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (1, CAST(N'2025-03-29T20:57:08.000' AS DateTime), N'Admin', CAST(N'2025-04-01T15:34:20.187' AS DateTime), N'Jun Quan', N'Defeat', NULL)
+GO
+INSERT [dbo].[Type] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (2, CAST(N'2025-03-29T20:57:16.207' AS DateTime), N'Admin', NULL, NULL, N'Request', NULL)
+GO
+INSERT [dbo].[Type] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (3, CAST(N'2025-03-29T20:57:20.377' AS DateTime), N'Admin', NULL, NULL, N'Enhancement', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Type] OFF
+GO
+SET IDENTITY_INSERT [dbo].[UserHobby] ON 
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (1, CAST(N'2025-04-02T18:53:24.193' AS DateTime), N'Admin', NULL, NULL, N'Badminton', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (2, CAST(N'2025-04-02T18:53:29.980' AS DateTime), N'Admin', NULL, NULL, N'Jogging', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (3, CAST(N'2025-04-02T18:53:41.567' AS DateTime), N'Admin', NULL, NULL, N'Basketball', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (4, CAST(N'2025-04-02T18:53:45.803' AS DateTime), N'Admin', NULL, NULL, N'Swimming', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (5, CAST(N'2025-04-02T18:53:51.463' AS DateTime), N'Admin', NULL, NULL, N'Sleep', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (6, CAST(N'2025-04-02T18:54:12.003' AS DateTime), N'Admin', NULL, NULL, N'Tennis', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (7, CAST(N'2025-04-02T18:54:16.490' AS DateTime), N'Admin', NULL, NULL, N'Walking', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (8, CAST(N'2025-04-02T18:54:48.677' AS DateTime), N'Admin', NULL, NULL, N'Cooking', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (10, CAST(N'2025-04-02T18:54:58.857' AS DateTime), N'Admin', NULL, NULL, N'Singing', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (11, CAST(N'2025-04-02T18:55:10.750' AS DateTime), N'Admin', NULL, NULL, N'Photography', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (12, CAST(N'2025-04-02T18:55:19.983' AS DateTime), N'Admin', NULL, NULL, N'Fishing', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (13, CAST(N'2025-04-02T18:55:27.303' AS DateTime), N'Admin', NULL, NULL, N'Travelling', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (14, CAST(N'2025-04-02T18:55:47.143' AS DateTime), N'Admin', NULL, NULL, N'Gymnastics', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (15, CAST(N'2025-04-02T18:55:50.717' AS DateTime), N'Admin', NULL, NULL, N'Gym', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (16, CAST(N'2025-04-02T18:56:01.920' AS DateTime), N'Admin', NULL, NULL, N'Shopping', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (17, CAST(N'2025-04-02T18:56:19.957' AS DateTime), N'Admin', NULL, NULL, N'Drawing', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (18, CAST(N'2025-04-02T18:56:37.060' AS DateTime), N'Admin', NULL, NULL, N'Reading', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (19, CAST(N'2025-04-02T18:56:46.577' AS DateTime), N'Admin', NULL, NULL, N'Dancing', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (20, CAST(N'2025-04-02T18:56:52.910' AS DateTime), N'Admin', NULL, NULL, N'Football', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (21, CAST(N'2025-04-02T18:57:09.613' AS DateTime), N'Admin', NULL, NULL, N'Knitting', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (22, CAST(N'2025-04-02T18:57:16.020' AS DateTime), N'Admin', NULL, NULL, N'Sewing', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (24, CAST(N'2025-04-02T18:57:30.580' AS DateTime), N'Admin', NULL, NULL, N'Magic', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (25, CAST(N'2025-04-02T18:57:49.030' AS DateTime), N'Admin', NULL, NULL, N'Meditation', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (26, CAST(N'2025-04-02T18:57:55.053' AS DateTime), N'Admin', NULL, NULL, N'Podcasting', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (27, CAST(N'2025-04-02T18:58:06.563' AS DateTime), N'Admin', NULL, NULL, N'Gardening', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (28, CAST(N'2025-04-02T18:58:11.623' AS DateTime), N'Admin', NULL, NULL, N'Writing', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (29, CAST(N'2025-04-02T18:58:21.420' AS DateTime), N'Admin', NULL, NULL, N'Baking', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (30, CAST(N'2025-04-02T18:58:27.060' AS DateTime), N'Admin', NULL, NULL, N'Hiking', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (31, CAST(N'2025-04-02T18:58:41.577' AS DateTime), N'Admin', NULL, NULL, N'Journaling', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (32, CAST(N'2025-04-02T18:59:08.220' AS DateTime), N'Admin', NULL, NULL, N'Camping', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (33, CAST(N'2025-04-02T18:59:19.700' AS DateTime), N'Admin', NULL, NULL, N'Playing video games', NULL)
+GO
+INSERT [dbo].[UserHobby] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (34, CAST(N'2025-04-03T11:54:55.130' AS DateTime), N'Admin', NULL, NULL, N'Eating', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[UserHobby] OFF
+GO
+SET IDENTITY_INSERT [dbo].[UserLevelRight] ON 
+GO
+INSERT [dbo].[UserLevelRight] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (1, CAST(N'2025-03-29T20:55:02.000' AS DateTime), N'Admin', CAST(N'2025-04-02T12:07:18.743' AS DateTime), N'Admin', N'Super Admin', NULL)
+GO
+INSERT [dbo].[UserLevelRight] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (2, CAST(N'2025-03-29T20:55:42.957' AS DateTime), N'Admin', NULL, NULL, N'Admin', NULL)
+GO
+INSERT [dbo].[UserLevelRight] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (3, CAST(N'2025-03-29T20:55:48.000' AS DateTime), N'Admin', CAST(N'2025-04-01T15:36:54.773' AS DateTime), N'Admin', N'Customer', NULL)
+GO
+INSERT [dbo].[UserLevelRight] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (4, CAST(N'2025-04-01T15:36:58.510' AS DateTime), N'Admin', NULL, NULL, N'Guest', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[UserLevelRight] OFF
+GO
+SET IDENTITY_INSERT [dbo].[UserSkill] ON 
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (1, CAST(N'2025-04-02T17:43:00.000' AS DateTime), N'Admin', CAST(N'2025-04-02T17:48:46.930' AS DateTime), N'Admin', N'C#', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (2, CAST(N'2025-04-02T17:43:10.847' AS DateTime), N'Admin', NULL, NULL, N'ASP.NET Core', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (3, CAST(N'2025-04-02T17:43:14.493' AS DateTime), N'Admin', NULL, NULL, N'HTML', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (4, CAST(N'2025-04-02T17:43:17.360' AS DateTime), N'Admin', NULL, NULL, N'CSS', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (5, CAST(N'2025-04-02T17:43:22.037' AS DateTime), N'Admin', NULL, NULL, N'JavaScript', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (6, CAST(N'2025-04-02T17:43:42.333' AS DateTime), N'Admin', NULL, NULL, N'Python', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (7, CAST(N'2025-04-02T17:43:45.460' AS DateTime), N'Admin', NULL, NULL, N'Java', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (8, CAST(N'2025-04-02T17:43:48.000' AS DateTime), N'Admin', CAST(N'2025-04-02T17:48:57.453' AS DateTime), N'Admin', N'C++', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (10, CAST(N'2025-04-02T17:51:31.920' AS DateTime), N'Admin', NULL, NULL, N'React', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (11, CAST(N'2025-04-02T17:51:35.943' AS DateTime), N'Admin', NULL, NULL, N'Unity', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (12, CAST(N'2025-04-02T17:51:47.250' AS DateTime), N'Admin', NULL, NULL, N'Leadership', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (13, CAST(N'2025-04-02T17:51:54.827' AS DateTime), N'Admin', NULL, NULL, N'Critical Thinking', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (14, CAST(N'2025-04-02T17:52:09.010' AS DateTime), N'Admin', NULL, NULL, N'Blender', NULL)
+GO
+INSERT [dbo].[UserSkill] ([UID], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [Name], [Description]) VALUES (16, CAST(N'2025-04-03T11:54:54.970' AS DateTime), N'Admin', NULL, NULL, N'Programming', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[UserSkill] OFF
+GO
+ALTER TABLE [dbo].[AccountInfo] ADD  DEFAULT ((0)) FOR [Active]
+GO
+USE [master]
+GO
+ALTER DATABASE [TaskListSystem] SET  READ_WRITE 
+GO
