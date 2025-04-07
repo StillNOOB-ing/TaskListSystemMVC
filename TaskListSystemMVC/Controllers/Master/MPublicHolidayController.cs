@@ -25,7 +25,7 @@ namespace TaskListSystemMVC.Controllers.Master
 
             ViewData["SearchString"] = searchString;
             ViewData["SortOrder"] = sortOrder;
-            //ViewData["SortParamStartDate"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "desc") ? "asc" : "desc";
+            ViewData["SortParamStartDate"] = (string.IsNullOrEmpty(sortOrder) || sortOrder == "desc") ? "asc" : "desc";
 
             var dataList = sortOrder switch
             {
